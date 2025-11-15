@@ -1,0 +1,6 @@
+streamlit
+embedchain
+streamlit-chat
+python-dotenv
+langchain-huggingface
+sentence-transformers

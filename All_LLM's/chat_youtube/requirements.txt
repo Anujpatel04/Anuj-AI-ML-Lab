@@ -1,0 +1,5 @@
+streamlit
+embedchain[youtube]
+youtube-transcript-api>=1.2.0
+python-dotenv
+langchain-huggingface
