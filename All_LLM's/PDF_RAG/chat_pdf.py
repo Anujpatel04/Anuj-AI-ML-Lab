@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os
 import tempfile
 import streamlit as st
@@ -61,8 +62,14 @@ st.markdown("""
 def get_api_key():
     """Get API key from Streamlit secrets (for Cloud) or .env file (for local)"""
     # First, try Streamlit secrets (for Streamlit Cloud)
-    if hasattr(st, 'secrets') and 'DEEPSEEK_API_KEY' in st.secrets:
-        return st.secrets['DEEPSEEK_API_KEY'].strip()
+    try:
+        if hasattr(st, 'secrets') and st.secrets is not None:
+            if 'DEEPSEEK_API_KEY' in st.secrets:
+                key = st.secrets['DEEPSEEK_API_KEY']
+                if isinstance(key, str):
+                    return key.strip()
+    except Exception:
+        pass
     
     # Fallback to .env file (for local development)
     try:

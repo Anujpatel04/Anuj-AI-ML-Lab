@@ -1,6 +1,6 @@
-streamlit
-embedchain
-streamlit-chat
-python-dotenv
-langchain-huggingface
-sentence-transformers
+streamlit>=1.28.0
+embedchain>=0.1.0
+streamlit-chat>=0.1.1
+python-dotenv>=1.0.0
+langchain-huggingface>=0.0.1
+sentence-transformers>=2.2.0
