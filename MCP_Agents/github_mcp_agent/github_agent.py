@@ -135,6 +135,19 @@ async def run_github_agent(message):
     if not os.getenv("OPENAI_API_KEY"):
         return "Error: OpenAI API key not provided"
     
+    # Check if Docker is available
+    import subprocess
+    try:
+        docker_check = subprocess.run(
+            ["docker", "ps"],
+            capture_output=True,
+            timeout=5
+        )
+        if docker_check.returncode != 0:
+            return "Error: Docker is not running. Please start Docker Desktop and try again."
+    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+        return "Error: Docker is not installed or not running. Please install Docker Desktop and ensure it's running."
+    
     try:
         server_params = StdioServerParameters(
             command="docker",
@@ -185,7 +198,14 @@ async def run_github_agent(message):
                 
     except asyncio.TimeoutError:
         return "Error: Request timed out after 120 seconds"
+    except subprocess.CalledProcessError as e:
+        if "docker" in str(e).lower() or "daemon" in str(e).lower():
+            return "Error: Docker is not running. Please start Docker Desktop and try again."
+        return f"Error: {str(e)}"
     except Exception as e:
+        error_msg = str(e)
+        if "docker" in error_msg.lower() or "daemon" in error_msg.lower() or "Cannot connect" in error_msg:
+            return "Error: Docker is not running. Please start Docker Desktop and try again."
         return f"Error: {str(e)}"
 
 if st.button("Run Query", type="primary", use_container_width=True):
