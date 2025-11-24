@@ -14,19 +14,19 @@ from mcp import StdioServerParameters
 # So we need to go up 2 levels to reach the root
 try:
     script_dir = Path(__file__).resolve().parent
-except NameError:
-    # If __file__ is not available (e.g., in some execution contexts), use current working directory
-    script_dir = Path.cwd()
-    # If we're in the github_mcp_agent directory, go up 2 levels
-    if script_dir.name == "github_mcp_agent":
-        root_dir = script_dir.parent.parent
-    else:
-        # Try to find the root by looking for config.py
-        root_dir = script_dir
-        while root_dir != root_dir.parent and not (root_dir / "config.py").exists():
-            root_dir = root_dir.parent
-else:
     root_dir = script_dir.parent.parent
+except (NameError, AttributeError):
+    # If __file__ is not available, try multiple approaches
+    script_dir = Path.cwd()
+    # Try to find the root by looking for config.py
+    root_dir = script_dir
+    max_depth = 10
+    depth = 0
+    while depth < max_depth and root_dir != root_dir.parent:
+        if (root_dir / "config.py").exists():
+            break
+        root_dir = root_dir.parent
+        depth += 1
 
 # Add root to path if not already there
 if str(root_dir) not in sys.path:
@@ -42,7 +42,18 @@ AZURE_MODEL = "gpt-4o"
 try:
     config_path = root_dir / "config.py"
     if config_path.exists():
-        from config import AZURE_KEY, AZURE_BASE_URL, API_VERSION, AZURE_MODEL, get_openai_client_config
+        # Import using the absolute path
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("config", config_path)
+        config_module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(config_module)
+        
+        AZURE_KEY = getattr(config_module, "AZURE_KEY", None)
+        AZURE_BASE_URL = getattr(config_module, "AZURE_BASE_URL", None)
+        API_VERSION = getattr(config_module, "API_VERSION", None)
+        AZURE_MODEL = getattr(config_module, "AZURE_MODEL", "gpt-4o")
+        get_openai_client_config = getattr(config_module, "get_openai_client_config", None)
+        
         if AZURE_KEY:
             USE_SHARED_CONFIG = True
 except (ImportError, Exception) as e:
