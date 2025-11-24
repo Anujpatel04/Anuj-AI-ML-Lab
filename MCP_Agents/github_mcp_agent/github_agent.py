@@ -200,18 +200,24 @@ async def run_github_agent(message):
             }
         )
         
-        # Use a wrapper to handle MCP connection with better cleanup
-        mcp_tools = None
-        try:
-            # Suppress stderr during MCP connection to avoid cleanup error spam
-            import contextlib
-            import io
-            
-            # Create MCP tools connection
-            mcp_tools_context = MCPTools(server_params=server_params)
-            mcp_tools = await mcp_tools_context.__aenter__()
-            
+        # Use contextlib to suppress cleanup errors
+        import contextlib
+        import sys
+        
+        # Suppress stderr during cleanup to avoid error spam
+        @contextlib.asynccontextmanager
+        async def suppress_cleanup_errors():
             try:
+                yield
+            except RuntimeError as e:
+                # Suppress known async cleanup errors
+                if "cancel scope" in str(e).lower() or "different task" in str(e).lower():
+                    pass  # Known non-fatal cleanup issue
+                else:
+                    raise
+        
+        async with suppress_cleanup_errors():
+            async with MCPTools(server_params=server_params) as mcp_tools:
                 # Configure Azure OpenAI if using shared config
                 # agno uses environment variables for OpenAI configuration
                 if USE_SHARED_CONFIG and AZURE_BASE_URL:
@@ -241,33 +247,7 @@ async def run_github_agent(message):
                 )
                 
                 response: RunOutput = await asyncio.wait_for(agent.arun(message), timeout=120.0)
-                result = response.content
-                
-                # Cleanup with error suppression
-                try:
-                    await mcp_tools_context.__aexit__(None, None, None)
-                except (RuntimeError, Exception) as cleanup_error:
-                    # Suppress known cleanup errors - they don't affect the result
-                    if "cancel scope" not in str(cleanup_error).lower():
-                        # Only log if it's not the known cleanup issue
-                        pass
-                
-                return result
-            except Exception as e:
-                # Ensure cleanup even on error
-                try:
-                    await mcp_tools_context.__aexit__(None, None, None)
-                except:
-                    pass
-                raise
-        except RuntimeError as e:
-            # Ignore async cleanup errors that don't affect functionality
-            if "cancel scope" in str(e).lower() or "different task" in str(e).lower():
-                # This is a known issue with MCP client cleanup
-                # If we somehow got here with a result, return it
-                if 'result' in locals():
-                    return result
-            raise
+                return response.content
                 
     except asyncio.TimeoutError:
         return "Error: Request timed out after 120 seconds"
