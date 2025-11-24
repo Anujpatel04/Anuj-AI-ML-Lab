@@ -21,7 +21,9 @@ try:
 except ImportError:
     USE_SHARED_CONFIG = False
     AZURE_MODEL = "gpt-4o"  # Default fallback
-    AZURE_MODEL = "gpt-4o"
+    AZURE_KEY = None
+    AZURE_BASE_URL = None
+    API_VERSION = None
 
 st.set_page_config(page_title="GitHub MCP Agent", page_icon="", layout="wide")
 
