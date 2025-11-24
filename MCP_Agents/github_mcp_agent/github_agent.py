@@ -110,6 +110,15 @@ with st.sidebar:
     else:
         st.error("Docker is not running. Please start Docker Desktop.")
         st.info("The GitHub MCP Agent requires Docker to run the GitHub MCP server.")
+        with st.expander("How to start Docker Desktop"):
+            st.markdown("""
+            **On macOS:**
+            1. Open Docker Desktop from Applications or Spotlight
+            2. Wait for Docker to fully start (whale icon in menu bar should be steady)
+            3. Refresh this page to check status again
+            
+            **Alternative:** Run `open -a Docker` in Terminal
+            """)
     
     st.markdown("---")
     st.markdown("### Example Queries")
