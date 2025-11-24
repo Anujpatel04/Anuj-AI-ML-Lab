@@ -20,6 +20,7 @@ try:
     USE_SHARED_CONFIG = True
 except ImportError:
     USE_SHARED_CONFIG = False
+    AZURE_MODEL = "gpt-4o"  # Default fallback
     AZURE_MODEL = "gpt-4o"
 
 st.set_page_config(page_title="GitHub MCP Agent", page_icon="", layout="wide")
@@ -124,7 +125,7 @@ async def run_github_agent(message):
             
             agent = Agent(
                 tools=[mcp_tools],
-                model=AZURE_MODEL if (USE_SHARED_CONFIG and 'AZURE_MODEL' in globals()) else "gpt-4o",
+                model=AZURE_MODEL if USE_SHARED_CONFIG else "gpt-4o",
                 instructions=dedent("""\
                     You are a GitHub assistant. Help users explore repositories and their activity.
                     - Provide organized, concise insights about the repository
