@@ -200,23 +200,41 @@ async def run_github_agent(message):
             }
         )
         
-        # Use contextlib to suppress cleanup errors
+        # Redirect stderr to suppress MCP client cleanup errors
         import contextlib
         import sys
+        from io import StringIO
         
-        # Suppress stderr during cleanup to avoid error spam
-        @contextlib.asynccontextmanager
-        async def suppress_cleanup_errors():
-            try:
-                yield
-            except RuntimeError as e:
-                # Suppress known async cleanup errors
-                if "cancel scope" in str(e).lower() or "different task" in str(e).lower():
-                    pass  # Known non-fatal cleanup issue
-                else:
-                    raise
+        # Create a custom stderr redirector that filters out known cleanup errors
+        class FilteredStderr:
+            def __init__(self, original_stderr):
+                self.original_stderr = original_stderr
+                self.buffer = StringIO()
+                
+            def write(self, text):
+                # Filter out known non-fatal cleanup errors
+                if any(keyword in text.lower() for keyword in [
+                    "cancel scope", "different task", "async_generator", 
+                    "stdio_client", "an error occurred during closing"
+                ]):
+                    # Suppress these errors - they're non-fatal cleanup issues
+                    return
+                # Write everything else to original stderr
+                self.original_stderr.write(text)
+                
+            def flush(self):
+                self.original_stderr.flush()
+                
+            def __getattr__(self, name):
+                return getattr(self.original_stderr, name)
         
-        async with suppress_cleanup_errors():
+        # Use filtered stderr during MCP operations
+        original_stderr = sys.stderr
+        filtered_stderr = FilteredStderr(original_stderr)
+        
+        try:
+            sys.stderr = filtered_stderr
+            
             async with MCPTools(server_params=server_params) as mcp_tools:
                 # Configure Azure OpenAI if using shared config
                 # agno uses environment variables for OpenAI configuration
@@ -247,7 +265,14 @@ async def run_github_agent(message):
                 )
                 
                 response: RunOutput = await asyncio.wait_for(agent.arun(message), timeout=120.0)
-                return response.content
+                result = response.content
+        finally:
+            # Restore original stderr
+            sys.stderr = original_stderr
+            # Give a small delay for cleanup to complete
+            await asyncio.sleep(0.1)
+        
+        return result
                 
     except asyncio.TimeoutError:
         return "Error: Request timed out after 120 seconds"
