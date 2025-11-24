@@ -110,7 +110,7 @@ with st.sidebar:
 
 col1, col2 = st.columns([3, 1])
 with col1:
-    repo = st.text_input("Repository", value="Shubhamsaboo/awesome-llm-apps", help="Format: owner/repo")
+    repo = st.text_input("Repository", value="Anujpatel04/Anuj-AI-ML-Lab", help="Format: owner/repo")
 with col2:
     query_type = st.selectbox("Query Type", [
         "Issues", "Pull Requests", "Repository Activity", "Custom"
