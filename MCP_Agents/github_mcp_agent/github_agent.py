@@ -210,17 +210,32 @@ async def run_github_agent(message):
             def __init__(self, original_stderr):
                 self.original_stderr = original_stderr
                 self.buffer = StringIO()
+                self.error_lines = []  # Buffer to check multi-line errors
                 
             def write(self, text):
+                # Buffer the text to check for multi-line error patterns
+                self.error_lines.append(text)
+                
+                # Check if this is part of the known cleanup error
+                full_text = ''.join(self.error_lines[-10:])  # Check last 10 lines
+                
                 # Filter out known non-fatal cleanup errors
-                if any(keyword in text.lower() for keyword in [
+                if any(keyword in full_text.lower() for keyword in [
                     "cancel scope", "different task", "async_generator", 
-                    "stdio_client", "an error occurred during closing"
+                    "stdio_client", "an error occurred during closing",
+                    "exception group", "generatorexit", "runtimeerror: attempted to exit",
+                    "attempted to exit cancel scope"
                 ]):
                     # Suppress these errors - they're non-fatal cleanup issues
-                    return
+                    self.error_lines = []  # Clear buffer after suppressing
+                    return len(text)  # Return length to pretend we wrote it
+                
+                # If buffer gets too large, flush old lines
+                if len(self.error_lines) > 20:
+                    self.error_lines = self.error_lines[-10:]
+                
                 # Write everything else to original stderr
-                self.original_stderr.write(text)
+                return self.original_stderr.write(text)
                 
             def flush(self):
                 self.original_stderr.flush()
@@ -267,6 +282,9 @@ async def run_github_agent(message):
                 response: RunOutput = await asyncio.wait_for(agent.arun(message), timeout=120.0)
                 result = response.content
         finally:
+            # Restore original stderr and give cleanup time to complete
+            sys.stderr = original_stderr
+            await asyncio.sleep(0.2)  # Small delay to let cleanup complete
             # Restore original stderr
             sys.stderr = original_stderr
             # Give a small delay for cleanup to complete
