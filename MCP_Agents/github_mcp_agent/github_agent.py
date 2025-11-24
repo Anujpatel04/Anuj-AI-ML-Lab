@@ -16,10 +16,11 @@ if str(root_dir) not in sys.path:
 
 # Try to load shared Azure config
 try:
-    from config import AZURE_KEY, AZURE_BASE_URL, API_VERSION, get_openai_client_config
+    from config import AZURE_KEY, AZURE_BASE_URL, API_VERSION, AZURE_MODEL, get_openai_client_config
     USE_SHARED_CONFIG = True
 except ImportError:
     USE_SHARED_CONFIG = False
+    AZURE_MODEL = "gpt-4o"
 
 st.set_page_config(page_title="GitHub MCP Agent", page_icon="", layout="wide")
 
@@ -107,8 +108,23 @@ async def run_github_agent(message):
         )
         
         async with MCPTools(server_params=server_params) as mcp_tools:
+            # Configure Azure OpenAI if using shared config
+            # agno uses environment variables for OpenAI configuration
+            if USE_SHARED_CONFIG and AZURE_BASE_URL:
+                os.environ["OPENAI_API_KEY"] = AZURE_KEY
+                os.environ["OPENAI_BASE_URL"] = AZURE_BASE_URL
+                # Azure OpenAI requires api-version as query parameter
+                # Set it via base_url with query string or use default_query
+                # For agno, we'll set it in the base_url
+                if "?" not in AZURE_BASE_URL:
+                    azure_base_url_with_version = f"{AZURE_BASE_URL}?api-version={API_VERSION}"
+                else:
+                    azure_base_url_with_version = AZURE_BASE_URL
+                os.environ["OPENAI_BASE_URL"] = azure_base_url_with_version
+            
             agent = Agent(
                 tools=[mcp_tools],
+                model=AZURE_MODEL if (USE_SHARED_CONFIG and 'AZURE_MODEL' in globals()) else "gpt-4o",
                 instructions=dedent("""\
                     You are a GitHub assistant. Help users explore repositories and their activity.
                     - Provide organized, concise insights about the repository
