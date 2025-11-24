@@ -28,19 +28,25 @@ st.set_page_config(page_title="GitHub MCP Agent", page_icon="", layout="wide")
 st.markdown("<h1 class='main-header'>GitHub MCP Agent</h1>", unsafe_allow_html=True)
 st.markdown("Explore GitHub repositories with natural language using the Model Context Protocol")
 
+# Load Azure OpenAI config automatically (no user input needed)
+if USE_SHARED_CONFIG and AZURE_KEY:
+    os.environ["OPENAI_API_KEY"] = AZURE_KEY
+    openai_key = AZURE_KEY
+else:
+    # Fallback: try to get from environment
+    openai_key = os.getenv("OPENAI_API_KEY")
+    if not openai_key:
+        st.error("Azure OpenAI not configured. Please check config.py or set OPENAI_API_KEY environment variable.")
+        st.stop()
+
 with st.sidebar:
     st.header("Authentication")
     
-    # Use shared config if available - don't show OpenAI key input
+    # Show Azure OpenAI status
     if USE_SHARED_CONFIG and AZURE_KEY:
         st.success("Azure OpenAI configured from shared config")
-        os.environ["OPENAI_API_KEY"] = AZURE_KEY
-        openai_key = AZURE_KEY
     else:
-        openai_key = st.text_input("OpenAI API Key", type="password",
-                                  help="Required for the AI agent to interpret queries and format results")
-        if openai_key:
-            os.environ["OPENAI_API_KEY"] = openai_key
+        st.warning("Using OpenAI API key from environment variable")
     
     github_token = st.text_input("GitHub Token", type="password", 
                                 help="Create a token with repo scope at github.com/settings/tokens")
@@ -147,7 +153,7 @@ async def run_github_agent(message):
 
 if st.button("Run Query", type="primary", use_container_width=True):
     if not openai_key:
-        st.error("OpenAI API key not configured. Please check config.py or enter API key in sidebar.")
+        st.error("Azure OpenAI API key not configured. Please check config.py or set OPENAI_API_KEY environment variable.")
     elif not github_token:
         st.error("Please enter your GitHub token in the sidebar")
     elif not query:
@@ -165,15 +171,10 @@ if st.button("Run Query", type="primary", use_container_width=True):
         st.markdown(result)
 
 if 'result' not in locals():
-        usage_instructions = """<div class='info-box'>
+        st.markdown(
+        """<div class='info-box'>
         <h4>How to use this app:</h4>
-        <ol>"""
-        
-        if not (USE_SHARED_CONFIG and AZURE_KEY):
-            usage_instructions += """
-            <li>Enter your <strong>OpenAI API key</strong> in the sidebar (powers the AI agent)</li>"""
-        
-        usage_instructions += """
+        <ol>
             <li>Enter your <strong>GitHub token</strong> in the sidebar</li>
             <li>Specify a repository (e.g., Shubhamsaboo/awesome-llm-apps)</li>
             <li>Select a query type or write your own</li>
@@ -181,11 +182,12 @@ if 'result' not in locals():
         </ol>
         <p><strong>How it works:</strong></p>
         <ul>
+            <li>Uses Azure OpenAI from shared config (configured automatically)</li>
             <li>Uses the official GitHub MCP server via Docker for real-time access to GitHub API</li>
             <li>AI Agent (powered by Azure OpenAI) interprets your queries and calls appropriate GitHub APIs</li>
             <li>Results are formatted in readable markdown with insights and links</li>
             <li>Queries work best when focused on specific aspects like issues, PRs, or repository info</li>
         </ul>
-        </div>"""
-        
-        st.markdown(usage_instructions, unsafe_allow_html=True)
+        </div>""", 
+        unsafe_allow_html=True
+    )
