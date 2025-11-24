@@ -31,9 +31,9 @@ st.markdown("Explore GitHub repositories with natural language using the Model C
 with st.sidebar:
     st.header("Authentication")
     
-    # Use shared config if available
+    # Use shared config if available - don't show OpenAI key input
     if USE_SHARED_CONFIG and AZURE_KEY:
-        st.info("Using Azure OpenAI from shared config")
+        st.success("Azure OpenAI configured from shared config")
         os.environ["OPENAI_API_KEY"] = AZURE_KEY
         openai_key = AZURE_KEY
     else:
@@ -145,9 +145,9 @@ async def run_github_agent(message):
     except Exception as e:
         return f"Error: {str(e)}"
 
-if st.button("🚀 Run Query", type="primary", use_container_width=True):
+if st.button("Run Query", type="primary", use_container_width=True):
     if not openai_key:
-        st.error("Please enter your OpenAI API key in the sidebar")
+        st.error("OpenAI API key not configured. Please check config.py or enter API key in sidebar.")
     elif not github_token:
         st.error("Please enter your GitHub token in the sidebar")
     elif not query:
@@ -165,11 +165,15 @@ if st.button("🚀 Run Query", type="primary", use_container_width=True):
         st.markdown(result)
 
 if 'result' not in locals():
-    st.markdown(
-        """<div class='info-box'>
+        usage_instructions = """<div class='info-box'>
         <h4>How to use this app:</h4>
-        <ol>
-            <li>Enter your <strong>OpenAI API key</strong> in the sidebar (powers the AI agent)</li>
+        <ol>"""
+        
+        if not (USE_SHARED_CONFIG and AZURE_KEY):
+            usage_instructions += """
+            <li>Enter your <strong>OpenAI API key</strong> in the sidebar (powers the AI agent)</li>"""
+        
+        usage_instructions += """
             <li>Enter your <strong>GitHub token</strong> in the sidebar</li>
             <li>Specify a repository (e.g., Shubhamsaboo/awesome-llm-apps)</li>
             <li>Select a query type or write your own</li>
@@ -178,10 +182,10 @@ if 'result' not in locals():
         <p><strong>How it works:</strong></p>
         <ul>
             <li>Uses the official GitHub MCP server via Docker for real-time access to GitHub API</li>
-            <li>AI Agent (powered by OpenAI) interprets your queries and calls appropriate GitHub APIs</li>
+            <li>AI Agent (powered by Azure OpenAI) interprets your queries and calls appropriate GitHub APIs</li>
             <li>Results are formatted in readable markdown with insights and links</li>
             <li>Queries work best when focused on specific aspects like issues, PRs, or repository info</li>
         </ul>
-        </div>""", 
-        unsafe_allow_html=True
-    )
+        </div>"""
+        
+        st.markdown(usage_instructions, unsafe_allow_html=True)
