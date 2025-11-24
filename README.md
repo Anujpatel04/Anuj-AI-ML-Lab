@@ -40,14 +40,30 @@ GitHub repository analysis tool that allows you to explore and analyze GitHub re
 
 Each project has its own `requirements.txt` and README with specific setup instructions.
 
-## Environment Variables
+## Configuration
+
+### Shared Azure OpenAI Configuration
+
+Azure OpenAI configuration is centralized in `config.py` at the root directory. This configuration is automatically used by all MCP Agents.
+
+To customize, edit `config.py` or set environment variables:
+- `AZURE_OPENAI_API_KEY` - Your Azure OpenAI API key
+- `AZURE_OPENAI_BASE_URL` - Your Azure endpoint base URL
+- `AZURE_OPENAI_API_VERSION` - API version (default: 2025-01-01-preview)
+- `AZURE_OPENAI_MODEL` - Model name (default: gpt-4o)
+
+### Environment Variables
 
 Create a `.env` file in the root directory with:
 ```env
-DEEPSEEK_API_KEY=your-api-key-here
+# Azure OpenAI (used by MCP Agents)
+AZURE_OPENAI_API_KEY=your-azure-api-key-here
+
+# DeepSeek API (used by All_LLMs projects)
+DEEPSEEK_API_KEY=your-deepseek-api-key-here
 ```
 
-For MCP Agents, configure Azure OpenAI credentials in the respective `mcp_agent.secrets.yaml` files.
+Alternatively, MCP Agents can use `mcp_agent.secrets.yaml` files in their respective directories.
 
 ## Notes
 

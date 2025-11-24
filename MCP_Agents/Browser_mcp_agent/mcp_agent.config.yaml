@@ -17,7 +17,9 @@ mcp:
 
 openai:
   # Secrets (API keys, etc.) are stored in an mcp_agent.secrets.yaml file which can be gitignored
+  # Configuration can also be loaded from root config.py or environment variables
   default_model: "gpt-4o"
   base_url: "https://oai-nasco.openai.azure.com/openai/deployments/gpt-4o"
   api_version: "2025-01-01-preview"
   # Azure OpenAI configuration
+  # These values can be overridden by root config.py or environment variables

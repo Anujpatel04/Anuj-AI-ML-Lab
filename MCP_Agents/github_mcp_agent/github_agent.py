@@ -1,24 +1,44 @@
 import asyncio
 import os
+import sys
 import streamlit as st
 from textwrap import dedent
+from pathlib import Path
 from agno.agent import Agent
 from agno.run.agent import RunOutput
 from agno.tools.mcp import MCPTools
 from mcp import StdioServerParameters
 
-st.set_page_config(page_title="🐙 GitHub MCP Agent", page_icon="🐙", layout="wide")
+# Add root directory to path to access shared config
+root_dir = Path(__file__).parent.parent.parent
+if str(root_dir) not in sys.path:
+    sys.path.insert(0, str(root_dir))
 
-st.markdown("<h1 class='main-header'>🐙 GitHub MCP Agent</h1>", unsafe_allow_html=True)
+# Try to load shared Azure config
+try:
+    from config import AZURE_KEY, AZURE_BASE_URL, API_VERSION, get_openai_client_config
+    USE_SHARED_CONFIG = True
+except ImportError:
+    USE_SHARED_CONFIG = False
+
+st.set_page_config(page_title="GitHub MCP Agent", page_icon="", layout="wide")
+
+st.markdown("<h1 class='main-header'>GitHub MCP Agent</h1>", unsafe_allow_html=True)
 st.markdown("Explore GitHub repositories with natural language using the Model Context Protocol")
 
 with st.sidebar:
-    st.header("🔑 Authentication")
+    st.header("Authentication")
     
-    openai_key = st.text_input("OpenAI API Key", type="password",
-                              help="Required for the AI agent to interpret queries and format results")
-    if openai_key:
-        os.environ["OPENAI_API_KEY"] = openai_key
+    # Use shared config if available
+    if USE_SHARED_CONFIG and AZURE_KEY:
+        st.info("Using Azure OpenAI from shared config")
+        os.environ["OPENAI_API_KEY"] = AZURE_KEY
+        openai_key = AZURE_KEY
+    else:
+        openai_key = st.text_input("OpenAI API Key", type="password",
+                                  help="Required for the AI agent to interpret queries and format results")
+        if openai_key:
+            os.environ["OPENAI_API_KEY"] = openai_key
     
     github_token = st.text_input("GitHub Token", type="password", 
                                 help="Create a token with repo scope at github.com/settings/tokens")

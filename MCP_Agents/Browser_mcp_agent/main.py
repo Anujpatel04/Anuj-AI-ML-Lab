@@ -1,23 +1,45 @@
 import asyncio
 import os
+import sys
 import streamlit as st
 from textwrap import dedent
 import yaml
 from pathlib import Path
 
+# Add root directory to path to access shared config
+root_dir = Path(__file__).parent.parent.parent
+if str(root_dir) not in sys.path:
+    sys.path.insert(0, str(root_dir))
+
+try:
+    from config import get_azure_config, AZURE_KEY, AZURE_BASE_URL, API_VERSION, AZURE_MODEL
+    USE_SHARED_CONFIG = True
+except ImportError:
+    USE_SHARED_CONFIG = False
+
 # Patch Azure OpenAI support BEFORE importing mcp-agent modules
 # mcp-agent doesn't pass default_query for api_version, so we need to monkey-patch
-_config_file = Path("mcp_agent.config.yaml")
-if _config_file.exists():
+# Try to use shared config first, then fallback to local config file
+_base_url = ""
+_api_version = ""
+
+if USE_SHARED_CONFIG:
+    _base_url = AZURE_BASE_URL
+    _api_version = API_VERSION
+else:
+    _config_file = Path("mcp_agent.config.yaml")
+    if _config_file.exists():
+        try:
+            with open(_config_file, 'r') as f:
+                _config = yaml.safe_load(f)
+                _openai_config = _config.get("openai", {})
+                _base_url = _openai_config.get("base_url", "")
+                _api_version = _openai_config.get("api_version", "")
+        except Exception:
+            pass
+
+if _base_url and "azure.com" in _base_url and _api_version:
     try:
-        with open(_config_file, 'r') as f:
-            _config = yaml.safe_load(f)
-            _openai_config = _config.get("openai", {})
-            _base_url = _openai_config.get("base_url", "")
-            _api_version = _openai_config.get("api_version", "")
-            
-            # If Azure endpoint, patch AsyncOpenAI to include default_query
-            if _base_url and "azure.com" in _base_url and _api_version:
                 from openai import AsyncOpenAI
                 _original_async_openai = AsyncOpenAI
                 
@@ -36,19 +58,30 @@ if _config_file.exists():
                 import mcp_agent.workflows.llm.augmented_llm_openai as _openai_module
                 _openai_module.AsyncOpenAI = _patched_async_openai
     except Exception:
-        pass  # If config read fails, continue without patch
+        pass  # If patch fails, continue without patch
 
 from mcp_agent.app import MCPApp
 from mcp_agent.agents.agent import Agent
 from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
 from mcp_agent.workflows.llm.augmented_llm import RequestParams
 
-# Load API key from secrets file if not in environment
+# Load API key from secrets file or shared config
 def load_api_key_from_secrets():
-    """Load API key from mcp_agent.secrets.yaml if not already set in environment"""
-    if os.getenv("OPENAI_API_KEY") or os.getenv("DEEPSEEK_API_KEY"):
+    """Load API key from shared config, secrets file, or environment variables"""
+    # Priority: Environment > Shared Config > Secrets File
+    if os.getenv("OPENAI_API_KEY") or os.getenv("AZURE_OPENAI_API_KEY"):
         return
     
+    # Try shared config first
+    if USE_SHARED_CONFIG:
+        try:
+            os.environ["OPENAI_API_KEY"] = AZURE_KEY
+            os.environ["AZURE_OPENAI_API_KEY"] = AZURE_KEY
+            return
+        except Exception:
+            pass
+    
+    # Fallback to secrets file
     secrets_file = Path("mcp_agent.secrets.yaml")
     if secrets_file.exists():
         try:
@@ -58,8 +91,6 @@ def load_api_key_from_secrets():
                     api_key = secrets['openai']['api_key']
                     if api_key and api_key != "YOUR_DEEPSEEK_API_KEY_HERE":
                         os.environ["OPENAI_API_KEY"] = api_key
-                        # For Azure OpenAI, also set AZURE_OPENAI_API_KEY
-                        # This helps mcp-agent identify it as Azure endpoint
                         os.environ["AZURE_OPENAI_API_KEY"] = api_key
         except Exception as e:
             st.warning(f"Could not load secrets file: {e}")
