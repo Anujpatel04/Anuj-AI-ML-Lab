@@ -36,3 +36,7 @@ build/
 # Streamlit
 .streamlit/
 
+
+# Environment files
+.env
+!.env.example
