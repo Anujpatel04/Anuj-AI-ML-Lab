@@ -90,6 +90,27 @@ with st.sidebar:
     if github_token:
         os.environ["GITHUB_TOKEN"] = github_token
     
+    # Check Docker status
+    st.markdown("---")
+    st.markdown("### System Status")
+    import subprocess
+    docker_available = False
+    try:
+        docker_check = subprocess.run(
+            ["docker", "ps"],
+            capture_output=True,
+            timeout=3
+        )
+        docker_available = docker_check.returncode == 0
+    except (subprocess.TimeoutExpired, FileNotFoundError, Exception):
+        docker_available = False
+    
+    if docker_available:
+        st.success("Docker is running")
+    else:
+        st.error("Docker is not running. Please start Docker Desktop.")
+        st.info("The GitHub MCP Agent requires Docker to run the GitHub MCP server.")
+    
     st.markdown("---")
     st.markdown("### Example Queries")
     
