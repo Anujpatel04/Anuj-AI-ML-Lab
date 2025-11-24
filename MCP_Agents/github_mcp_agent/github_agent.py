@@ -10,20 +10,44 @@ from agno.tools.mcp import MCPTools
 from mcp import StdioServerParameters
 
 # Add root directory to path to access shared config
-root_dir = Path(__file__).parent.parent.parent
+# github_agent.py is in MCP_Agents/github_mcp_agent/
+# So we need to go up 2 levels to reach the root
+try:
+    script_dir = Path(__file__).resolve().parent
+except NameError:
+    # If __file__ is not available (e.g., in some execution contexts), use current working directory
+    script_dir = Path.cwd()
+    # If we're in the github_mcp_agent directory, go up 2 levels
+    if script_dir.name == "github_mcp_agent":
+        root_dir = script_dir.parent.parent
+    else:
+        # Try to find the root by looking for config.py
+        root_dir = script_dir
+        while root_dir != root_dir.parent and not (root_dir / "config.py").exists():
+            root_dir = root_dir.parent
+else:
+    root_dir = script_dir.parent.parent
+
+# Add root to path if not already there
 if str(root_dir) not in sys.path:
     sys.path.insert(0, str(root_dir))
 
 # Try to load shared Azure config
+USE_SHARED_CONFIG = False
+AZURE_KEY = None
+AZURE_BASE_URL = None
+API_VERSION = None
+AZURE_MODEL = "gpt-4o"
+
 try:
-    from config import AZURE_KEY, AZURE_BASE_URL, API_VERSION, AZURE_MODEL, get_openai_client_config
-    USE_SHARED_CONFIG = True
-except ImportError:
+    config_path = root_dir / "config.py"
+    if config_path.exists():
+        from config import AZURE_KEY, AZURE_BASE_URL, API_VERSION, AZURE_MODEL, get_openai_client_config
+        if AZURE_KEY:
+            USE_SHARED_CONFIG = True
+except (ImportError, Exception) as e:
+    # If import fails, try to load from environment variables
     USE_SHARED_CONFIG = False
-    AZURE_MODEL = "gpt-4o"  # Default fallback
-    AZURE_KEY = None
-    AZURE_BASE_URL = None
-    API_VERSION = None
 
 st.set_page_config(page_title="GitHub MCP Agent", page_icon="", layout="wide")
 
