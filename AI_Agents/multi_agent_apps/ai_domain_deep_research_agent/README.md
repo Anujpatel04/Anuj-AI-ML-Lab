@@ -32,7 +32,7 @@ An advanced AI research agent built using the Agno Agent framework, Together AI'
    ```bash
    # Clone the repository
    git clone https://github.com/Anujpatel04/awesome-llm-apps.git
-   cd advanced_ai_agents/single_agent_apps/ai_domain_deep_research_agent
+   cd advanced_ai_agents/Single_Agents/ai_domain_deep_research_agent
 
    # Install dependencies
    pip install -r requirements.txt
