@@ -337,7 +337,7 @@ if 'result' not in locals():
         <h4>How to use this app:</h4>
         <ol>
             <li>Enter your <strong>GitHub token</strong> in the sidebar</li>
-            <li>Specify a repository (e.g., Shubhamsaboo/awesome-llm-apps)</li>
+            <li>Specify a repository (e.g., Anujpatel04/awesome-llm-apps)</li>
             <li>Select a query type or write your own</li>
             <li>Click 'Run Query' to see results</li>
         </ol>

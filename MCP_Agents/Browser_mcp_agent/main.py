@@ -146,10 +146,10 @@ with st.sidebar:
     st.markdown("---")
     
     st.markdown("### 🌐 Navigation")
-    example_nav = st.button("📌 Go to github.com/Shubhamsaboo/awesome-llm-apps", 
+    example_nav = st.button("📌 Go to github.com/Anujpatel04/awesome-llm-apps", 
                            use_container_width=True, key="nav_example")
     if example_nav:
-        st.session_state.example_query = "Go to github.com/Shubhamsaboo/awesome-llm-apps"
+        st.session_state.example_query = "Go to github.com/Anujpatel04/awesome-llm-apps"
         st.rerun()
     
     st.markdown("### 🖱️ Interactions")
@@ -169,7 +169,7 @@ with st.sidebar:
     example_multi1 = st.button("📌 Navigate, scroll, and report details", 
                                use_container_width=True, key="multi1_example")
     if example_multi1:
-        st.session_state.example_query = "Navigate to github.com/Shubhamsaboo/awesome-llm-apps, scroll down, and report details"
+        st.session_state.example_query = "Navigate to github.com/Anujpatel04/awesome-llm-apps, scroll down, and report details"
         st.rerun()
     
     example_multi2 = st.button("📌 Scroll and summarize readme", 
@@ -473,7 +473,7 @@ if not st.session_state.last_result:
         st.markdown("""
         **Basic Navigation:**
         ```
-        Go to github.com/Shubhamsaboo/awesome-llm-apps
+        Go to github.com/Anujpatel04/awesome-llm-apps
         Navigate to example.com
         Go back to the previous page
         ```
