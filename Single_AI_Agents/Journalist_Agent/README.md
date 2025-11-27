@@ -1,5 +1,5 @@
 ## 🗞️ AI Journalist Agent 
-This Streamlit app is an AI-powered journalist agent that generates high-quality articles using OpenAI GPT-4o. It automates the process of researching, writing, and editing articles, allowing you to create compelling content on any topic with ease.
+This Streamlit app is an AI-powered journalist agent that generates high-quality articles using DeepSeek API. It automates the process of researching, writing, and editing articles, allowing you to create compelling content on any topic with ease.
 
 ### Features
 - Searches the web for relevant information on a given topic
@@ -19,13 +19,17 @@ cd advanced_ai_agents/Single_Agents/Journalist_Agent
 ```bash
 pip install -r requirements.txt
 ```
-3. Get your OpenAI API Key
+3. Configure DeepSeek API Key
 
-- Sign up for an [OpenAI account](https://platform.openai.com/) (or the LLM provider of your choice) and obtain your API key.
+- Add your DeepSeek API key to the `.env` file in the root directory:
+  ```
+  DEEPSEEK_API_KEY=your_deepseek_api_key_here
+  ```
+- The app will automatically load the API key from the `.env` file.
 
-4. Get your SerpAPI Key
+4. SerpAPI Key
 
-- Sign up for an [SerpAPI account](https://serpapi.com/) and obtain your API key.
+- The SerpAPI key is pre-configured in the application. No manual setup required.
 
 5. Run the Streamlit App
 ```bash
