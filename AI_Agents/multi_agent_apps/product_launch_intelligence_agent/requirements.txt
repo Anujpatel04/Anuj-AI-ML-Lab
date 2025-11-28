@@ -1,4 +1,0 @@
-streamlit
-agno>=2.2.10
-firecrawl
-
