@@ -1,70 +1,108 @@
 # Anuj AI/ML Lab
 
-A collection of AI/ML projects and experiments using Large Language Models (LLMs).
+A collection of AI/ML projects and experiments using Large Language Models (LLMs) and various AI frameworks.
 
-## Structure
+## Project Structure
 
 ```
 Anuj-AI-ML-Lab/
-├── All_LLMs/
-│   ├── chat_youtube/      # Chat with YouTube videos using RAG
-│   ├── PDF_RAG/           # Chat with PDF documents using RAG
-│   └── chat_with_gmail/   # Chat with Gmail inbox using RAG
-└── MCP_Agents/
-    ├── Browser_mcp_agent/ # Browser automation using MCP Agent with Azure OpenAI
-    └── github_mcp_agent/  # GitHub repository analysis using MCP Agent
+├── All_LLMs/                    # RAG-based chat applications
+│   ├── chat_youtube/           # Chat with YouTube videos
+│   ├── PDF_RAG/                # Chat with PDF documents
+│   └── chat_with_gmail/        # Chat with Gmail inbox
+│
+├── Single_AI_Agents/            # Specialized AI agent applications
+│   ├── Health_Fitness_Agent/    # Personalized health & fitness planning
+│   ├── Journalist_Agent/       # Automated article writing
+│   ├── Meeting_Agent/          # Meeting notes and insights
+│   └── Startup_Insight_Agent/  # Startup company analysis
+│
+├── MCP_Agents/                  # Model Context Protocol agents
+│   ├── Browser_mcp_agent/      # Browser automation agent
+│   └── github_mcp_agent/       # GitHub repository analysis
+│
+├── config.py                    # Shared Azure OpenAI configuration
+└── .env                         # Environment variables (API keys)
 ```
 
 ## Projects
 
 ### All_LLMs
+RAG-based applications for chatting with different data sources using DeepSeek API.
 
-#### Chat with YouTube
-RAG application to chat with YouTube videos using DeepSeek API.
+- **Chat with YouTube**: Extract and chat with YouTube video content
+- **PDF RAG**: Query and analyze PDF documents
+- **Chat with Gmail**: Interact with Gmail inbox using natural language
 
-#### PDF RAG
-RAG application to chat with PDF documents using DeepSeek API.
+### Single_AI_Agents
+Specialized AI agents for specific use cases using DeepSeek API.
 
-#### Chat with Gmail
-RAG application to chat with Gmail inbox using DeepSeek API.
+- **Health & Fitness Agent**: Generate personalized dietary and fitness plans
+- **Journalist Agent**: Automated research and article writing
+- **Meeting Agent**: Extract insights and summaries from meeting notes
+- **Startup Insight Agent**: Analyze startup companies and extract key information
 
 ### MCP_Agents
+Agents using Model Context Protocol for advanced integrations.
 
-#### Browser MCP Agent
-Browser automation application that allows you to control a web browser using natural language commands. Uses Azure OpenAI and Playwright for browser automation.
-
-#### GitHub MCP Agent
-GitHub repository analysis tool that allows you to explore and analyze GitHub repositories using natural language queries through the Model Context Protocol.
+- **Browser MCP Agent**: Control web browsers using natural language
+- **GitHub MCP Agent**: Analyze and explore GitHub repositories
 
 ## Setup
 
-Each project has its own `requirements.txt` and README with specific setup instructions.
+### Prerequisites
+- Python 3.10+
+- API keys (see Configuration section)
+
+### Installation
+
+Each project has its own `requirements.txt`. Navigate to the project directory and install:
+
+```bash
+cd <project_directory>
+pip install -r requirements.txt
+```
+
+### Running Projects
+
+Each project includes a README with specific usage instructions. Most projects use Streamlit:
+
+```bash
+streamlit run <main_file>.py
+```
 
 ## Configuration
 
-### Shared Azure OpenAI Configuration
-
-Azure OpenAI configuration is centralized in `config.py` at the root directory. This configuration is automatically used by all MCP Agents.
-
-To customize, edit `config.py` or set environment variables:
-- `AZURE_OPENAI_API_KEY` - Your Azure OpenAI API key
-- `AZURE_OPENAI_BASE_URL` - Your Azure endpoint base URL
-- `AZURE_OPENAI_API_VERSION` - API version (default: 2025-01-01-preview)
-- `AZURE_OPENAI_MODEL` - Model name (default: gpt-4o)
-
 ### Environment Variables
 
-Create a `.env` file in the root directory with:
-```env
-# Azure OpenAI (used by MCP Agents)
-AZURE_OPENAI_API_KEY=your-azure-api-key-here
+Create a `.env` file in the root directory:
 
-# DeepSeek API (used by All_LLMs projects)
+```env
+# DeepSeek API (used by All_LLMs and Single_AI_Agents)
 DEEPSEEK_API_KEY=your-deepseek-api-key-here
+
+# Azure OpenAI (used by MCP_Agents)
+AZURE_OPENAI_API_KEY=your-azure-api-key-here
+AZURE_OPENAI_BASE_URL=your-azure-endpoint-url
+AZURE_OPENAI_API_VERSION=2025-01-01-preview
+AZURE_OPENAI_MODEL=gpt-4o
 ```
 
-Alternatively, MCP Agents can use `mcp_agent.secrets.yaml` files in their respective directories.
+### Shared Configuration
+
+- **Azure OpenAI**: Configured in `config.py` at the root directory
+- **DeepSeek API**: Loaded from `.env` file
+- **MCP Agents**: Can use `mcp_agent.secrets.yaml` files in their directories
+
+## Technologies
+
+- **LLM Providers**: DeepSeek API, Azure OpenAI
+- **Frameworks**: Streamlit, Agno AI, CrewAI, Embedchain
+- **Tools**: Exa API, Firecrawl, SerpAPI, Serper API
 
 ## Notes
 
-This repository is organized systematically for easy project management and future additions.
+- Each project is self-contained with its own dependencies
+- Projects can be run independently
+- Configuration is centralized for easy management
+- All projects include individual README files with detailed instructions
