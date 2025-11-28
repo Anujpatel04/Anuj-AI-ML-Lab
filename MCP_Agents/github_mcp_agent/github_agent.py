@@ -249,8 +249,8 @@ async def run_github_agent(message):
         
         try:
             sys.stderr = filtered_stderr
-            
-            async with MCPTools(server_params=server_params) as mcp_tools:
+        
+        async with MCPTools(server_params=server_params) as mcp_tools:
                 # Configure Azure OpenAI if using shared config
                 # agno uses environment variables for OpenAI configuration
                 if USE_SHARED_CONFIG and AZURE_BASE_URL:
@@ -265,21 +265,21 @@ async def run_github_agent(message):
                         azure_base_url_with_version = AZURE_BASE_URL
                     os.environ["OPENAI_BASE_URL"] = azure_base_url_with_version
                 
-                agent = Agent(
-                    tools=[mcp_tools],
+            agent = Agent(
+                tools=[mcp_tools],
                     model=AZURE_MODEL if USE_SHARED_CONFIG else "gpt-4o",
-                    instructions=dedent("""\
-                        You are a GitHub assistant. Help users explore repositories and their activity.
-                        - Provide organized, concise insights about the repository
-                        - Focus on facts and data from the GitHub API
-                        - Use markdown formatting for better readability
-                        - Present numerical data in tables when appropriate
-                        - Include links to relevant GitHub pages when helpful
-                    """),
-                    markdown=True,
-                )
-                
-                response: RunOutput = await asyncio.wait_for(agent.arun(message), timeout=120.0)
+                instructions=dedent("""\
+                    You are a GitHub assistant. Help users explore repositories and their activity.
+                    - Provide organized, concise insights about the repository
+                    - Focus on facts and data from the GitHub API
+                    - Use markdown formatting for better readability
+                    - Present numerical data in tables when appropriate
+                    - Include links to relevant GitHub pages when helpful
+                """),
+                markdown=True,
+            )
+            
+            response: RunOutput = await asyncio.wait_for(agent.arun(message), timeout=120.0)
                 result = response.content
         finally:
             # Restore original stderr and give cleanup time to complete
@@ -332,7 +332,7 @@ if st.button("Run Query", type="primary", use_container_width=True):
         st.markdown(result)
 
 if 'result' not in locals():
-        st.markdown(
+    st.markdown(
         """<div class='info-box'>
         <h4>How to use this app:</h4>
         <ol>

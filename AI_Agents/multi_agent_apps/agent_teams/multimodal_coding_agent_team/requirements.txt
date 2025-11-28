@@ -1,4 +1,0 @@
-streamlit
-e2b-code-interpreter
-agno>=2.2.10
-Pillow

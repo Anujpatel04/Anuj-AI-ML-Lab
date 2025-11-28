@@ -1,5 +1,0 @@
-google-adk
-python-dotenv
-pydantic
-
-

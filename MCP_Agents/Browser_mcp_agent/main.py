@@ -27,18 +27,18 @@ if USE_SHARED_CONFIG:
     _base_url = AZURE_BASE_URL
     _api_version = API_VERSION
 else:
-    _config_file = Path("mcp_agent.config.yaml")
-    if _config_file.exists():
-        try:
-            with open(_config_file, 'r') as f:
-                _config = yaml.safe_load(f)
-                _openai_config = _config.get("openai", {})
-                _base_url = _openai_config.get("base_url", "")
-                _api_version = _openai_config.get("api_version", "")
+_config_file = Path("mcp_agent.config.yaml")
+if _config_file.exists():
+    try:
+        with open(_config_file, 'r') as f:
+            _config = yaml.safe_load(f)
+            _openai_config = _config.get("openai", {})
+            _base_url = _openai_config.get("base_url", "")
+            _api_version = _openai_config.get("api_version", "")
         except Exception:
             pass
-
-if _base_url and "azure.com" in _base_url and _api_version:
+            
+            if _base_url and "azure.com" in _base_url and _api_version:
     try:
                 from openai import AsyncOpenAI
                 _original_async_openai = AsyncOpenAI

@@ -1,4 +1,0 @@
-streamlit
-openai
-anthropic
-agno>=2.2.10
