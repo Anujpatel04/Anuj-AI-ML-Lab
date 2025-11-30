@@ -20,9 +20,7 @@ Anuj-AI-ML-Lab/
 ├── MCP_Agents/                  # Model Context Protocol agents
 │   ├── Browser_mcp_agent/      # Browser automation agent
 │   └── github_mcp_agent/       # GitHub repository analysis
-│
-├── config.py                    # Shared Azure OpenAI configuration
-└── .env                         # Environment variables (API keys)
+
 ```
 
 ## Projects
