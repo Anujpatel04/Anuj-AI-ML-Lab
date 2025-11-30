@@ -96,7 +96,6 @@ AZURE_OPENAI_MODEL=gpt-4o
 
 - **LLM Providers**: DeepSeek API, Azure OpenAI
 - **Frameworks**: Streamlit, Agno AI, CrewAI, Embedchain
-- **Tools**: Exa API, Firecrawl, SerpAPI, Serper API
 
 ## Notes
 
