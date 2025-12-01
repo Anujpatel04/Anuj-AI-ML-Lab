@@ -241,7 +241,7 @@ if st.button("🚀 Start Analysis", type="primary"):
                     except Exception:
                         pass
                     
-                    agno_agent = Agent(
+                        agno_agent = Agent(
                         model=OpenAIChat(
                             id="deepseek-chat",
                             api_key=DEEPSEEK_API_KEY,
@@ -338,16 +338,16 @@ Important guidelines:
                                             
                                             if value:  # Only display if there's a value
                                                 with st.container():
-                                                    if isinstance(value, list):
+                                                if isinstance(value, list):
                                                         st.markdown(f"#### {display_key}")
-                                                        for item in value:
+                                                    for item in value:
                                                             st.markdown(f"• {item}")
-                                                    elif isinstance(value, str):
+                                                elif isinstance(value, str):
                                                         st.markdown(f"#### {display_key}")
                                                         st.markdown(f"{value}")
-                                                    elif isinstance(value, bool):
+                                                elif isinstance(value, bool):
                                                         st.markdown(f"**{display_key}:** {'Yes' if value else 'No'}")
-                                                    else:
+                                                else:
                                                         st.markdown(f"**{display_key}:** {value}")
                                                     st.markdown("---")
                                         

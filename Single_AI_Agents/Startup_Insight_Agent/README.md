@@ -31,7 +31,7 @@ A web extraction and analysis tool that extracts structured data from startup we
 2. **Configure DeepSeek API Key**
 
    Add your DeepSeek API key to the `.env` file in the root directory:
-   
+
    ```
    DEEPSEEK_API_KEY=your_deepseek_api_key_here
    ```
