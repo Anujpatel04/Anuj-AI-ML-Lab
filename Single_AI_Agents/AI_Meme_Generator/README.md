@@ -20,7 +20,7 @@ An AI-powered browser automation tool that generates memes using natural languag
 
 1. Navigate to the project directory:
 ```bash
-cd Single_AI_Agents/ai_meme_generator_agent_browseruse
+cd Single_AI_Agents/AI_Meme_Generator
 ```
 
 2. Install Python dependencies:
