@@ -18,8 +18,8 @@ A personalized health and fitness planning application powered by DeepSeek API. 
 
 1. Install dependencies:
    ```bash
-   pip install -r requirements.txt
-   ```
+    pip install -r requirements.txt
+    ```
 
 2. Add your DeepSeek API key to `.env` file in the project root:
    ```
@@ -29,9 +29,9 @@ A personalized health and fitness planning application powered by DeepSeek API. 
 ## Usage
 
 Run the Streamlit application:
-```bash
-streamlit run health_agent.py
-```
+    ```bash
+    streamlit run health_agent.py
+    ```
 
 Enter your profile information (age, weight, height, activity level, dietary preferences, fitness goals) and generate personalized plans.
 

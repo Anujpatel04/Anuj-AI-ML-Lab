@@ -1,4 +1,0 @@
-streamlit 
-scrapegraphai
-playwright
-python-dotenv

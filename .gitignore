@@ -18,10 +18,19 @@ ENV/
 *.egg-info/
 dist/
 build/
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg
 
-# Environment variables
+# Environment variables and secrets
 .env
 .env.local
+.env.*.local
+*.secrets.yaml
+mcp_agent.secrets.yaml
+config.py
+secrets/
 
 # IDE
 .vscode/
@@ -29,14 +38,51 @@ build/
 *.swp
 *.swo
 *~
+.project
+.classpath
+.settings/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+*.ipynb_checkpoints
 
 # Streamlit
 .streamlit/
+.streamlit_cache/
 
+# Logs
+logs/
+*.log
+streamlit.log
 
-# Environment files
-.env
-!.env.example
+# Model files and data
+*.model
+*.pkl
+*.h5
+*.ckpt
+models/
+data/
+datasets/
+*.db
+*.sqlite
+*.sqlite3
+
+# Playwright
+playwright/.cache/
+test-results/
+playwright-report/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Project specific
+rough2/
+testfile.txt

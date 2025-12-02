@@ -6,8 +6,8 @@ An AI-powered web scraping tool that extracts structured data from websites usin
 
 This folder contains two implementations:
 
-1. **ai_scrapper.py** - Uses DeepSeek API for cloud-based scraping
-2. **local_ai_scrapper.py** - Uses local Ollama models for offline scraping
+1. **DeepSek_scrapper.py** - Uses DeepSeek API for cloud-based scraping
+2. **ollama_scrapper.py** - Uses local Ollama models for offline scraping
 
 ## Prerequisites
 
@@ -30,7 +30,7 @@ playwright install chromium
 
 ## Configuration
 
-### For ai_scrapper.py (DeepSeek API)
+### For DeepSek_scrapper.py (DeepSeek API)
 
 1. Add your DeepSeek API key to the root .env file:
 ```
@@ -39,7 +39,7 @@ DEEPSEEK_API_KEY=your-deepseek-api-key-here
 
 2. The app will automatically load the API key from the .env file.
 
-### For local_ai_scrapper.py (Ollama)
+### For ollama_scrapper.py (Ollama)
 
 1. Make sure Ollama is installed and running on your machine
 2. Pull the required model:
@@ -52,7 +52,7 @@ ollama pull llama3.1:latest
 ### Run with DeepSeek API
 
 ```bash
-streamlit run ai_scrapper.py
+streamlit run DeepSek_scrapper.py
 ```
 
 This will start a Streamlit app where you can:
@@ -64,7 +64,7 @@ This will start a Streamlit app where you can:
 ### Run with Local Ollama
 
 ```bash
-streamlit run local_ai_scrapper.py
+streamlit run ollama_scrapper.py
 ```
 
 This will start a Streamlit app using your local Ollama installation:

@@ -118,7 +118,7 @@ def main():
             st.error("❌ DeepSeek API: Not found in .env")
             st.info("Please add DEEPSEEK_API_KEY to your .env file in the root directory.")
             return
-
+        
     if DEEPSEEK_API_KEY:
         try:
             # Patch to convert developer role to system role for DeepSeek compatibility
