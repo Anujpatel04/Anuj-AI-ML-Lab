@@ -8,18 +8,22 @@ A comprehensive collection of AI/ML projects and experiments using Large Languag
 
 ```
 Anuj-AI-ML-Lab/
-├── All_LLMs/                    # RAG-based chat applications
-│   ├── chat_youtube/           # Chat with YouTube videos
-│   ├── PDF_RAG/                # Chat with PDF documents
-│   └── chat_with_gmail/        # Chat with Gmail inbox
+├── All_LargeLangugage_Models/   # RAG-based chat applications
+│   ├── chat_youtube/            # Chat with YouTube videos
+│   ├── PDF_RAG/                 # Chat with PDF documents
+│   └── chat_with_gmail/         # Chat with Gmail inbox
 │
 ├── Single_AI_Agents/            # Specialized AI agent applications
 │   ├── AI_Meme_Generator/      # Browser-automated meme generation
 │   ├── Health_Fitness_Agent/   # Personalized health & fitness planning
 │   ├── Journalist_Agent/       # Automated article writing
 │   ├── Meeting_Agent/          # Meeting notes and insights
-│   ├── Simple_ScrapingAgent/   # Web scraping with DeepSeek/Ollama
+│   ├── Simple_ScrapingAgent/   # Web scraping agent
 │   └── Startup_Insight_Agent/  # Startup company analysis
+│
+├── ALL_MachineLearning_Algos/  # Machine learning algorithms
+│   ├── Supervised_Learning/    # Supervised learning implementations
+│   └── Unsupervised_Learning/  # Unsupervised learning implementations
 │
 └── MCP_Agents/                  # Model Context Protocol agents
     ├── Browser_mcp_agent/      # Browser automation agent
@@ -28,25 +32,31 @@ Anuj-AI-ML-Lab/
 
 ## Projects Overview
 
-### All_LLMs
-RAG-based applications for chatting with different data sources using DeepSeek API.
+### All_LargeLangugage_Models
+RAG-based applications for chatting with different data sources. You can use any LLM provider of your choice (DeepSeek, OpenAI, Anthropic, Ollama, etc.).
 
 - **Chat with YouTube**: Extract and chat with YouTube video content
 - **PDF RAG**: Query and analyze PDF documents
 - **Chat with Gmail**: Interact with Gmail inbox using natural language
 
 ### Single_AI_Agents
-Specialized AI agents for specific use cases using DeepSeek API and other LLMs.
+Specialized AI agents for specific use cases. Each agent can be configured to use your preferred LLM provider.
 
 - **AI Meme Generator**: Browser-automated meme creation using imgflip.com
 - **Health & Fitness Agent**: Generate personalized dietary and fitness plans
 - **Journalist Agent**: Automated research and article writing
 - **Meeting Agent**: Extract insights and summaries from meeting notes
-- **Simple Scraping Agent**: Web scraping with DeepSeek API or local Ollama models
+- **Simple Scraping Agent**: Web scraping with configurable LLM backend
 - **Startup Insight Agent**: Analyze startup companies and extract key information
 
+### ALL_MachineLearning_Algos
+Machine learning algorithm implementations from scratch.
+
+- **Supervised Learning**: Linear Regression, Logistic Regression, Polynomial Regression, Decision Trees, K-Nearest Neighbors, and more
+- **Unsupervised Learning**: K-Means Clustering and other clustering algorithms
+
 ### MCP_Agents
-Agents using Model Context Protocol for advanced integrations.
+Agents using Model Context Protocol for advanced integrations. Compatible with various LLM providers.
 
 - **Browser MCP Agent**: Control web browsers using natural language
 - **GitHub MCP Agent**: Analyze and explore GitHub repositories
@@ -78,31 +88,42 @@ streamlit run <main_file>.py
 
 ### Environment Variables
 
-Create a `.env` file in the root directory:
+Create a `.env` file in the root directory with your preferred LLM provider:
 
 ```env
-# DeepSeek API (used by most agents)
+# Example: DeepSeek API
 DEEPSEEK_API_KEY=your-deepseek-api-key-here
 
-# Azure OpenAI (used by MCP_Agents)
-AZURE_OPENAI_API_KEY=your-azure-api-key-here
-AZURE_OPENAI_BASE_URL=your-azure-endpoint-url
-AZURE_OPENAI_API_VERSION=2025-01-01-preview
-AZURE_OPENAI_MODEL=gpt-4o
+# Example: OpenAI
+OPENAI_API_KEY=your-openai-api-key-here
+
+# Example: Anthropic Claude
+ANTHROPIC_API_KEY=your-anthropic-api-key-here
+
+# Or use any other LLM provider of your choice
 ```
 
-### Shared Configuration
+### LLM Provider Support
 
-- **Azure OpenAI**: Configured in `config.py` at the root directory (if present)
-- **DeepSeek API**: Loaded from `.env` file automatically
-- **MCP Agents**: Can use `mcp_agent.secrets.yaml` files in their directories
-- **Ollama**: Required for local model agents (install separately)
+Most projects support multiple LLM providers. You can use:
+- **DeepSeek API**: Cost-effective OpenAI-compatible API
+- **OpenAI**: GPT-3.5, GPT-4, and other models
+- **Anthropic**: Claude models
+- **Ollama**: Local models (install separately)
+- **Any OpenAI-compatible API**: Most agents support any provider with OpenAI-compatible endpoints
+
+### Configuration Files
+
+- **`.env` file**: Centralized environment variables in the root directory
+- **`config.py`**: Some projects may use this for additional configuration
+- **`mcp_agent.secrets.yaml`**: MCP agents can use their own secrets files
+- **Project-specific configs**: Check individual README files for specific setup instructions
 
 ## Technologies
 
-- **LLM Providers**: DeepSeek API, Azure OpenAI, Ollama (local)
+- **LLM Providers**: Use any LLM provider of your choice (DeepSeek, OpenAI, Anthropic, Ollama, etc.)
 - **Frameworks**: Streamlit, Agno AI, CrewAI, Embedchain, Browser-Use, ScrapeGraphAI
-- **Tools**: Playwright, LangChain, Python-dotenv
+- **Tools**: Playwright, LangChain, Python-dotenv, scikit-learn, numpy, pandas
 
 ## Project Details
 
@@ -128,8 +149,9 @@ This repository is actively being developed. Here's what's coming:
 - Each project is self-contained with its own dependencies
 - Projects can be run independently
 - Configuration is centralized in the root `.env` file
+- Most projects support multiple LLM providers - choose the one that works best for you
 - Some agents require additional setup (Playwright browsers, Ollama, etc.)
-- Check individual README files for specific requirements
+- Check individual README files for specific requirements and LLM provider configuration
 - This repository is in active development - expect regular updates and new features
 
 ## Contributing
