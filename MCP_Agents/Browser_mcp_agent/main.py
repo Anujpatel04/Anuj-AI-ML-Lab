@@ -27,36 +27,36 @@ if USE_SHARED_CONFIG:
     _base_url = AZURE_BASE_URL
     _api_version = API_VERSION
 else:
-_config_file = Path("mcp_agent.config.yaml")
-if _config_file.exists():
-    try:
-        with open(_config_file, 'r') as f:
-            _config = yaml.safe_load(f)
-            _openai_config = _config.get("openai", {})
-            _base_url = _openai_config.get("base_url", "")
-            _api_version = _openai_config.get("api_version", "")
+    _config_file = Path("mcp_agent.config.yaml")
+    if _config_file.exists():
+        try:
+            with open(_config_file, 'r') as f:
+                _config = yaml.safe_load(f)
+                _openai_config = _config.get("openai", {})
+                _base_url = _openai_config.get("base_url", "")
+                _api_version = _openai_config.get("api_version", "")
         except Exception:
             pass
             
-            if _base_url and "azure.com" in _base_url and _api_version:
+if _base_url and "azure.com" in _base_url and _api_version:
     try:
-                from openai import AsyncOpenAI
-                _original_async_openai = AsyncOpenAI
-                
-                def _patched_async_openai(*args, **kwargs):
-                    # Add default_query with api-version for Azure
-                    if 'default_query' not in kwargs:
-                        kwargs['default_query'] = {'api-version': _api_version}
-                    elif 'api-version' not in kwargs.get('default_query', {}):
-                        if 'default_query' in kwargs:
-                            kwargs['default_query']['api-version'] = _api_version
-                        else:
-                            kwargs['default_query'] = {'api-version': _api_version}
-                    return _original_async_openai(*args, **kwargs)
-                
-                # Patch before mcp-agent imports it
-                import mcp_agent.workflows.llm.augmented_llm_openai as _openai_module
-                _openai_module.AsyncOpenAI = _patched_async_openai
+        from openai import AsyncOpenAI
+        _original_async_openai = AsyncOpenAI
+        
+        def _patched_async_openai(*args, **kwargs):
+            # Add default_query with api-version for Azure
+            if 'default_query' not in kwargs:
+                kwargs['default_query'] = {'api-version': _api_version}
+            elif 'api-version' not in kwargs.get('default_query', {}):
+                if 'default_query' in kwargs:
+                    kwargs['default_query']['api-version'] = _api_version
+                else:
+                    kwargs['default_query'] = {'api-version': _api_version}
+            return _original_async_openai(*args, **kwargs)
+        
+        # Patch before mcp-agent imports it
+        import mcp_agent.workflows.llm.augmented_llm_openai as _openai_module
+        _openai_module.AsyncOpenAI = _patched_async_openai
     except Exception:
         pass  # If patch fails, continue without patch
 

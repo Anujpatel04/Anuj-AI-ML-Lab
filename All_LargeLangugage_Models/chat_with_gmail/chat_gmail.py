@@ -64,9 +64,9 @@ gmail_filter = "to: me label:inbox"
 if DEEPSEEK_API_KEY and DEEPSEEK_API_KEY != "your-deepseek-api-key-here":
     # Initialize session state
     if 'app' not in st.session_state:
-    # Create a temporary directory to store the database
-    db_path = tempfile.mkdtemp()
-    # Create an instance of Embedchain App
+        # Create a temporary directory to store the database
+        db_path = tempfile.mkdtemp()
+        # Create an instance of Embedchain App
         st.session_state.app = embedchain_bot(db_path, DEEPSEEK_API_KEY)
         st.session_state.emails_loaded = False
     
@@ -83,15 +83,15 @@ if DEEPSEEK_API_KEY and DEEPSEEK_API_KEY != "your-deepseek-api-key-here":
 
     # Ask a question about the emails
     if st.session_state.emails_loaded:
-    prompt = st.text_input("Ask any question about your emails")
+        prompt = st.text_input("Ask any question about your emails")
 
-    # Chat with the emails
-    if prompt:
+        # Chat with the emails
+        if prompt:
             try:
                 with st.spinner("🤔 Thinking..."):
                     answer = st.session_state.app.chat(prompt)
                     st.write("**Answer:**")
-        st.write(answer)
+                    st.write(answer)
             except Exception as e:
                 st.error(f"❌ Error: {e}")
 else:
