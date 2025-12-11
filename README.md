@@ -147,7 +147,6 @@ This repository is actively being developed. Here's what's coming:
 ## Notes
 
 - Each project is self-contained with its own dependencies
-- Projects can be run independently
 - Configuration is centralized in the root `.env` file
 - Most projects support multiple LLM providers - choose the one that works best for you
 - Some agents require additional setup (Playwright browsers, Ollama, etc.)
