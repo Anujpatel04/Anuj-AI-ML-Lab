@@ -131,7 +131,7 @@ This architecture provides:
 ## Repository
 
 This agent is part of the Anuj AI/ML Lab repository:
-https://github.com/Anujpatel04/Anuj-AI-ML-Lab/tree/main/Single_AI_Agents/Home_Renovation_agent
+- GitHub: [https://github.com/Anujpatel04/Anuj-AI-ML-Lab/tree/main/Single_AI_Agents/Home_Renovation_agent](https://github.com/Anujpatel04/Anuj-AI-ML-Lab/tree/main/Single_AI_Agents/Home_Renovation_agent)
 
 ## Requirements
 
