@@ -1,118 +1,117 @@
-# 🏚️ 🍌 AI Home Renovation Planner Agent 
+# AI Home Renovation Planner Agent
 
-### 🎓 FREE Step-by-Step Tutorial 
-**👉 [Click here to follow our complete step-by-step tutorial](https://www.theunwindai.com/p/build-an-ai-home-renovation-planner-agent-using-nano-banana) and learn how to build this from scratch with detailed code walkthroughs, explanations, and best practices.**
+A multi-agent system built with Google ADK that analyzes room photos, creates personalized renovation plans, and generates photorealistic renderings using Gemini 2.5 Flash's multimodal capabilities.
 
-A multi-agent system built with Google ADK that analyzes photos of your space, creates personalized renovation plans, and generates photorealistic renderings using Gemini 2.5 Flash's multimodal capabilities.
+## Overview
+
+This agent helps you plan home renovations by analyzing your space, understanding your budget constraints, and generating detailed renovation plans with visual renderings. It uses a coordinator/dispatcher pattern with specialized agents for different aspects of renovation planning.
 
 ## Features
 
-- **🔍 Smart Image Analysis**: Upload room photos and inspiration images - agent automatically detects and analyzes them
-- **🎨 Photorealistic Rendering**: Generates professional-quality images of your renovated space using Gemini 2.5 Flash
-- **💰 Budget-Aware Planning**: Tailors recommendations to your budget constraints
-- **📊 Complete Roadmap**: Provides timeline, budget breakdown, contractor list, and action checklist
-- **🤖 Multi-Agent Orchestration**: Demonstrates Coordinator/Dispatcher + Sequential Pipeline patterns
-- **✏️ Iterative Refinement**: Edit generated renderings based on feedback
+- **Image Analysis**: Upload room photos and inspiration images for automatic analysis
+- **Photorealistic Rendering**: Generate professional-quality images of renovated spaces
+- **Budget Planning**: Get recommendations tailored to your budget constraints
+- **Complete Roadmaps**: Receive timeline, budget breakdown, and action checklists
+- **Iterative Refinement**: Edit and refine renderings based on feedback
 
-## How It Works
+## Architecture
 
-The system uses a **Coordinator/Dispatcher pattern** with three specialized agents:
+The system uses a Coordinator/Dispatcher pattern with three specialized agents:
 
-1. **Visual Assessor** 📸
-   - Analyzes uploaded room photos (layout, condition, dimensions)
-   - Extracts style from inspiration images
-   - Estimates costs and identifies improvement opportunities
+1. **Visual Assessor**: Analyzes uploaded photos, extracts style from inspiration images, estimates costs, and identifies improvement opportunities
 
-2. **Design Planner** 🎨
-   - Creates budget-appropriate design plans
-   - Specifies exact materials, colors, and fixtures
-   - Prioritizes high-impact changes
+2. **Design Planner**: Creates budget-appropriate design plans, specifies materials and colors, and prioritizes high-impact changes
 
-3. **Project Coordinator** 🏗️
-   - Generates comprehensive renovation roadmap
-   - Creates photorealistic rendering of renovated space
-   - Provides budget breakdown, timeline, and action steps
+3. **Project Coordinator**: Generates comprehensive renovation roadmaps, creates photorealistic renderings, and provides budget breakdowns and timelines
 
-## Quick Start
+## Prerequisites
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
-   cd awesome-llm-apps/advanced_ai_agents/multi_agent_apps/ai_home_renovation_agent
-   ```
+- Python 3.10 or higher
+- Google API key (Gemini API)
+- Google ADK installed
 
-2. **Install dependencies**
+## Installation
+
+1. Install dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set up your API key**
+2. Set up your Google API key:
+   
+   Add to your `.env` file in the root directory:
+   ```
+   GOOGLE_API_KEY=your_google_api_key_here
+   ```
+   
+   Or export as an environment variable:
    ```bash
-   export GOOGLE_API_KEY="your_gemini_api_key"
-   ```
-   Or create a `.env` file:
-   ```
-   GOOGLE_API_KEY=your_gemini_api_key
+   export GOOGLE_API_KEY="your_google_api_key_here"
    ```
 
-4. **Launch ADK Web** 
+## Running the Agent
+
+1. Navigate to the parent directory containing all agents:
    ```bash
-   cd multi_agent_apps
+   cd /path/to/Single_AI_Agents
+   ```
+
+2. Launch ADK Web:
+   ```bash
    adk web
    ```
 
-5. **Open browser** and select "ai_home_renovation_agent"
+3. Open your browser and navigate to the URL shown (typically `http://localhost:8000`)
+
+4. Select `Home_Renovation_agent` from the list of available agents
 
 ## Usage Examples
 
-### Scenario 1: Current Room + Budget
+### Basic Renovation Planning
+Upload a photo of your room and ask:
 ```
-[Upload photo of your kitchen]
 "What can I improve here with a $5k budget?"
 ```
-→ Agent analyzes your space, suggests budget-friendly improvements, generates rendering
 
-### Scenario 2: Room + Inspiration
+### Style Transformation
+Upload your current room photo and an inspiration image:
 ```
-[Upload photo 1: your kitchen]
-[Upload photo 2: Pinterest inspiration]
 "Transform my kitchen to look like this. What's the cost?"
 ```
-→ Agent extracts style from inspiration, applies to your room, provides budget + rendering
 
-### Scenario 3: Text Only
+### Text-Based Planning
+Describe your space:
 ```
 "Renovate my 10x12 kitchen with oak cabinets and laminate counters. 
 Want modern farmhouse style with white shaker cabinets. Budget: $30k"
 ```
-→ Agent creates design plan and generates rendering from description
 
-### Scenario 4: Iterative Refinement
+### Iterative Refinement
+After generating an initial rendering:
 ```
-[After initial rendering]
 "Make the cabinets cream instead of white"
 "Add pendant lights over the island"
 "Change flooring to lighter oak"
 ```
-→ Agent refines the rendering with your feedback
 
 ## Sample Prompts
+
 - "I want to renovate my small galley kitchen. It's 8x12 feet, has oak cabinets from the 90s. I love modern farmhouse style. Budget: $25k"
 - "My master bathroom is tiny (5x8) with a cramped tub. I want a spa-like retreat with walk-in shower. Budget: $15k"
 - "Transform my boring bedroom into a cozy retreat. Thinking accent wall, new flooring. Budget: $12k"
 
-## Tools & Capabilities
+## Capabilities
 
-- **google_search**: Finds renovation costs, materials, and trends
-- **estimate_renovation_cost**: Calculates costs by room type and scope
-- **calculate_timeline**: Estimates project duration
-- **generate_renovation_rendering**: Creates photorealistic renderings
-- **edit_renovation_rendering**: Refines renderings based on feedback
-- **Versioned artifacts**: Automatic version tracking for all renderings
+- **Google Search**: Finds renovation costs, materials, and design trends
+- **Cost Estimation**: Calculates costs by room type and renovation scope
+- **Timeline Calculation**: Estimates project duration
+- **Rendering Generation**: Creates photorealistic renderings of renovated spaces
+- **Rendering Editing**: Refines renderings based on user feedback
+- **Version Control**: Automatic version tracking for all generated renderings
 
-## Multi-Agent Pattern
+## Technical Details
 
-Demonstrates **Coordinator/Dispatcher + Sequential Pipeline**:
+This agent demonstrates a Coordinator/Dispatcher pattern combined with a Sequential Pipeline:
 
 ```
 Coordinator (Root Agent)
@@ -123,9 +122,26 @@ Coordinator (Root Agent)
           └── Project Coordinator (rendering + roadmap)
 ```
 
-**Why this pattern?**
-- Efficient: Only runs workflows that are needed
-- Modular: Each agent has clear responsibilities
-- Scalable: Easy to add new features
-- Production-ready: Real-world agentic system pattern
+This architecture provides:
+- Efficient workflow execution (only runs what's needed)
+- Modular design with clear agent responsibilities
+- Scalability for adding new features
+- Production-ready agentic system pattern
 
+## Repository
+
+This agent is part of the Anuj AI/ML Lab repository:
+https://github.com/Anujpatel04/Anuj-AI-ML-Lab/tree/main/Single_AI_Agents/Home_Renovation_agent
+
+## Requirements
+
+- google-adk>=1.15.0
+- google-generativeai>=0.8.3
+- python-dotenv>=1.0.0
+
+## Notes
+
+- The agent requires a valid Google API key with access to Gemini models
+- Image analysis capabilities depend on Gemini 2.5 Flash's multimodal features
+- Rendering generation may take some time depending on complexity
+- All generated renderings are automatically versioned for easy reference
