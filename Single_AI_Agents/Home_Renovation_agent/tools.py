@@ -1,12 +1,16 @@
 import os
 import logging
+from pathlib import Path
 from google import genai
 from google.genai import types
 from google.adk.tools import ToolContext
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
-load_dotenv()
+# Load environment variables from root .env file
+root_dir = Path(__file__).parent.parent.parent
+env_path = root_dir / ".env"
+load_dotenv(env_path)
 
 # Configure logging
 logger = logging.getLogger(__name__)

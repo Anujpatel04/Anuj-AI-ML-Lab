@@ -39,12 +39,14 @@ The system uses a Coordinator/Dispatcher pattern with three specialized agents:
 
 2. Set up your Google API key:
    
-   Add to your `.env` file in the root directory:
+   **Important**: This agent loads the API key from the root `.env` file of the repository. No API keys are stored in this folder.
+   
+   Add your Google API key to the `.env` file in the root directory (`/Users/anuj/Desktop/Anuj-AI-ML-Lab/.env`):
    ```
    GOOGLE_API_KEY=your_google_api_key_here
    ```
    
-   Or export as an environment variable:
+   Alternatively, you can export it as an environment variable:
    ```bash
    export GOOGLE_API_KEY="your_google_api_key_here"
    ```
@@ -141,6 +143,7 @@ This agent is part of the Anuj AI/ML Lab repository:
 
 ## Notes
 
+- **API Key Configuration**: The agent automatically loads the `GOOGLE_API_KEY` from the root `.env` file. No API keys are hardcoded in this folder.
 - The agent requires a valid Google API key with access to Gemini models
 - Image analysis capabilities depend on Gemini 2.5 Flash's multimodal features
 - Rendering generation may take some time depending on complexity
