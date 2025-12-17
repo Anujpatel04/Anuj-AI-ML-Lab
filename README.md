@@ -6,7 +6,8 @@ This repository is actively being developed. More work is coming around voice ag
 
 ## Status
 
-This repo is under active development and changes frequently. If you find it useful, feel free to star it and fork it to keep track of updates and experiment in your own copy.
+> **Active development:** This repo changes frequently.  
+> If you find it useful, **star** it and **fork** it to follow updates and experiment in your own copy.
 
 ## What you’ll find here
 
