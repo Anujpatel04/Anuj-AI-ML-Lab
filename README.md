@@ -4,6 +4,10 @@ A personal lab for AI agents, RAG apps, and ML algorithms. Everything here is me
 
 This repository is actively being developed. More work is coming around voice agents, multi-agent systems, and deeper RAG workflows.
 
+## Status
+
+This repo is under active development and changes frequently. If you find it useful, feel free to star it and fork it to keep track of updates and experiment in your own copy.
+
 ## What you’ll find here
 
 - **LLM/RAG apps**: small, focused apps that let you chat with your own data (PDFs, YouTube, Gmail) and experiment with retrieval.
