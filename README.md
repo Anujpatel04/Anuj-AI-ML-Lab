@@ -1,158 +1,87 @@
 # Anuj AI/ML Lab
 
-A comprehensive collection of AI/ML projects and experiments using Large Language Models (LLMs) and various AI frameworks. This repository contains specialized AI agents, RAG applications, and automation tools.
+A personal lab for AI agents, RAG apps, and ML algorithms. Everything here is meant to be runnable and easy to iterate on.
 
-> **Note**: This repository is still in active development. Many exciting features are coming up including advanced Voice Agents, Multi-Agent Systems, and more. Stay tuned for updates!
+This repository is actively being developed. More work is coming around voice agents, multi-agent systems, and deeper RAG workflows.
 
-## Project Structure
+## What you’ll find here
 
-```
+- **LLM/RAG apps**: small, focused apps that let you chat with your own data (PDFs, YouTube, Gmail) and experiment with retrieval.
+- **Single-purpose agents**: practical agents for common tasks (scraping, content writing, meeting notes, etc.).
+- **ML algorithms**: supervised and unsupervised algorithms implemented as learning references and demos.
+- **MCP agents**: agents that integrate external tools/services using the Model Context Protocol.
+
+## Repository structure
+
+```text
 Anuj-AI-ML-Lab/
-├── All_LargeLangugage_Models/   # RAG-based chat applications
-│   ├── chat_youtube/            # Chat with YouTube videos
-│   ├── PDF_RAG/                 # Chat with PDF documents
-│   └── chat_with_gmail/         # Chat with Gmail inbox
+├── All_LargeLangugage_Models/
+│   ├── LocalLama_Agent/          # Local RAG/chat app (Ollama + optional Qdrant/Exa)
+│   ├── PDF_RAG/                  # Chat with PDFs
+│   ├── chat_youtube/             # Chat with YouTube content
+│   └── chat_with_gmail/           # Chat with Gmail content
 │
-├── Single_AI_Agents/            # Specialized AI agent applications
-│   ├── AI_Meme_Generator/      # Browser-automated meme generation
-│   ├── Health_Fitness_Agent/   # Personalized health & fitness planning
-│   ├── Journalist_Agent/       # Automated article writing
-│   ├── Meeting_Agent/          # Meeting notes and insights
-│   ├── Simple_ScrapingAgent/   # Web scraping agent
-│   └── Startup_Insight_Agent/  # Startup company analysis
+├── Single_AI_Agents/
+│   ├── AI_Meme_Generator/
+│   ├── Health_Fitness_Agent/
+│   ├── Home_Renovation_agent/    # ADK-based multi-agent app
+│   ├── Journalist_Agent/
+│   ├── LINKEDIN_ROSTER/
+│   ├── Meeting_Agent/
+│   ├── Simple_ScrapingAgent/
+│   └── Startup_Insight_Agent/
 │
-├── ALL_MachineLearning_Algos/  # Machine learning algorithms
-│   ├── Supervised_Learning/    # Supervised learning implementations
-│   └── Unsupervised_Learning/  # Unsupervised learning implementations
+├── ALL_MachineLearning_Algos/
+│   ├── Supervised_Learning/
+│   └── Unsupervised_Learning/
 │
-└── MCP_Agents/                  # Model Context Protocol agents
-    ├── Browser_mcp_agent/      # Browser automation agent
-    └── github_mcp_agent/       # GitHub repository analysis
+├── MCP_Agents/
+│   ├── ai_travel_planner_mcp_agent_team/
+│   ├── Browser_mcp_agent/
+│   └── github_mcp_agent/
+│
+└── Automation_WorkFlows/
+    └── N8N_Workflows/
 ```
 
-## Projects Overview
+## Quick start
 
-### All_LargeLangugage_Models
-RAG-based applications for chatting with different data sources. You can use any LLM provider of your choice (DeepSeek, OpenAI, Anthropic, Ollama, etc.).
-
-- **Chat with YouTube**: Extract and chat with YouTube video content
-- **PDF RAG**: Query and analyze PDF documents
-- **Chat with Gmail**: Interact with Gmail inbox using natural language
-
-### Single_AI_Agents
-Specialized AI agents for specific use cases. Each agent can be configured to use your preferred LLM provider.
-
-- **AI Meme Generator**: Browser-automated meme creation using imgflip.com
-- **Health & Fitness Agent**: Generate personalized dietary and fitness plans
-- **Journalist Agent**: Automated research and article writing
-- **Meeting Agent**: Extract insights and summaries from meeting notes
-- **Simple Scraping Agent**: Web scraping with configurable LLM backend
-- **Startup Insight Agent**: Analyze startup companies and extract key information
-
-### ALL_MachineLearning_Algos
-Machine learning algorithm implementations from scratch.
-
-- **Supervised Learning**: Linear Regression, Logistic Regression, Polynomial Regression, Decision Trees, K-Nearest Neighbors, and more
-- **Unsupervised Learning**: K-Means Clustering and other clustering algorithms
-
-### MCP_Agents
-Agents using Model Context Protocol for advanced integrations. Compatible with various LLM providers.
-
-- **Browser MCP Agent**: Control web browsers using natural language
-- **GitHub MCP Agent**: Analyze and explore GitHub repositories
-
-## Quick Start
-
-### Prerequisites
-- Python 3.10+ (Python 3.11+ required for some agents)
-- API keys (see Configuration section)
-
-### Installation
-
-Each project has its own `requirements.txt`. Navigate to the project directory and install:
+Most folders are self-contained (install deps per project):
 
 ```bash
-cd <project_directory>
-pip install -r requirements.txt
+cd <project_folder>
+python3 -m pip install -r requirements.txt
 ```
 
-### Running Projects
-
-Each project includes a README with specific usage instructions. Most projects use Streamlit:
+Then run what that folder’s README says. Many projects are Streamlit apps:
 
 ```bash
-streamlit run <main_file>.py
+streamlit run <file>.py
+```
+
+For script-style projects, you’ll typically run:
+
+```bash
+python3 <file>.py
 ```
 
 ## Configuration
 
-### Environment Variables
+- **Root `.env`**: central place for API keys and service URLs used by multiple apps (this file is git-ignored).
+- **Project READMEs**: each folder documents what keys (if any) it expects and how to run it.
 
-Create a `.env` file in the root directory with your preferred LLM provider:
+Minimal example (add only what you actually use):
 
 ```env
-# Example: DeepSeek API
-DEEPSEEK_API_KEY=your-deepseek-api-key-here
+# Qdrant (used by local RAG apps when enabled)
+QDRANT_URL="https://your-qdrant-host:6333"
+QDRANT_API_KEY="..."
 
-# Example: OpenAI
-OPENAI_API_KEY=your-openai-api-key-here
-
-# Example: Anthropic Claude
-ANTHROPIC_API_KEY=your-anthropic-api-key-here
-
-# Or use any other LLM provider of your choice
+# Exa (used only if web-search fallback is enabled)
+EXA_API_KEY="..."
 ```
-
-### LLM Provider Support
-
-Most projects support multiple LLM providers. You can use:
-- **DeepSeek API**: Cost-effective OpenAI-compatible API
-- **OpenAI**: GPT-3.5, GPT-4, and other models
-- **Anthropic**: Claude models
-- **Ollama**: Local models (install separately)
-- **Any OpenAI-compatible API**: Most agents support any provider with OpenAI-compatible endpoints
-
-### Configuration Files
-
-- **`.env` file**: Centralized environment variables in the root directory
-- **`config.py`**: Some projects may use this for additional configuration
-- **`mcp_agent.secrets.yaml`**: MCP agents can use their own secrets files
-- **Project-specific configs**: Check individual README files for specific setup instructions
-
-## Technologies
-
-- **LLM Providers**: Use any LLM provider of your choice (DeepSeek, OpenAI, Anthropic, Ollama, etc.)
-- **Frameworks**: Streamlit, Agno AI, CrewAI, Embedchain, Browser-Use, ScrapeGraphAI
-- **Tools**: Playwright, LangChain, Python-dotenv, scikit-learn, numpy, pandas
-
-## Project Details
-
-Each project folder contains:
-- Main Python script(s)
-- `requirements.txt` with dependencies
-- `README.md` with detailed setup and usage instructions
-
-## Upcoming Features
-
-This repository is actively being developed. Here's what's coming:
-
-- **Advanced Voice Agents**: Enhanced voice-based AI applications with improved natural language understanding and multi-modal interactions
-- **Multi-Agent Systems**: Collaborative agent frameworks where multiple AI agents work together to solve complex tasks
-- **Enhanced RAG Systems**: Improved retrieval-augmented generation with better context understanding
-- **Agent Orchestration**: Tools for managing and coordinating multiple agents
-- **More Specialized Agents**: Additional domain-specific agents for various use cases
-- **Performance Optimizations**: Improved efficiency and speed across all agents
-- **Better Documentation**: Comprehensive guides and tutorials
 
 ## Notes
 
-- Each project is self-contained with its own dependencies
-- Configuration is centralized in the root `.env` file
-- Most projects support multiple LLM providers - choose the one that works best for you
-- Some agents require additional setup (Playwright browsers, Ollama, etc.)
-- Check individual README files for specific requirements and LLM provider configuration
-- This repository is in active development - expect regular updates and new features
-
-## Contributing
-
-This is a personal lab repository for AI/ML experiments and projects. The repository is continuously evolving with new agents and features being added regularly.
+- Each project is intentionally isolated with its own `requirements.txt`.
+- If something uses a browser (Playwright), you may need an extra install step described in that project’s README.
