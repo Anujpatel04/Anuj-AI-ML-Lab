@@ -1,0 +1,396 @@
+{
+    "nodes": [
+      {
+        "parameters": {},
+        "id": "c6890c0a-f7d4-4a7e-a4ac-929ab4ee0e8b",
+        "name": "When clicking \"Execute Workflow\"",
+        "type": "n8n-nodes-base.manualTrigger",
+        "position": [
+          -1584,
+          304
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "url": "http://www.paulgraham.com/articles.html",
+          "options": {}
+        },
+        "id": "0e930c2b-f7df-47f8-8f67-37df8716f7be",
+        "name": "Fetch essay list",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -1360,
+          304
+        ],
+        "typeVersion": 4.1
+      },
+      {
+        "parameters": {
+          "operation": "extractHtmlContent",
+          "dataPropertyName": "=data",
+          "extractionValues": {
+            "values": [
+              {
+                "key": "essay",
+                "cssSelector": "table table a",
+                "returnValue": "attribute",
+                "attribute": "href",
+                "returnArray": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c2a73aa0-8fae-4e9c-955a-9f9e2691b611",
+        "name": "Extract essay names",
+        "type": "n8n-nodes-base.html",
+        "position": [
+          -1152,
+          304
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "url": "=http://www.paulgraham.com/{{ $json.essay }}",
+          "options": {}
+        },
+        "id": "c2d5f42d-af11-45f3-856f-71d827648e40",
+        "name": "Fetch essay texts",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -480,
+          304
+        ],
+        "typeVersion": 4.1
+      },
+      {
+        "parameters": {
+          "operation": "extractHtmlContent",
+          "extractionValues": {
+            "values": [
+              {
+                "key": "title",
+                "cssSelector": "title"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "6ca8556f-ea6f-4eb1-a2c7-5359392b3b8b",
+        "name": "Extract title",
+        "type": "n8n-nodes-base.html",
+        "position": [
+          -144,
+          0
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "fields": {
+            "values": [
+              {
+                "name": "title",
+                "stringValue": "={{ $json.title }}"
+              },
+              {
+                "name": "summary",
+                "stringValue": "={{ $json.response.text }}"
+              },
+              {
+                "name": "url",
+                "stringValue": "=http://www.paulgraham.com/{{ $('Limit to first 3').item.json.essay }}"
+              }
+            ]
+          },
+          "include": "none",
+          "options": {}
+        },
+        "id": "6a37461d-df8c-43bb-a160-6200a83ffea8",
+        "name": "Clean up",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          528,
+          288
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "content": "## Scrape latest Paul Graham essays",
+          "height": 285.66037735849045,
+          "width": 1071.752021563343
+        },
+        "id": "53b51876-e8f1-4071-aa1e-ad52434c5558",
+        "name": "Sticky Note",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -1424,
+          224
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## Summarize them with Deepseek",
+          "height": 606.7924528301882,
+          "width": 465.3908355795153
+        },
+        "id": "9f49e78e-0207-40e0-9e5b-6a125b74aa9b",
+        "name": "Sticky Note1",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -224,
+          224
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "essay",
+          "options": {}
+        },
+        "id": "1e30f36f-385c-4b0e-b633-1d4f74710e46",
+        "name": "Split out into items",
+        "type": "n8n-nodes-base.splitOut",
+        "position": [
+          -928,
+          304
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "maxItems": 3
+        },
+        "id": "3d71cb72-faa1-43dd-8ef4-c32caadf82cd",
+        "name": "Limit to first 3",
+        "type": "n8n-nodes-base.limit",
+        "position": [
+          -704,
+          304
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "ad8083f8-f0f0-476a-880f-0b1d218ada2a",
+        "name": "Default Data Loader",
+        "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+        "position": [
+          -32,
+          512
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "a729b960-b456-4fc5-89c3-a4be7f8f6e5e",
+        "name": "Recursive Character Text Splitter",
+        "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+        "position": [
+          -32,
+          640
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {}
+        },
+        "id": "46c31cc9-ed87-4b5d-b9e6-3742027b8acc",
+        "name": "Merge",
+        "type": "n8n-nodes-base.merge",
+        "position": [
+          320,
+          288
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "operationMode": "documentLoader",
+          "options": {}
+        },
+        "id": "92ca95a2-fd17-4bdd-9735-754106e5caf1",
+        "name": "Summarization Chain",
+        "type": "@n8n/n8n-nodes-langchain.chainSummarization",
+        "position": [
+          -128,
+          304
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+        "typeVersion": 1,
+        "position": [
+          -176,
+          512
+        ],
+        "id": "2c16b6ba-b55e-4da1-b781-ad5a01e2d837",
+        "name": "DeepSeek Chat Model",
+        "credentials": {
+          "deepSeekApi": {
+            "id": "frYw4RwGT7ZElyz5",
+            "name": "DeepSeek account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking \"Execute Workflow\"": {
+        "main": [
+          [
+            {
+              "node": "Fetch essay list",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch essay list": {
+        "main": [
+          [
+            {
+              "node": "Extract essay names",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract essay names": {
+        "main": [
+          [
+            {
+              "node": "Split out into items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch essay texts": {
+        "main": [
+          [
+            {
+              "node": "Extract title",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Summarization Chain",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract title": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split out into items": {
+        "main": [
+          [
+            {
+              "node": "Limit to first 3",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Limit to first 3": {
+        "main": [
+          [
+            {
+              "node": "Fetch essay texts",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Default Data Loader": {
+        "ai_document": [
+          [
+            {
+              "node": "Summarization Chain",
+              "type": "ai_document",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Recursive Character Text Splitter": {
+        "ai_textSplitter": [
+          [
+            {
+              "node": "Default Data Loader",
+              "type": "ai_textSplitter",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Clean up",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Summarization Chain": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "DeepSeek Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Summarization Chain",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "41c436da7030a9268d66e2cd109e9f80e81014f04f6a92061ed9b2b8e2ca9040"
+    }
+  }
