@@ -16,38 +16,7 @@ This lab contains a curated set of projects organized into four main categories:
 - **Machine Learning Algorithms**: Implementations of supervised and unsupervised learning algorithms from scratch, suitable for educational purposes and experimentation
 - **MCP Agents**: Model Context Protocol agents that integrate with external tools and services for enhanced functionality
 
-## Repository Structure
 
-```
-Anuj-AI-ML-Lab/
-├── All_LargeLangugage_Models/
-│   ├── LocalLama_Agent/          # Local RAG/chat app (Ollama + optional Qdrant/Exa)
-│   ├── PDF_RAG/                  # Chat with PDF documents
-│   ├── chat_youtube/             # Chat with YouTube video content
-│   └── chat_with_gmail/          # Chat with Gmail inbox content
-│
-├── Single_AI_Agents/
-│   ├── AI_Meme_Generator/        # Automated meme generation agent
-│   ├── Health_Fitness_Agent/     # Health and fitness assistant
-│   ├── Home_Renovation_agent/    # ADK-based multi-agent renovation planner
-│   ├── Journalist_Agent/         # Content writing and journalism assistant
-│   ├── LINKEDIN_ROSTER/          # LinkedIn profile analysis agent
-│   ├── Meeting_Agent/            # Meeting transcription and summarization
-│   ├── Simple_ScrapingAgent/     # Web scraping utilities
-│   └── Startup_Insight_Agent/    # Startup analysis and insights
-│
-├── ALL_MachineLearning_Algos/
-│   ├── Supervised_Learning/      # Classification and regression algorithms
-│   └── Unsupervised_Learning/    # Clustering and dimensionality reduction
-│
-├── MCP_Agents/
-│   ├── ai_travel_planner_mcp_agent_team/  # Travel planning with MCP tools
-│   ├── Browser_mcp_agent/        # Browser automation via MCP
-│   └── github_mcp_agent/         # GitHub integration agent
-│
-└── Automation_WorkFlows/
-    └── N8N_Workflows/            # Workflow automation templates
-```
 
 ## Quick Start
 
