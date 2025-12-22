@@ -1,0 +1,461 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "34b2337a-4e6c-4259-81da-62e3f6222bf9",
+        "name": "Chat Message Trigger",
+        "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+        "position": [
+          -1376,
+          16
+        ],
+        "webhookId": "cb0b9dbe-1f35-441a-b062-29624b0ebc6a",
+        "typeVersion": 1.1
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=User Query: {{ $('Chat Message Trigger').item.json.chatInput }}",
+          "messages": {
+            "messageValues": [
+              {
+                "message": "=You are an expert research assistant. Given a user's query, generate up to four distinct, precise search queries that would help gather comprehensive information on the topic. Return only a JSON list of strings, for example: ['query1', 'query2', 'query3']."
+              }
+            ]
+          }
+        },
+        "id": "694c78db-d9bb-45b7-942a-ad23fb168336",
+        "name": "Generate Search Queries using LLM",
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "position": [
+          -1184,
+          16
+        ],
+        "typeVersion": 1.5
+      },
+      {
+        "parameters": {
+          "model": "google/gemini-2.0-flash-001",
+          "options": {}
+        },
+        "id": "d2881c3c-47a0-46af-bcb6-5fb48dfd7213",
+        "name": "LLM Response Provider (OpenRouter)",
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+        "position": [
+          -1184,
+          544
+        ],
+        "typeVersion": 1,
+        "credentials": {
+          "openRouterApi": {
+            "id": "cyyYA016k0iuPoHT",
+            "name": "OpenRouter account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Parse the input JSON string and split it into four chunks\nconst rawText = $json.text;\n\n// Remove Markdown JSON code blocks if present\nconst cleanedText = rawText.replace(/```json|```/g, '').trim();\n\ntry {\n const jsonArray = JSON.parse(cleanedText);\n if (!Array.isArray(jsonArray)) {\n throw new Error('The JSON is not an array.');\n }\n const chunkSize = Math.ceil(jsonArray.length / 4);\n const chunks = [];\n for (let i = 0; i < jsonArray.length; i += chunkSize) {\n chunks.push(jsonArray.slice(i, i + chunkSize));\n }\n return chunks.map(chunk => ({ json: { chunk } }));\n} catch (error) {\n return [{ json: { error: error.message } }];\n}\n"
+        },
+        "id": "97d55907-4610-41cc-abaf-0b04eb566435",
+        "name": "Parse and Chunk JSON Data",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          -848,
+          16
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "url": "https://serpapi.com/search",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "q",
+                "value": "={{ $('Parse and Chunk JSON Data').item.json.chunk }}"
+              },
+              {
+                "name": "api_key",
+                "value": "=5caaea9b145768c68cb9485f3db9013b09394d60d4de0ed41b72d8f1e4b8213d"
+              },
+              {
+                "name": "engine",
+                "value": "google"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "0bc22904-ee37-4638-b609-2db7f1794c28",
+        "name": "Perform SerpAPI Search Request",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -208,
+          32
+        ],
+        "typeVersion": 4.2
+      },
+      {
+        "parameters": {
+          "url": "=https://r.jina.ai/{{ $json.url }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "options": {}
+        },
+        "id": "0ee2454a-fd1a-4968-b146-c29434869e36",
+        "name": "Perform Jina AI Analysis Request",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          656,
+          16
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "y7AvKsIETLZCaZYw",
+            "name": "Header Auth account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Format the organic search results from SerpAPI\nconst results = $input.first().json.organic_results;\nif (results.length === 0) {\n return [{ json: { error: 'No search results found.' } }];\n}\nconst formattedResults = results.map(result => ({\n title: result.title || 'No title available',\n url: result.link || 'No link available',\n source: result.source || result.displayed_link || 'Unknown source'\n}));\nreturn formattedResults.map(result => ({ json: result }));\n"
+        },
+        "id": "765a602c-e2e0-4947-9f0b-5d1aa90b1ce8",
+        "name": "Format SerpAPI Organic Results",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          112,
+          -16
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=User Queries: {{ $('Parse and Chunk JSON Data').all().map(item => item.json.chunk[0]).join(', ') }}\nWebpage Contents: \n\"\"\"\n{{ $json.data }}\n\"\"\"",
+          "options": {
+            "systemMessage": "=You are an expert information extractor. Given the user's query, the search query that led to this page, and the webpage content, extract all relevant pieces of information that are useful to answer the query. Return only the relevant context as plain text without any additional commentary."
+          }
+        },
+        "id": "3a4b713b-a272-47cc-8adb-a518c73b4637",
+        "name": "Extract Relevant Context via LLM",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          -704,
+          368
+        ],
+        "typeVersion": 1.7
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Extracted Contexts (Merged):\n\"\"\"\n{{ $json.output }}\n\"\"\"",
+          "options": {
+            "systemMessage": "You are an expert researcher and report writer. Based on the gathered contexts and the original user query, generate a comprehensive, well-structured report. Include all relevant insights and conclusions without unnecessary commentary.\n\nFormat the report in Markdown with clear headings. For example:\n\n# Research Report: [User Query]\n\n## Key Findings\n- Point 1\n- Point 2\n\n## Detailed Analysis\n### Aspect 1\nSummary of findings.\n_Source:_ [Source Name](URL)\n\n### Aspect 2\nSummary of findings.\n_Source:_ [Another Source](URL)\n\nNow, generate the complete report."
+          }
+        },
+        "id": "edf3290a-5b01-4ac6-b59a-999361c78cd0",
+        "name": "Generate Comprehensive Research Report",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          -176,
+          368
+        ],
+        "typeVersion": 1.7
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "d9fb36c2-c9a8-48b3-94bd-f979f6c2a03e",
+        "name": "Split Data for SerpAPI Batching",
+        "type": "n8n-nodes-base.splitInBatches",
+        "position": [
+          -528,
+          16
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "1b5978b8-d900-4d9d-a4db-d93b6673f142",
+        "name": "Split Data for Jina AI Batching",
+        "type": "n8n-nodes-base.splitInBatches",
+        "position": [
+          352,
+          -16
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "my_test_session",
+          "contextWindowLength": 20
+        },
+        "id": "a3f3d54c-1407-4cae-aaf0-27930da05898",
+        "name": "LLM Memory Buffer (Input Context)",
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "position": [
+          -592,
+          592
+        ],
+        "typeVersion": 1.3
+      },
+      {
+        "parameters": {
+          "sessionIdType": "customKey",
+          "sessionKey": "my_test_session",
+          "contextWindowLength": 20
+        },
+        "id": "d6e55006-f00b-4d9e-a7b7-57831f402946",
+        "name": "LLM Memory Buffer (Report Context)",
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "position": [
+          -48,
+          608
+        ],
+        "typeVersion": 1.3
+      },
+      {
+        "parameters": {},
+        "id": "b4248fc6-f925-4cea-80df-a4d01ccf1d87",
+        "name": "Fetch Wikipedia Information",
+        "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+        "position": [
+          -16,
+          768
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## SerpAPI Setup Instructions\n1. Obtain your API key from https://serpapi.com/manage-api-key.\n2. Save your API key securely in n8n credentials (do not use plain text).",
+          "height": 140,
+          "width": 420,
+          "color": 7
+        },
+        "id": "b61c63ad-a1a6-4db9-9ec3-9122a3cefbf7",
+        "name": "Sticky Note: SerpAPI Setup",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -368,
+          -176
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## Jina AI Setup Instructions\n1. Obtain your API key from https://jina.ai/api-dashboard/key-manager.\n2. Configure your Jina AI credential in n8n to ensure secure API access.",
+          "height": 140,
+          "width": 420,
+          "color": 7
+        },
+        "id": "880fc09d-0054-4916-aee4-29d8ae78d4cf",
+        "name": "Sticky Note: Jina AI Setup",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          512,
+          -192
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## OpenRouter API Setup Instructions\n1. Obtain your API key from https://openrouter.ai/settings/keys.\n2. Set up your OpenRouter credential in n8n for secure integration.",
+          "height": 180,
+          "width": 300,
+          "color": 7
+        },
+        "id": "816ab8c0-a044-48f0-a052-1be0d40f16db",
+        "name": "Sticky Note: OpenRouter API Setup",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -1104,
+          304
+        ],
+        "typeVersion": 1
+      }
+    ],
+    "connections": {
+      "Chat Message Trigger": {
+        "main": [
+          [
+            {
+              "node": "Generate Search Queries using LLM",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Generate Search Queries using LLM": {
+        "main": [
+          [
+            {
+              "node": "Parse and Chunk JSON Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "LLM Response Provider (OpenRouter)": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Generate Search Queries using LLM",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "Extract Relevant Context via LLM",
+              "type": "ai_languageModel",
+              "index": 0
+            },
+            {
+              "node": "Generate Comprehensive Research Report",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Parse and Chunk JSON Data": {
+        "main": [
+          [
+            {
+              "node": "Split Data for SerpAPI Batching",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Perform SerpAPI Search Request": {
+        "main": [
+          [
+            {
+              "node": "Split Data for SerpAPI Batching",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Perform Jina AI Analysis Request": {
+        "main": [
+          [
+            {
+              "node": "Split Data for Jina AI Batching",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format SerpAPI Organic Results": {
+        "main": [
+          [
+            {
+              "node": "Split Data for Jina AI Batching",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Relevant Context via LLM": {
+        "main": [
+          [
+            {
+              "node": "Generate Comprehensive Research Report",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Data for SerpAPI Batching": {
+        "main": [
+          [
+            {
+              "node": "Format SerpAPI Organic Results",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Perform SerpAPI Search Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Data for Jina AI Batching": {
+        "main": [
+          [
+            {
+              "node": "Extract Relevant Context via LLM",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Perform Jina AI Analysis Request",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "LLM Memory Buffer (Input Context)": {
+        "ai_memory": [
+          [
+            {
+              "node": "Extract Relevant Context via LLM",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "LLM Memory Buffer (Report Context)": {
+        "ai_memory": [
+          [
+            {
+              "node": "Generate Comprehensive Research Report",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Fetch Wikipedia Information": {
+        "ai_tool": [
+          [
+            {
+              "node": "Generate Comprehensive Research Report",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "41c436da7030a9268d66e2cd109e9f80e81014f04f6a92061ed9b2b8e2ca9040"
+    }
+  }
