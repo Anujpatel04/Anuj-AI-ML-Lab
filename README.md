@@ -4,7 +4,7 @@ A comprehensive collection of AI agents, RAG applications, and machine learning 
 
 ## Status
 
->  Active Development: This repository is under active development and changes frequently.  
+>  Active Development: This repository is under active development and undergoes frequent changes.  
 > If you find this project useful, please consider **starring** and **forking** to stay updated with the latest features and experiment with your own modifications.
 
 ## Overview
@@ -52,30 +52,6 @@ python3 <script_file>.py
 
 ## Configuration
 
-### Environment Variables
-
-API keys and service configurations are managed through a root-level `.env` file (git-ignored). Each project's README documents the specific environment variables it requires.
-
-**Example `.env` configuration:**
-
-```env
-# Vector Database (Qdrant)
-QDRANT_URL="https://your-qdrant-host:6333"
-QDRANT_API_KEY="your-api-key"
-
-# Web Search (Exa)
-EXA_API_KEY="your-exa-api-key"
-
-# Embedding Model
-OLLAMA_EMBED_MODEL="nomic-embed-text"
-
-# LLM API Keys (as needed)
-DEEPSEEK_API_KEY="your-deepseek-key"
-OPENAI_API_KEY="your-openai-key"
-ANTHROPIC_API_KEY="your-anthropic-key"
-GOOGLE_API_KEY="your-google-key"
-```
-
 ### Project-Specific Configuration
 
 - Each project includes its own `requirements.txt` for dependency management
@@ -85,7 +61,7 @@ GOOGLE_API_KEY="your-google-key"
 ## Features
 
 - **Modular Design**: Each project is independent and can be run standalone
-- **Comprehensive Documentation**: Every project includes detailed README with setup instructions
+- **Comprehensive Documentation**: Every project includes a detailed README with setup instructions
 - **Production-Ready Code**: Clean, well-structured code suitable for learning and adaptation
 - **Multiple LLM Support**: Projects support various LLM providers (OpenAI, Anthropic, DeepSeek, Ollama)
 - **RAG Implementations**: Multiple RAG patterns and vector database integrations
