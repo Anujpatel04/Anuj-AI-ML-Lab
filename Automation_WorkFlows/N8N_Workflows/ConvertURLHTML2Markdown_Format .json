@@ -1,0 +1,412 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "amount": 45
+        },
+        "id": "27fc5770-c223-43a4-a33d-1cc147504ab0",
+        "name": "Wait",
+        "type": "n8n-nodes-base.wait",
+        "position": [
+          3840,
+          560
+        ],
+        "webhookId": "f10708f0-38c6-4c75-b635-37222d5b183a",
+        "typeVersion": 1.1
+      },
+      {
+        "parameters": {
+          "content": "**40 at a time seems to be the memory limit on my server - run until complete with batches of 40 or increase based on your server memory**\n",
+          "height": 268.48353140372035,
+          "width": 327.8244990224782,
+          "color": 7
+        },
+        "id": "6bb3e17a-f210-429a-9f57-aecc6ad28e70",
+        "name": "Sticky Note36",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          3440,
+          656
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "**Firecrawl.dev retrieves markdown inc. title, description, links & content. First define the URLs you'd like to scrape**\n",
+          "height": 248.90718753310907,
+          "width": 574.7594700148138,
+          "color": 7
+        },
+        "id": "cfefedab-bc47-46db-8440-9367614beccd",
+        "name": "Sticky Note28",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          2848,
+          672
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {},
+        "id": "3c655283-bf67-4d3b-be37-9fae86a653e3",
+        "name": "Connect to your own data source",
+        "type": "n8n-nodes-base.noOp",
+        "position": [
+          4272,
+          768
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {},
+        "id": "611e6b4e-a1eb-4114-872c-c2962de8f940",
+        "name": "Get urls from own data source",
+        "type": "n8n-nodes-base.noOp",
+        "position": [
+          2896,
+          736
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "cc2c6af0-68d3-49eb-85fe-3288d2ed0f6b",
+                "name": "Page",
+                "type": "array",
+                "value": "[\"https://4byte.in/\", \"https://n8n.io/\"]"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "id": "d129fa2f-153e-4be6-95a6-da82b04a6e1f",
+        "name": "Example fields from data source",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          3088,
+          736
+        ],
+        "notesInFlow": true,
+        "typeVersion": 3.4,
+        "notes": "Define URLs in array"
+      },
+      {
+        "parameters": {
+          "content": "**REQUIRED**\nConnect to your database of urls to input. Name the column `Page` like in the `Example fields from data source` node and make sure it has one link per row like `split out page urls`",
+          "height": 94.13486342358942,
+          "width": 510.3561134140244,
+          "color": 3
+        },
+        "id": "2f9c3c73-df78-4891-8431-cbbdc48d308a",
+        "name": "Sticky Note33",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          2848,
+          944
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "**REQUIRED** \nOutput the data to your own data source e.g. Airtable",
+          "height": 91.91340067739628,
+          "width": 284.87764467541297,
+          "color": 3
+        },
+        "id": "35c48c9e-7ae2-4725-80ec-cc67e725d558",
+        "name": "Sticky Note35",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          4256,
+          944
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "**Respect API limits (10 requests per min)**\n",
+          "height": 189.23753199986137,
+          "width": 181.96744211154697,
+          "color": 7
+        },
+        "id": "1d401bf4-a7d3-4296-8cf3-d68948827e70",
+        "name": "Sticky Note37",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          3792,
+          512
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "maxItems": 40
+        },
+        "id": "3f9a6d10-018d-4306-b282-549cdfaf4c37",
+        "name": "40 items at a time",
+        "type": "n8n-nodes-base.limit",
+        "position": [
+          3472,
+          736
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "batchSize": 10,
+          "options": {}
+        },
+        "id": "7715b7c9-86d5-4399-be36-63b33fab6934",
+        "name": "10 at a time",
+        "type": "n8n-nodes-base.splitInBatches",
+        "position": [
+          3632,
+          736
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "3a959c64-4c3c-4072-8427-67f6f6ecba1b",
+                "name": "title",
+                "type": "string",
+                "value": "={{ $json.data.metadata.title }}"
+              },
+              {
+                "id": "d2da0859-a7a0-4c39-913a-150ecb95d075",
+                "name": "description",
+                "type": "string",
+                "value": "={{ $json.data.metadata.description }}"
+              },
+              {
+                "id": "62bd2d76-b78d-4501-a59b-a25ed7b345b0",
+                "name": "content",
+                "type": "string",
+                "value": "={{ $json.data.markdown }}"
+              },
+              {
+                "id": "d4c712fa-b52a-498f-8abc-26dc72be61f7",
+                "name": "links",
+                "type": "string",
+                "value": "={{ $json.data.links }} "
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "0c8f2de6-daa0-4620-bb47-41d60dedefd9",
+        "name": "Markdown data and Links",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          4048,
+          768
+        ],
+        "notesInFlow": true,
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "Page",
+          "options": {}
+        },
+        "id": "eccf3d33-7ac7-407e-a2b6-7558d149db97",
+        "name": "Split out page URLs",
+        "type": "n8n-nodes-base.splitOut",
+        "position": [
+          3280,
+          736
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "https://api.firecrawl.dev/v1/scrape",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n \"url\": \"{{ $json.Page }}\",\n \"formats\" : [\"markdown\", \"links\"]\n} ",
+          "options": {}
+        },
+        "id": "0e968764-1ce1-4408-8b3c-21b062a866a2",
+        "name": "Retrieve Page Markdown and Links",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          3856,
+          768
+        ],
+        "retryOnFail": true,
+        "typeVersion": 4.2,
+        "waitBetweenTries": 5000,
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "vs4nvN82HMomLOud",
+            "name": "Header Auth account"
+          }
+        },
+        "notes": "curl -X POST https://api.firecrawl.dev/v1/scrape \\\n -H 'Content-Type: application/json' \\\n -H 'Authorization: Bearer YOUR_API_KEY' \\\n -d '{\n \"url\": \"https://docs.firecrawl.dev\",\n \"formats\" : [\"markdown\", \"html\"]\n }'\n"
+      },
+      {
+        "parameters": {
+          "content": "**REQUIRED**\nUpdate the Auth parameter to your own [Firecrawl](https://firecrawl.dev) dev token\n\n**Header Auth parameter**\nname - Authorization\nvalue - your-own-api-key",
+          "height": 168.68864948728321,
+          "width": 284.87764467541297,
+          "color": 3
+        },
+        "id": "385964f4-2f7c-4be1-acb4-4e67e4122b73",
+        "name": "Sticky Note",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          3760,
+          944
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          2688,
+          736
+        ],
+        "id": "8075af94-f0ac-4b65-ac2c-95bfabac5401",
+        "name": "When clicking ‘Execute workflow’"
+      }
+    ],
+    "connections": {
+      "Wait": {
+        "main": [
+          [
+            {
+              "node": "10 at a time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Connect to your own data source": {
+        "main": [
+          [
+            {
+              "node": "Wait",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get urls from own data source": {
+        "main": [
+          [
+            {
+              "node": "Example fields from data source",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Example fields from data source": {
+        "main": [
+          [
+            {
+              "node": "Split out page URLs",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "40 items at a time": {
+        "main": [
+          [
+            {
+              "node": "10 at a time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "10 at a time": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Retrieve Page Markdown and Links",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Markdown data and Links": {
+        "main": [
+          [
+            {
+              "node": "Connect to your own data source",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split out page URLs": {
+        "main": [
+          [
+            {
+              "node": "40 items at a time",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Retrieve Page Markdown and Links": {
+        "main": [
+          [
+            {
+              "node": "Markdown data and Links",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Get urls from own data source",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "41c436da7030a9268d66e2cd109e9f80e81014f04f6a92061ed9b2b8e2ca9040"
+    }
+  }
