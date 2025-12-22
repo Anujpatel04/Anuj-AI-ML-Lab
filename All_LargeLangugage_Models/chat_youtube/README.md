@@ -1,8 +1,8 @@
-# 📽️ Chat with YouTube Videos using DeepSeek
+# Chat with YouTube Videos using DeepSeek
 
 RAG application to chat with YouTube videos using DeepSeek API.
 
-## 🚀 Quick Start
+##  Quick Start
 
 1. **Install dependencies**
    ```bash
