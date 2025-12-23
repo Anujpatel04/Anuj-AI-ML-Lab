@@ -1,0 +1,1765 @@
+{
+    "nodes": [
+      {
+        "parameters": {},
+        "id": "89ef049f-207a-4af9-89f8-74d6a4b4547b",
+        "name": "When clicking ‘Test workflow’",
+        "type": "n8n-nodes-base.manualTrigger",
+        "position": [
+          -752,
+          624
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {}
+        },
+        "id": "513afa86-68a7-4415-b88e-254896f264ae",
+        "name": "Merge",
+        "type": "n8n-nodes-base.merge",
+        "position": [
+          1904,
+          832
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "dd256ef7-013c-4769-8580-02c2d902d0b2",
+                "name": "company_name",
+                "type": "string",
+                "value": "=Twilio"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "83695759-51e3-4af0-8596-7b2b6d30399b",
+        "name": "SET company_name",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -496,
+          624
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "6ae671be-45d0-4a94-a443-2f1d4772d31b",
+                "name": "asian",
+                "type": "string",
+                "value": "Asian"
+              },
+              {
+                "id": "6c93370c-996c-44a6-a34c-4cd3baeeb846",
+                "name": "hispanic",
+                "type": "string",
+                "value": "Hispanic or Latinx"
+              },
+              {
+                "id": "dee79039-6051-4e9d-98b5-63a07d30f6b0",
+                "name": "white",
+                "type": "string",
+                "value": "White"
+              },
+              {
+                "id": "08d42380-8397-412f-8459-7553e9309b5d",
+                "name": "pacific_islander",
+                "type": "string",
+                "value": "Native Hawaiian or other Pacific Islander"
+              },
+              {
+                "id": "09e8ebc5-e7e7-449a-9036-9b9b54cdc828",
+                "name": "black",
+                "type": "string",
+                "value": "Black or African American"
+              },
+              {
+                "id": "39e910f8-3a8b-4233-a93a-3c5693e808c6",
+                "name": "middle_eastern",
+                "type": "string",
+                "value": "Middle Eastern"
+              },
+              {
+                "id": "169b3471-efa0-476e-aa83-e3f717c568f1",
+                "name": "indigenous",
+                "type": "string",
+                "value": "Indigenous American or Native Alaskan"
+              },
+              {
+                "id": "b6192296-4efa-4af5-ae02-1e31d28aae90",
+                "name": "male",
+                "type": "string",
+                "value": "Men"
+              },
+              {
+                "id": "4b322294-940c-459d-b083-8e91e38193f7",
+                "name": "female",
+                "type": "string",
+                "value": "Women"
+              },
+              {
+                "id": "1940eef0-6b76-4a26-9d8f-7c8536fbcb1b",
+                "name": "trans",
+                "type": "string",
+                "value": "Transgender and/or Non-Binary"
+              },
+              {
+                "id": "3dba3e18-2bb1-4078-bde9-9d187f9628dd",
+                "name": "hetero",
+                "type": "string",
+                "value": "Heterosexual"
+              },
+              {
+                "id": "9b7d10ad-1766-4b18-a230-3bd80142b48c",
+                "name": "lgbtqia",
+                "type": "string",
+                "value": "LGBTQ+"
+              },
+              {
+                "id": "458636f8-99e8-4245-9950-94e4cf68e371",
+                "name": "nondisabled",
+                "type": "string",
+                "value": "Non-Disabled"
+              },
+              {
+                "id": "a466e258-7de1-4453-a126-55f780094236",
+                "name": "disabled",
+                "type": "string",
+                "value": "People with Disabilities"
+              },
+              {
+                "id": "98735266-0451-432f-be7c-efcb09512cb1",
+                "name": "caregiver",
+                "type": "string",
+                "value": "Caregivers"
+              },
+              {
+                "id": "ebe2353c-9ff5-47bc-8c11-b66d3436f5b4",
+                "name": "parent",
+                "type": "string",
+                "value": "Parents/Guardians"
+              },
+              {
+                "id": "ab51c80c-d81d-41ab-94d9-c0a263743c17",
+                "name": "nonparent",
+                "type": "string",
+                "value": "Not a Parent or Caregiver"
+              },
+              {
+                "id": "cb7df429-c600-43f4-aa7e-dbc2382a85a0",
+                "name": "nonveteran",
+                "type": "string",
+                "value": "Non-Veterans"
+              },
+              {
+                "id": "dffbdb13-189a-462d-83d1-c5ec39a17d41",
+                "name": "veteran",
+                "type": "string",
+                "value": "Veterans"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "id": "4bc7bd3a-f237-46f1-a948-dcb62139ccf3",
+        "name": "Define dictionary of demographic keys",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -304,
+          624
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "url": "https://app.scrapingbee.com/api/v1",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "url",
+                "value": "=https://www.glassdoor.com/Search/results.htm?keyword={{ $json.company_name.toLowerCase().urlEncode() }}"
+              },
+              {
+                "name": "premium_proxy",
+                "value": "true"
+              },
+              {
+                "name": "block_resources",
+                "value": "false"
+              },
+              {
+                "name": "stealth_proxy",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "d3fdf634-5aa7-4f81-91f9-aabf112ec7f4",
+        "name": "ScrapingBee Search Glassdoor",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          -96,
+          624
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "NV1Q90fbv73Fvo49",
+            "name": "Query Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "extractHtmlContent",
+          "extractionValues": {
+            "values": [
+              {
+                "key": "url_path",
+                "cssSelector": "body main div a",
+                "returnValue": "attribute",
+                "attribute": "href"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "2c40a16d-8149-4517-b9e7-7141a1cbaeec",
+        "name": "Extract company url path",
+        "type": "n8n-nodes-base.html",
+        "position": [
+          112,
+          624
+        ],
+        "typeVersion": 1.2
+      },
+      {
+        "parameters": {
+          "url": "https://app.scrapingbee.com/api/v1",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "url",
+                "value": "=https://www.glassdoor.com{{ $json.url_path }}"
+              },
+              {
+                "name": "premium_proxy",
+                "value": "true"
+              },
+              {
+                "name": "block_resources",
+                "value": "false"
+              },
+              {
+                "name": "stealth_proxy",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "46bf74ca-f989-42eb-8b83-89c1edbba018",
+        "name": "ScrapingBee GET company page contents",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          304,
+          624
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "NV1Q90fbv73Fvo49",
+            "name": "Query Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "extractHtmlContent",
+          "extractionValues": {
+            "values": [
+              {
+                "key": "url_path",
+                "cssSelector": "#reviews a",
+                "returnValue": "attribute",
+                "attribute": "href"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "c02e1820-e9dc-4b29-9f56-259e2d14afbb",
+        "name": "Extract reviews page url path",
+        "type": "n8n-nodes-base.html",
+        "position": [
+          512,
+          624
+        ],
+        "typeVersion": 1.2
+      },
+      {
+        "parameters": {
+          "url": "https://app.scrapingbee.com/api/v1",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpQueryAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "url",
+                "value": "=https://www.glassdoor.com{{ $json.url_path }}"
+              },
+              {
+                "name": "premium_proxy",
+                "value": "True"
+              },
+              {
+                "name": "block_resources",
+                "value": "False"
+              },
+              {
+                "name": "stealth_proxy",
+                "value": "true"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "74fb540b-e180-4fc9-a71c-48dca37f5c65",
+        "name": "ScrapingBee GET Glassdoor Reviews Content",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          736,
+          624
+        ],
+        "typeVersion": 4.2,
+        "credentials": {
+          "httpQueryAuth": {
+            "id": "NV1Q90fbv73Fvo49",
+            "name": "Query Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "extractHtmlContent",
+          "extractionValues": {
+            "values": [
+              {
+                "key": "review_summary",
+                "cssSelector": "div[data-test=\"review-summary\"]",
+                "returnValue": "html"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "9a90c19e-f791-41d5-bd35-0bb7cf97a11b",
+        "name": "Extract Overall Review Summary",
+        "type": "n8n-nodes-base.html",
+        "position": [
+          944,
+          496
+        ],
+        "typeVersion": 1.2
+      },
+      {
+        "parameters": {
+          "operation": "extractHtmlContent",
+          "extractionValues": {
+            "values": [
+              {
+                "key": "demographics_content",
+                "cssSelector": "div[data-test=\"demographics-module\"]",
+                "returnValue": "html"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "7b695692-2f75-43ef-b233-434a62b35e68",
+        "name": "Extract Demographics Module",
+        "type": "n8n-nodes-base.html",
+        "position": [
+          944,
+          752
+        ],
+        "typeVersion": 1.2
+      },
+      {
+        "parameters": {
+          "text": "={{ $json.review_summary }}",
+          "attributes": {
+            "attributes": [
+              {
+                "name": "average_rating",
+                "type": "number",
+                "description": "The overall average rating for this company.",
+                "required": true
+              },
+              {
+                "name": "total_number_of_reviews",
+                "type": "number",
+                "description": "The total number of reviews for this company.",
+                "required": true
+              },
+              {
+                "name": "5_star_distribution_percentage",
+                "type": "number",
+                "description": "The percentage distribution of 5 star reviews",
+                "required": true
+              },
+              {
+                "name": "4_star_distribution_percentage",
+                "type": "number",
+                "description": "The percentage distribution of 4 star reviews",
+                "required": true
+              },
+              {
+                "name": "3_star_distribution_percentage",
+                "type": "number",
+                "description": "The percentage distribution of 3 star reviews",
+                "required": true
+              },
+              {
+                "name": "2_star_distribution_percentage",
+                "type": "number",
+                "description": "The percentage distribution of 2 star reviews",
+                "required": true
+              },
+              {
+                "name": "1_star_distribution_percentage",
+                "type": "number",
+                "description": "The percentage distribution of 1 star reviews",
+                "required": true
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "7a106299-da3a-4513-8d61-ff3af461cf87",
+        "name": "Extract overall ratings and distribution percentages",
+        "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+        "position": [
+          1168,
+          432
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "text": "={{ $json.demographics_content }}",
+          "attributes": {
+            "attributes": [
+              {
+                "name": "asian_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as asian.",
+                "required": true
+              },
+              {
+                "name": "asian_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as asian.",
+                "required": true
+              },
+              {
+                "name": "hispanic_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as hispanic.",
+                "required": true
+              },
+              {
+                "name": "hispanic_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as hispanic.",
+                "required": true
+              },
+              {
+                "name": "white_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as white.",
+                "required": true
+              },
+              {
+                "name": "white_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as white.",
+                "required": true
+              },
+              {
+                "name": "pacific_islander_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as native hawaiian or pacific islander.",
+                "required": true
+              },
+              {
+                "name": "pacific_islander_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as native hawaiian or pacific islander.",
+                "required": true
+              },
+              {
+                "name": "black_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as black.",
+                "required": true
+              },
+              {
+                "name": "black_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as black.",
+                "required": true
+              },
+              {
+                "name": "middle_eastern_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as middle eastern.",
+                "required": true
+              },
+              {
+                "name": "middle_eastern_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as middle_eastern.",
+                "required": true
+              },
+              {
+                "name": "indigenous_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as indigenous american or native alaskan.",
+                "required": true
+              },
+              {
+                "name": "indigenous_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as indigenous american or native alaskan.",
+                "required": true
+              },
+              {
+                "name": "male_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as men.",
+                "required": true
+              },
+              {
+                "name": "male_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as men.",
+                "required": true
+              },
+              {
+                "name": "female_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as women.",
+                "required": true
+              },
+              {
+                "name": "female_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as women.",
+                "required": true
+              },
+              {
+                "name": "trans_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as transgender and/or non-binary.",
+                "required": true
+              },
+              {
+                "name": "trans_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as trans and/or non-binary.",
+                "required": true
+              },
+              {
+                "name": "hetero_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as heterosexual.",
+                "required": true
+              },
+              {
+                "name": "hetero_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as heterosexual.",
+                "required": true
+              },
+              {
+                "name": "lgbtqia_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as lgbtqia+.",
+                "required": true
+              },
+              {
+                "name": "lgbtqia_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as lgbtqia+.",
+                "required": true
+              },
+              {
+                "name": "nondisabled_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as non-disabled.",
+                "required": true
+              },
+              {
+                "name": "nondisabled_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as non-disabled.",
+                "required": true
+              },
+              {
+                "name": "disabled_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as people with disabilities.",
+                "required": true
+              },
+              {
+                "name": "disabled_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as people with disabilities.",
+                "required": true
+              },
+              {
+                "name": "caregiver_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as caregivers.",
+                "required": true
+              },
+              {
+                "name": "caregiver_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as caregivers.",
+                "required": true
+              },
+              {
+                "name": "parent_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as parents/guardians.",
+                "required": true
+              },
+              {
+                "name": "parent_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as parents/guardians.",
+                "required": true
+              },
+              {
+                "name": "nonparent_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as not a parent or caregiver.",
+                "required": true
+              },
+              {
+                "name": "nonparent_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as not a parent or guardian.",
+                "required": true
+              },
+              {
+                "name": "nonveteran_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as non-veterans.",
+                "required": true
+              },
+              {
+                "name": "nonveteran_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as non-veterans.",
+                "required": true
+              },
+              {
+                "name": "veteran_average_rating",
+                "type": "number",
+                "description": "=The average rating for this company by employees who self identified as veterans.",
+                "required": true
+              },
+              {
+                "name": "veteran_total_number_of_reviews",
+                "type": "number",
+                "description": "=The number of reviews for this company by employees who self-identified as veterans.",
+                "required": true
+              }
+            ]
+          },
+          "options": {
+            "systemPromptTemplate": "You are an expert extraction algorithm.\nOnly extract relevant information from the text.\nIf you do not know the value of an attribute asked to extract, you may use 0 for the attribute's value."
+          }
+        },
+        "id": "771e87bb-e8fb-46cb-ab1b-724842aa7797",
+        "name": "Extract demographic distributions",
+        "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+        "position": [
+          1168,
+          864
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "7360b2c2-1e21-45de-8d1a-e72b8abcb56b",
+                "name": "contribution_to_variance.5_star",
+                "type": "number",
+                "value": "={{ ($json.output['5_star_distribution_percentage'] / 100) * Math.pow(5 - $json.output.average_rating,2) }}"
+              },
+              {
+                "id": "acdd308a-fa33-4e33-b71b-36b9441bfa06",
+                "name": "contribution_to_variance.4_star",
+                "type": "number",
+                "value": "={{ ($json.output['4_star_distribution_percentage'] / 100) * Math.pow(4 - $json.output.average_rating,2) }}"
+              },
+              {
+                "id": "376818f3-d429-4abe-8ece-e8e9c5585826",
+                "name": "contribution_to_variance.3_star",
+                "type": "number",
+                "value": "={{ ($json.output['3_star_distribution_percentage'] / 100) * Math.pow(3 - $json.output.average_rating,2) }}"
+              },
+              {
+                "id": "620d5c37-8b93-4d39-9963-b7ce3a7f431e",
+                "name": "contribution_to_variance.2_star",
+                "type": "number",
+                "value": "={{ ($json.output['2_star_distribution_percentage'] / 100) * Math.pow(2 - $json.output.average_rating,2) }}"
+              },
+              {
+                "id": "76357980-4f9b-4b14-be68-6498ba25af67",
+                "name": "contribution_to_variance.1_star",
+                "type": "number",
+                "value": "={{ ($json.output['1_star_distribution_percentage'] / 100) * Math.pow(1 - $json.output.average_rating,2) }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "17f45760-7161-4619-8a58-2172def0f0df",
+        "name": "Define contributions to variance",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          1536,
+          432
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "3217d418-f1b0-45ff-9f9a-6e6145cc29ca",
+                "name": "variance",
+                "type": "number",
+                "value": "={{ $json.contribution_to_variance.values().sum() }}"
+              },
+              {
+                "id": "acdb9fea-15ec-46ed-bde9-073e93597f17",
+                "name": "average_rating",
+                "type": "number",
+                "value": "={{ $('Extract overall ratings and distribution percentages').item.json.output.average_rating }}"
+              },
+              {
+                "id": "1f3a8a29-4bd4-4b40-8694-c74a0285eadb",
+                "name": "total_number_of_reviews",
+                "type": "number",
+                "value": "={{ $('Extract overall ratings and distribution percentages').item.json.output.total_number_of_reviews }}"
+              },
+              {
+                "id": "1906c796-1964-446b-8b56-d856269da938",
+                "name": "std_dev",
+                "type": "number",
+                "value": "={{ Math.sqrt($json.contribution_to_variance.values().sum()) }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "1e9c0af8-cc10-4e5d-b8b8-c3fe0f254338",
+        "name": "Set variance and std_dev",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          1712,
+          432
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "jsCode": "// Approximate CDF for standard normal distribution\nfunction normSDist(z) {\n const t = 1 / (1 + 0.3275911 * Math.abs(z));\n const d = 0.254829592 * t - 0.284496736 * t * t + 1.421413741 * t * t * t - 1.453152027 * t * t * t * t + 1.061405429 * t * t * t * t * t;\n return 0.5 * (1 + Math.sign(z) * d * Math.exp(-z * z / 2));\n}\n\nfor (const item of $input.all()) {\n if (!item.json.population_analysis.p_scores) {\n item.json.population_analysis.p_scores = {};\n }\n\n for (const score of Object.keys(item.json.population_analysis.z_scores)) {\n // Check if review count exists and is greater than zero\n if (item.json.population_analysis.review_count[score] > 0) {\n // Apply the p_score formula: 2 * NORM.S.DIST(-ABS(z_score))\n const p_score = 2 * normSDist(-Math.abs(item.json.population_analysis.z_scores[score]));\n\n // Store the calculated p_score\n item.json.population_analysis.p_scores[score] = p_score;\n } else {\n // Remove z_scores, effect_sizes, and p_scores for groups with no reviews\n delete item.json.population_analysis.z_scores[score];\n delete item.json.population_analysis.effect_sizes[score];\n delete item.json.population_analysis.p_scores[score];\n }\n }\n}\n\nreturn $input.all();"
+        },
+        "id": "095824c9-5aa3-46f6-8eaa-59306668be9c",
+        "name": "Calculate P-Scores",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          2304,
+          672
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "61cf92ba-bc4e-40b8-a234-9b993fd24019",
+                "name": "population_analysis.effect_sizes",
+                "type": "object",
+                "value": "={{ Object.fromEntries(Object.entries($json.population_analysis.effect_sizes).sort(([,a],[,b]) => a-b )) }}"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {}
+        },
+        "id": "0c7bedc2-5271-4764-a0f3-4790561850c6",
+        "name": "Sort Effect Sizes",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          2512,
+          672
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "790a53e8-5599-45d3-880e-ab1ad7d165d2",
+                "name": "population_analysis.z_scores.asian",
+                "type": "number",
+                "value": "={{ ($json.output.asian_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.asian_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "ebd61097-8773-45b9-a8e6-cdd840d73650",
+                "name": "population_analysis.effect_sizes.asian",
+                "type": "number",
+                "value": "={{ ($json.output.asian_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "627b1293-efdc-485a-83c8-bd332d6dc225",
+                "name": "population_analysis.z_scores.hispanic",
+                "type": "number",
+                "value": "={{ ($json.output.hispanic_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.hispanic_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "822028d0-e94f-4cf7-9e13-8f8cc5c72ec0",
+                "name": "population_analysis.z_scores.white",
+                "type": "number",
+                "value": "={{ ($json.output.white_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.white_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "d32321f9-0fcf-4e54-9059-c3fd5a901ce0",
+                "name": "population_analysis.z_scores.pacific_islander",
+                "type": "number",
+                "value": "={{ ($json.output.pacific_islander_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.pacific_islander_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "e212d683-247f-45c4-9668-c290230a10ed",
+                "name": "population_analysis.z_scores.black",
+                "type": "number",
+                "value": "={{ ($json.output.black_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.black_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "882049c3-eb81-4c09-af0c-5c79b0ef0154",
+                "name": "population_analysis.z_scores.middle_eastern",
+                "type": "number",
+                "value": "={{ ($json.output.middle_eastern_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.middle_eastern_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "9bdc187f-3d8d-4030-9143-479eff441b7e",
+                "name": "population_analysis.z_scores.indigenous",
+                "type": "number",
+                "value": "={{ ($json.output.indigenous_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.indigenous_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "0cf11453-dbae-4250-a01a-c98e35aab224",
+                "name": "population_analysis.z_scores.male",
+                "type": "number",
+                "value": "={{ ($json.output.male_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.male_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "35a18fbc-7c2c-40fe-829d-2fffbdb13bb8",
+                "name": "population_analysis.z_scores.female",
+                "type": "number",
+                "value": "={{ ($json.output.female_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.female_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "a6e17c1b-a89b-4c05-8184-10f7248c159f",
+                "name": "population_analysis.z_scores.trans",
+                "type": "number",
+                "value": "={{ ($json.output.trans_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.trans_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "5e7dbccf-3011-4dba-863c-5390c1ee9e50",
+                "name": "population_analysis.z_scores.hetero",
+                "type": "number",
+                "value": "={{ ($json.output.hetero_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.hetero_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "1872152f-2c7e-4c24-bcd5-e2777616bfe2",
+                "name": "population_analysis.z_scores.lgbtqia",
+                "type": "number",
+                "value": "={{ ($json.output.lgbtqia_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.lgbtqia_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "91b2cb00-173e-421a-929a-51d2a6654767",
+                "name": "population_analysis.z_scores.nondisabled",
+                "type": "number",
+                "value": "={{ ($json.output.nondisabled_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.nondisabled_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "8bb7429e-0500-482c-8e8d-d2c63733ffe1",
+                "name": "population_analysis.z_scores.disabled",
+                "type": "number",
+                "value": "={{ ($json.output.disabled_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.disabled_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "89f00d0f-80db-4ad9-bf60-9385aa3d915b",
+                "name": "population_analysis.z_scores.caregiver",
+                "type": "number",
+                "value": "={{ ($json.output.caregiver_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.caregiver_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "0bb2b96c-d882-4ac1-9432-9fce06b26cf5",
+                "name": "population_analysis.z_scores.parent",
+                "type": "number",
+                "value": "={{ ($json.output.parent_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.parent_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "9aae7169-1a25-4fab-b940-7f2cd7ef39d9",
+                "name": "population_analysis.z_scores.nonparent",
+                "type": "number",
+                "value": "={{ ($json.output.nonparent_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.nonparent_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "aac189a0-d6fc-4581-a15d-3e75a0cb370a",
+                "name": "population_analysis.z_scores.nonveteran",
+                "type": "number",
+                "value": "={{ ($json.output.nonveteran_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.nonveteran_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "d40f014a-9c1d-4aea-88ac-d8a3de143931",
+                "name": "population_analysis.z_scores.veteran",
+                "type": "number",
+                "value": "={{ ($json.output.veteran_average_rating - $json.average_rating) / ($json.std_dev / Math.sqrt($json.output.veteran_total_number_of_reviews)) }}"
+              },
+              {
+                "id": "67e0394f-6d55-4e80-8a7d-814635620b1d",
+                "name": "population_analysis.effect_sizes.hispanic",
+                "type": "number",
+                "value": "={{ ($json.output.hispanic_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "65cd3a22-2c97-4da1-8fcc-cc1af39118f2",
+                "name": "population_analysis.effect_sizes.white",
+                "type": "number",
+                "value": "={{ ($json.output.white_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "a03bdf0f-e294-4a01-bb08-ddc16e9997a5",
+                "name": "population_analysis.effect_sizes.pacific_islander",
+                "type": "number",
+                "value": "={{ ($json.output.pacific_islander_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "b0bdc40e-ed5f-475b-9d8b-8cf5beff7002",
+                "name": "population_analysis.effect_sizes.black",
+                "type": "number",
+                "value": "={{ ($json.output.black_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "45cac3f0-7270-4fa4-8fc4-94914245a77d",
+                "name": "population_analysis.effect_sizes.middle_eastern",
+                "type": "number",
+                "value": "={{ ($json.output.middle_eastern_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "cf5b7650-8766-45f6-8241-49aea62bf619",
+                "name": "population_analysis.effect_sizes.indigenous",
+                "type": "number",
+                "value": "={{ ($json.output.indigenous_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "7c6a8d38-02b7-47a1-af44-5eebfb4140ec",
+                "name": "population_analysis.effect_sizes.male",
+                "type": "number",
+                "value": "={{ ($json.output.male_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "4bf3dba9-4d07-4315-83ce-5fba288a00c9",
+                "name": "population_analysis.effect_sizes.female",
+                "type": "number",
+                "value": "={{ ($json.output.female_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "d5e980b8-d7a8-4d4c-bcd9-fd9cbd20c729",
+                "name": "population_analysis.effect_sizes.trans",
+                "type": "number",
+                "value": "={{ ($json.output.trans_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "2c8271c1-b612-4292-9d48-92c342b83727",
+                "name": "population_analysis.effect_sizes.hetero",
+                "type": "number",
+                "value": "={{ ($json.output.hetero_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "996f2ea0-2e46-424b-9797-2d58fd56b1d3",
+                "name": "population_analysis.effect_sizes.lgbtqia",
+                "type": "number",
+                "value": "={{ ($json.output.lgbtqia_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "8c987b6e-764d-422e-82de-00bd89269b22",
+                "name": "population_analysis.effect_sizes.nondisabled",
+                "type": "number",
+                "value": "={{ ($json.output.nondisabled_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "ab796bb7-06ff-4282-b4b3-eefd129c743e",
+                "name": "population_analysis.effect_sizes.disabled",
+                "type": "number",
+                "value": "={{ ($json.output.disabled_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "a17bf413-a098-4f24-8162-821a6a0ddb5e",
+                "name": "population_analysis.effect_sizes.caregiver",
+                "type": "number",
+                "value": "={{ ($json.output.caregiver_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "99911e1e-06e8-4bbd-915d-b92b8b37b374",
+                "name": "population_analysis.effect_sizes.parent",
+                "type": "number",
+                "value": "={{ ($json.output.parent_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "4ddf729b-361e-4d81-a67c-b6c18509e60b",
+                "name": "population_analysis.effect_sizes.nonparent",
+                "type": "number",
+                "value": "={{ ($json.output.nonparent_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "725b8abb-7f72-45fc-a0c0-0e0a4f2cb131",
+                "name": "population_analysis.effect_sizes.nonveteran",
+                "type": "number",
+                "value": "={{ ($json.output.nonveteran_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "20e54fa5-2faa-4134-90e5-81224ec9659e",
+                "name": "population_analysis.effect_sizes.veteran",
+                "type": "number",
+                "value": "={{ ($json.output.veteran_average_rating - $json.average_rating) / $json.std_dev }}"
+              },
+              {
+                "id": "2cc6465a-3a1c-4eb5-9e5a-72d41049d81e",
+                "name": "population_analysis.review_count.asian",
+                "type": "number",
+                "value": "={{ $json.output.asian_total_number_of_reviews }}"
+              },
+              {
+                "id": "0a5f6aae-ba21-47b5-8af8-fec2256e4df6",
+                "name": "population_analysis.review_count.hispanic",
+                "type": "number",
+                "value": "={{ $json.output.hispanic_total_number_of_reviews }}"
+              },
+              {
+                "id": "ae124587-7e24-4c1a-a002-ed801f859c30",
+                "name": "population_analysis.review_count.pacific_islander",
+                "type": "number",
+                "value": "={{ $json.output.pacific_islander_total_number_of_reviews }}"
+              },
+              {
+                "id": "fc790196-ca8e-4069-a093-87a413ebbf3e",
+                "name": "population_analysis.review_count.black",
+                "type": "number",
+                "value": "={{ $json.output.black_total_number_of_reviews }}"
+              },
+              {
+                "id": "7fd72701-781e-4e33-b000-174a853b172b",
+                "name": "population_analysis.review_count.middle_eastern",
+                "type": "number",
+                "value": "={{ $json.output.middle_eastern_total_number_of_reviews }}"
+              },
+              {
+                "id": "3751e7da-11a7-4af3-8aa6-1c6d53bcf27d",
+                "name": "population_analysis.review_count.indigenous",
+                "type": "number",
+                "value": "={{ $json.output.indigenous_total_number_of_reviews }}"
+              },
+              {
+                "id": "9ee0cac9-d2dd-4ba0-90ee-b2cdd22d9b77",
+                "name": "population_analysis.review_count.male",
+                "type": "number",
+                "value": "={{ $json.output.male_total_number_of_reviews }}"
+              },
+              {
+                "id": "ae7fcdc7-d373-4c24-9a65-94bd2b5847a8",
+                "name": "population_analysis.review_count.female",
+                "type": "number",
+                "value": "={{ $json.output.female_total_number_of_reviews }}"
+              },
+              {
+                "id": "3f53d065-269f-425a-b27d-dc5a3dbb6141",
+                "name": "population_analysis.review_count.trans",
+                "type": "number",
+                "value": "={{ $json.output.trans_total_number_of_reviews }}"
+              },
+              {
+                "id": "d15e976e-7599-4df0-9e65-8047b7a4cda8",
+                "name": "population_analysis.review_count.hetero",
+                "type": "number",
+                "value": "={{ $json.output.hetero_total_number_of_reviews }}"
+              },
+              {
+                "id": "c8b786d3-a980-469f-bf0e-de70ad44f0ea",
+                "name": "population_analysis.review_count.lgbtqia",
+                "type": "number",
+                "value": "={{ $json.output.lgbtqia_total_number_of_reviews }}"
+              },
+              {
+                "id": "e9429215-0858-4482-964a-75de7978ecbb",
+                "name": "population_analysis.review_count.nondisabled",
+                "type": "number",
+                "value": "={{ $json.output.nondisabled_total_number_of_reviews }}"
+              },
+              {
+                "id": "2c6e53c4-eab1-42aa-b956-ee882832f569",
+                "name": "population_analysis.review_count.disabled",
+                "type": "number",
+                "value": "={{ $json.output.disabled_total_number_of_reviews }}"
+              },
+              {
+                "id": "b5edfa25-ab11-4b94-9670-4d5589a62498",
+                "name": "population_analysis.review_count.caregiver",
+                "type": "number",
+                "value": "={{ $json.output.caregiver_total_number_of_reviews }}"
+              },
+              {
+                "id": "41084e96-c42f-4bb0-ac1a-883b46537fca",
+                "name": "population_analysis.review_count.parent",
+                "type": "number",
+                "value": "={{ $json.output.parent_total_number_of_reviews }}"
+              },
+              {
+                "id": "96496a38-9311-4ade-bd2f-2943d1d92314",
+                "name": "population_analysis.review_count.nonparent",
+                "type": "number",
+                "value": "={{ $json.output.nonparent_total_number_of_reviews }}"
+              },
+              {
+                "id": "5071771d-5f41-43cb-a8ce-e4e40ed3519b",
+                "name": "population_analysis.review_count.nonveteran",
+                "type": "number",
+                "value": "={{ $json.output.nonveteran_total_number_of_reviews }}"
+              },
+              {
+                "id": "2358e782-70da-4964-b625-5fe1946b5250",
+                "name": "population_analysis.review_count.veteran",
+                "type": "number",
+                "value": "={{ $json.output.veteran_total_number_of_reviews }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "e46985fe-527d-4a80-a802-052f2604893f",
+        "name": "Calculate Z-Scores and Effect Sizes",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          2112,
+          832
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "jsCode": "// Iterate through the input data and format the dataset for QuickChart\nfor (const item of $input.all()) {\n // Ensure the data object exists and initialize datasets\n item.json.data = {\n datasets: []\n };\n\n const z_scores = item.json.population_analysis.z_scores;\n const effect_sizes = item.json.population_analysis.effect_sizes;\n const review_count = item.json.population_analysis.review_count;\n\n // Ensure z_scores, effect_sizes, and review_count are defined and are objects\n if (z_scores && effect_sizes && review_count && typeof z_scores === 'object' && typeof effect_sizes === 'object' && typeof review_count === 'object') {\n // Initialize the dataset object\n const dataset = {\n label: 'Demographics Data',\n data: []\n };\n\n // Iterate through the demographic keys\n for (const key in z_scores) {\n // Check if review count for the demographic is greater than 0\n if (z_scores.hasOwnProperty(key) && effect_sizes.hasOwnProperty(key) && review_count[key] > 0) {\n\n // Add each demographic point to the dataset\n dataset.data.push({\n x: z_scores[key], // x = z_score\n y: effect_sizes[key], // y = effect_size\n label: $('Define dictionary of demographic keys').first().json[key],\n });\n }\n }\n\n // Only add the dataset if it contains data\n if (dataset.data.length > 0) {\n item.json.data.datasets.push(dataset);\n }\n\n delete item.json.population_analysis\n }\n}\n\n// Return the updated input with the data object containing datasets and labels\nreturn $input.all();\n"
+        },
+        "id": "919a6a18-2d00-4d12-a5a6-07ef0879a8e7",
+        "name": "Format dataset for scatterplot",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          2304,
+          992
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "5cd507f6-6835-4d2e-8329-1b5d24a3fc15",
+                "name": "type",
+                "type": "string",
+                "value": "scatter"
+              },
+              {
+                "id": "80b6f981-e3c7-4c6e-a0a1-f30d028fe15e",
+                "name": "options",
+                "type": "object",
+                "value": "={\n \"title\": {\n \"display\": true,\n \"position\": \"top\",\n \"fontSize\": 12,\n \"fontFamily\": \"sans-serif\",\n \"fontColor\": \"#666666\",\n \"fontStyle\": \"bold\",\n \"padding\": 10,\n \"lineHeight\": 1.2,\n \"text\": \"{{ $('SET company_name').item.json.company_name }} Workplace Population Bias\"\n },\n \"legend\": {\n \"display\": false\n },\n \"scales\": {\n \"xAxes\": [\n {\n \"scaleLabel\": {\n \"display\": true,\n \"labelString\": \"Z-Score\",\n \"fontColor\": \"#666666\",\n \"fontSize\": 12,\n \"fontFamily\": \"sans-serif\"\n }\n }\n ],\n \"yAxes\": [\n {\n \"scaleLabel\": {\n \"display\": true,\n \"labelString\": \"Effect Score\",\n \"fontColor\": \"#666666\",\n \"fontSize\": 12,\n \"fontFamily\": \"sans-serif\"\n }\n }\n ]\n },\n \"plugins\": {\n \"datalabels\": {\n \"display\": true,\n \"align\": \"top\",\n \"anchor\": \"center\",\n \"backgroundColor\": \"#eee\",\n \"borderColor\": \"#ddd\",\n \"borderRadius\": 6,\n \"borderWidth\": 1,\n \"padding\": 4,\n \"color\": \"#000\",\n \"font\": {\n \"family\": \"sans-serif\",\n \"size\": 10,\n \"style\": \"normal\"\n }\n }\n }\n }"
+              }
+            ]
+          },
+          "includeOtherFields": true,
+          "options": {
+            "ignoreConversionErrors": false
+          }
+        },
+        "id": "6a2c1225-3942-436d-8cef-f76bad14f9d7",
+        "name": "Specify additional parameters for scatterplot",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          2512,
+          992
+        ],
+        "typeVersion": 3.4
+      },
+      {
+        "parameters": {
+          "url": "https://quickchart.io/chart",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "c",
+                "value": "={{ $json.toJsonString() }}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "name": "encoding",
+                "value": "url"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "29cbd3a2-23a3-46b7-8f49-f30cd20021e7",
+        "name": "Quickchart Scatterplot",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          2704,
+          992
+        ],
+        "typeVersion": 4.2
+      },
+      {
+        "parameters": {
+          "labelsMode": "array",
+          "labelsArray": "={{ $json.population_analysis.effect_sizes.keys() }}",
+          "data": "={{ $json.population_analysis.effect_sizes.values() }}",
+          "output": "bar_chart",
+          "chartOptions": {
+            "format": "png"
+          },
+          "datasetOptions": {
+            "label": "={{ $('SET company_name').item.json.company_name }} Effect Size on Employee Experience"
+          }
+        },
+        "id": "2e26be9e-ebf7-48fb-8b06-1d04365ede95",
+        "name": "QuickChart Bar Chart",
+        "type": "n8n-nodes-base.quickChart",
+        "position": [
+          2704,
+          800
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "# Spot Workplace Discrimination Patterns using ScrapingBee, Glassdoor, OpenAI, and QuickChart\n",
+          "height": 1044.8111554136713,
+          "width": 3741.593083126444,
+          "color": 7
+        },
+        "id": "d95e3833-9167-49a3-aae4-5b5418d69202",
+        "name": "Sticky Note",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -560,
+          272
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## Use ScrapingBee to gather raw data from Glassdoor",
+          "height": 575.9439659309116,
+          "width": 1237.3377621763516,
+          "color": 4
+        },
+        "id": "1b317d6d-c6f7-45a7-8500-7dc0d015ac3b",
+        "name": "Sticky Note1",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -144,
+          416
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "### Due to javascript restrictions, a normal HTTP request cannot be used to gather user-reported details from Glassdoor. \n\nInstead, [ScrapingBee](https://www.scrapingbee.com/) offers a great tool with a very generous package of free tokens per month, which works out to roughly 4-5 runs of this workflow.",
+          "height": 125.73173301324687,
+          "width": 804.3951263154196,
+          "color": 7
+        },
+        "id": "297a4867-53ff-4cbe-982d-d160468b05f0",
+        "name": "Sticky Note2",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -112,
+          480
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## Extract details with AI",
+          "height": 843.8786512173932,
+          "width": 311.0523273992095,
+          "color": 5
+        },
+        "id": "9209b87d-a3d4-437f-997e-351f952f6918",
+        "name": "Sticky Note3",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1152,
+          336
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "### Calculate variance and standard deviation from review rating distributions.",
+          "height": 309.71740416262054,
+          "width": 423.41585047129973,
+          "color": 7
+        },
+        "id": "c457fbbf-f9a5-4369-9c7e-ecf2afac521f",
+        "name": "Sticky Note4",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1488,
+          336
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## Formatting datasets for Scatterplot",
+          "height": 242.80759628871897,
+          "width": 639.5579220386832,
+          "color": 5
+        },
+        "id": "77b90b89-6ec2-44cf-8b65-be109d73a590",
+        "name": "Sticky Note6",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          2288,
+          944
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## How this workflow works\n1. Replace ScrapingBee and OpenAI credentials\n2. Replace company_name with company of choice (workflow performs better with larger US-based organizations)\n3. Preview QuickChart data visualizations and AI data analysis",
+          "height": 186.36110628732342,
+          "width": 356.84794255678776
+        },
+        "id": "31ee6b32-c35f-4e35-b9bf-1e20f7752dd1",
+        "name": "Sticky Note7",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -544,
+          352
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## Glossary\n**Z-Score** – A statistical measure that indicates how many standard deviations a data point is from the mean. In this analysis, a negative z-score suggests a group rates their workplace experience lower than the average, while a positive z-score suggests a better-than-average experience.\n\n**Effect Size** – A measure of the magnitude of difference between groups. Larger negative effect sizes indicate a more substantial disparity in workplace experiences for certain groups, making it useful for identifying meaningful gaps beyond just statistical significance.\n\n**P-Score (P-Value)** – The probability that the observed differences occurred by chance. A lower p-score (typically below 0.05) suggests the difference is statistically significant and unlikely to be random. In this analysis, high p-scores confirm that the disparities in ratings for marginalized groups are unlikely to be due to chance alone.\n\n### Relevance to This Analysis\nThese metrics help quantify workplace disparities among demographic groups. Z-scores show which groups report better or worse experiences, effect sizes reveal the severity of these differences, and p-scores confirm whether the disparities are statistically meaningful. This data allows for a more informed discussion about workplace equity and areas needing improvement.",
+          "height": 444.9087184962878,
+          "width": 737.6316136259719,
+          "color": 6
+        },
+        "id": "256be512-8a08-46a5-9b54-0842481fc809",
+        "name": "Sticky Note11",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1504,
+          1040
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=This data compares the average rating given by different demographic groups against a baseline (the overall mean rating).\n\nObjective:\n1. Analyze the data and offer between 2 and 5 key takeaways with a title and short (one-sentence) summary.\n2. Below the key takeaways, Include a heading called \"Employee Experiences\". Under this heading, include a subheader and paragraph describing the possible perception of the workplace for members of any groups reporting significantly worse (or better) experiences than others.\n3. Ensure there are between 2-5 key takeaways and employee experiences\n\nData for analysis:\n{{ $json.population_analysis.toJsonString() }}"
+        },
+        "id": "18b17fc7-76e6-47cf-9d40-bb8bf0aa6183",
+        "name": "Text Analysis of Bias Data",
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "position": [
+          2688,
+          512
+        ],
+        "typeVersion": 1.4
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+        "typeVersion": 1,
+        "position": [
+          1168,
+          1056
+        ],
+        "id": "22232eeb-8bf1-470d-9c70-68422bd46875",
+        "name": "DeepSeek Chat Model",
+        "credentials": {
+          "deepSeekApi": {
+            "id": "frYw4RwGT7ZElyz5",
+            "name": "DeepSeek account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+        "typeVersion": 1,
+        "position": [
+          1168,
+          640
+        ],
+        "id": "2991aa21-d540-4dc5-a4e2-d442918f4218",
+        "name": "DeepSeek Chat Model1",
+        "credentials": {
+          "deepSeekApi": {
+            "id": "frYw4RwGT7ZElyz5",
+            "name": "DeepSeek account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+        "typeVersion": 1,
+        "position": [
+          2816,
+          672
+        ],
+        "id": "652ef60c-d7f0-4816-9e1c-4166a8b113a9",
+        "name": "DeepSeek Chat Model2",
+        "credentials": {
+          "deepSeekApi": {
+            "id": "frYw4RwGT7ZElyz5",
+            "name": "DeepSeek account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "When clicking ‘Test workflow’": {
+        "main": [
+          [
+            {
+              "node": "SET company_name",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Calculate Z-Scores and Effect Sizes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SET company_name": {
+        "main": [
+          [
+            {
+              "node": "Define dictionary of demographic keys",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Define dictionary of demographic keys": {
+        "main": [
+          [
+            {
+              "node": "ScrapingBee Search Glassdoor",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ScrapingBee Search Glassdoor": {
+        "main": [
+          [
+            {
+              "node": "Extract company url path",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract company url path": {
+        "main": [
+          [
+            {
+              "node": "ScrapingBee GET company page contents",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ScrapingBee GET company page contents": {
+        "main": [
+          [
+            {
+              "node": "Extract reviews page url path",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract reviews page url path": {
+        "main": [
+          [
+            {
+              "node": "ScrapingBee GET Glassdoor Reviews Content",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ScrapingBee GET Glassdoor Reviews Content": {
+        "main": [
+          [
+            {
+              "node": "Extract Demographics Module",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Extract Overall Review Summary",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Overall Review Summary": {
+        "main": [
+          [
+            {
+              "node": "Extract overall ratings and distribution percentages",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract Demographics Module": {
+        "main": [
+          [
+            {
+              "node": "Extract demographic distributions",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract overall ratings and distribution percentages": {
+        "main": [
+          [
+            {
+              "node": "Define contributions to variance",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Extract demographic distributions": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Define contributions to variance": {
+        "main": [
+          [
+            {
+              "node": "Set variance and std_dev",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Set variance and std_dev": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Calculate P-Scores": {
+        "main": [
+          [
+            {
+              "node": "Sort Effect Sizes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Sort Effect Sizes": {
+        "main": [
+          [
+            {
+              "node": "QuickChart Bar Chart",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Text Analysis of Bias Data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Calculate Z-Scores and Effect Sizes": {
+        "main": [
+          [
+            {
+              "node": "Calculate P-Scores",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Format dataset for scatterplot",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Format dataset for scatterplot": {
+        "main": [
+          [
+            {
+              "node": "Specify additional parameters for scatterplot",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Specify additional parameters for scatterplot": {
+        "main": [
+          [
+            {
+              "node": "Quickchart Scatterplot",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DeepSeek Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Extract demographic distributions",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DeepSeek Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Extract overall ratings and distribution percentages",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DeepSeek Chat Model2": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Text Analysis of Bias Data",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "41c436da7030a9268d66e2cd109e9f80e81014f04f6a92061ed9b2b8e2ca9040"
+    }
+  }
