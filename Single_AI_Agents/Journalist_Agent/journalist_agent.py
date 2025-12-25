@@ -21,8 +21,7 @@ else:
     load_dotenv(override=True)
 
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "").strip()
-
-SERP_API_KEY = "5caaea9b145768c68cb9485f3db9013b09394d60d4de0ed41b72d8f1e4b8213d"
+SERP_API_KEY = os.getenv("SERP_API_KEY", "").strip()
 
 st.set_page_config(
     page_title="AI Journalist Agent",
@@ -36,7 +35,10 @@ st.caption("Generate High-quality articles with AI Journalist by researching, wr
 if not DEEPSEEK_API_KEY:
     st.error("⚠️ DEEPSEEK_API_KEY not found in .env file. Please add it to your .env file in the root directory.")
 
-if DEEPSEEK_API_KEY:
+if not SERP_API_KEY:
+    st.error("⚠️ SERP_API_KEY not found in .env file. Please add it to your .env file in the root directory.")
+
+if DEEPSEEK_API_KEY and SERP_API_KEY:
     os.environ["OPENAI_API_KEY"] = DEEPSEEK_API_KEY
     os.environ["OPENAI_BASE_URL"] = "https://api.deepseek.com"
     
