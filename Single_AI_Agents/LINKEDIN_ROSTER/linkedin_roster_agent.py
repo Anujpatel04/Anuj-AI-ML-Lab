@@ -30,17 +30,13 @@ class LinkedInRosterAgent:
         if not self.api_key:
             raise ValueError("Gemini API key required. Set GEMINI_API_KEY environment variable or pass as argument.")
         
-        # Configure Gemini
         genai.configure(api_key=self.api_key)
-        # Use the latest available model (gemini-2.5-flash is fast and supports vision)
-        # Fallback to gemini-2.5-pro if flash is not available
         try:
             self.model = genai.GenerativeModel('gemini-2.5-flash')
         except Exception:
             try:
                 self.model = genai.GenerativeModel('gemini-2.5-pro')
             except Exception:
-                # Fallback to older models
                 try:
                     self.model = genai.GenerativeModel('gemini-pro')
                 except Exception:
@@ -56,10 +52,8 @@ class LinkedInRosterAgent:
         """Analyze LinkedIn profile screenshot using Google Gemini Vision API."""
         print(f"Analyzing LinkedIn profile from: {image_path}")
         
-        # Load image for Gemini
         img = Image.open(image_path)
         
-        # Prepare prompt for roasting/roasting style analysis
         prompt = """You are a witty, humorous LinkedIn profile roaster who makes fun of profiles while giving genuinely helpful improvement suggestions. 
         Analyze this LinkedIn profile screenshot and ROAST it with humor, but also provide real improvement suggestions.
 
@@ -119,7 +113,6 @@ class LinkedInRosterAgent:
 
         Return ONLY the JSON object, no additional text or markdown formatting."""
         
-        # Call Gemini Vision API with retry logic
         max_retries = 3
         retry_delay = 2  # Start with 2 seconds
         
@@ -128,7 +121,6 @@ class LinkedInRosterAgent:
                 response = self.model.generate_content([prompt, img])
                 content = response.text.strip()
                 
-                # Clean up the response - remove markdown code blocks if present
                 if content.startswith("```json"):
                     content = content[7:]
                 if content.startswith("```"):
@@ -137,53 +129,44 @@ class LinkedInRosterAgent:
                     content = content[:-3]
                 content = content.strip()
                 
-                # Try to extract JSON from response
                 try:
-                    # Find JSON in the response
                     json_start = content.find('{')
                     json_end = content.rfind('}') + 1
                     if json_start != -1 and json_end > json_start:
                         profile_data = json.loads(content[json_start:json_end])
                     else:
-                        # Fallback: create structured data from text
                         profile_data = self._parse_text_response(content)
                 except json.JSONDecodeError as e:
                     print(f"Warning: Could not parse JSON response. Error: {e}")
                     print(f"Response content: {content[:200]}...")
                     profile_data = self._parse_text_response(content)
                 
-                # Success - break out of retry loop
                 break
                 
             except Exception as e:
                 error_str = str(e)
                 
-                # Check if it's a quota/rate limit error
                 if "429" in error_str or "quota" in error_str.lower() or "rate limit" in error_str.lower():
                     if attempt < max_retries - 1:
-                        # Extract retry delay from error if available
                         if "retry in" in error_str.lower():
                             try:
-                                # Try to extract seconds from error message
                                 import re
                                 match = re.search(r'retry in ([\d.]+)s', error_str.lower())
                                 if match:
                                     retry_delay = float(match.group(1)) + 1
                             except:
-                                retry_delay = retry_delay * 2  # Exponential backoff
+                                retry_delay = retry_delay * 2
                         
                         print(f"⚠️  Rate limit/quota exceeded. Retrying in {retry_delay:.1f} seconds... (Attempt {attempt + 1}/{max_retries})")
                         time.sleep(retry_delay)
-                        retry_delay *= 2  # Exponential backoff for next retry
+                        retry_delay *= 2
                         continue
                     else:
-                        # Final attempt failed
                         print(f"❌ Error: Quota/Rate limit exceeded. Please wait or check your API quota.")
                         print(f"   Free tier limit: 20 requests/day per model")
                         print(f"   Check usage: https://ai.dev/usage?tab=rate-limit")
                         raise Exception("API quota exceeded. Please wait before trying again or upgrade your API plan.")
                 else:
-                    # Other errors - don't retry
                     print(f"Error calling Gemini API: {e}")
                     raise
         
@@ -215,7 +198,6 @@ class LinkedInRosterAgent:
         """Generate smart roster suggestions based on profile analysis."""
         suggestions = profile_data.get("roster_suggestions", [])
         
-        # If no suggestions from AI, generate based on experience level
         if not suggestions:
             experience = profile_data.get("experience_level", "Mid").lower()
             title = profile_data.get("title", "").lower()
@@ -248,7 +230,6 @@ class LinkedInRosterAgent:
             y_start = int(height * 0.2)
             y_end = int(height * 0.5)
         
-        # Estimate X position
         if "left" in desc_lower:
             x_start = int(width * 0.05)
             x_end = int(width * 0.45)
@@ -266,18 +247,15 @@ class LinkedInRosterAgent:
     
     def _get_text_color(self, img: Image.Image, x: int, y: int, width: int, height: int) -> Tuple[int, int, int]:
         """Determine contrasting text color based on background."""
-        # Sample pixels around the text area to determine background brightness
         sample_size = min(50, width // 4, height // 4)
         x_sample = max(0, min(x, img.width - sample_size))
         y_sample = max(0, min(y, img.height - sample_size))
         
-        # Convert to RGB if needed
         if img.mode != 'RGB':
             img_rgb = img.convert('RGB')
         else:
             img_rgb = img
         
-        # Sample pixels
         total_brightness = 0
         sample_count = 0
         for dx in range(0, sample_size, 5):
@@ -285,14 +263,12 @@ class LinkedInRosterAgent:
                 px = min(x_sample + dx, img_rgb.width - 1)
                 py = min(y_sample + dy, img_rgb.height - 1)
                 pixel = img_rgb.getpixel((px, py))
-                # Calculate brightness (0-255)
                 brightness = (pixel[0] + pixel[1] + pixel[2]) / 3
                 total_brightness += brightness
                 sample_count += 1
         
         avg_brightness = total_brightness / sample_count if sample_count > 0 else 128
         
-        # Return white text for dark backgrounds, black for light backgrounds
         if avg_brightness < 128:
             return (255, 255, 255)  # White text
         else:
@@ -302,12 +278,10 @@ class LinkedInRosterAgent:
                                  font: ImageFont.FreeTypeFont, fill_color: Tuple[int, int, int],
                                  outline_color: Tuple[int, int, int] = (0, 0, 0), outline_width: int = 2):
         """Draw text with outline for better visibility."""
-        # Draw outline (shadow effect)
         for adj in range(-outline_width, outline_width + 1):
             for adj2 in range(-outline_width, outline_width + 1):
                 if adj != 0 or adj2 != 0:
                     draw.text((x + adj, y + adj2), text, font=font, fill=outline_color)
-        # Draw main text
         draw.text((x, y), text, font=font, fill=fill_color)
     
     def _wrap_text(self, text: str, font: ImageFont.FreeTypeFont, max_width: int, draw: ImageDraw.Draw) -> List[str]:
@@ -337,7 +311,6 @@ class LinkedInRosterAgent:
                            fill_color: Tuple[int, int, int, int], outline_color: Tuple[int, int, int],
                            pointer_x: int, pointer_y: int, pointer_direction: str = "down"):
         """Draw a speech bubble with a pointer arrow."""
-        # Draw main bubble rectangle
         draw.rectangle(
             [(x, y), (x + width, y + height)],
             fill=fill_color,
@@ -345,31 +318,26 @@ class LinkedInRosterAgent:
             width=4
         )
         
-        # Draw pointer triangle based on direction
         pointer_size = 20
         if pointer_direction == "down":
-            # Pointing down (bubble above section)
             points = [
                 (pointer_x, y + height),
                 (pointer_x - pointer_size, y + height + pointer_size),
                 (pointer_x + pointer_size, y + height + pointer_size)
             ]
         elif pointer_direction == "up":
-            # Pointing up (bubble below section)
             points = [
                 (pointer_x, y),
                 (pointer_x - pointer_size, y - pointer_size),
                 (pointer_x + pointer_size, y - pointer_size)
             ]
         elif pointer_direction == "left":
-            # Pointing left (bubble to the right)
             points = [
                 (x, pointer_y),
                 (x - pointer_size, pointer_y - pointer_size),
                 (x - pointer_size, pointer_y + pointer_size)
             ]
-        else:  # right
-            # Pointing right (bubble to the left)
+        else:
             points = [
                 (x + width, pointer_y),
                 (x + width + pointer_size, pointer_y - pointer_size),
@@ -382,14 +350,11 @@ class LinkedInRosterAgent:
         """Annotate with COMPLETE, VISIBLE roasts + improvements + roster for each section."""
         print(f"Creating complete roasts with improvements and roster suggestions...")
         
-        # Load image
         img = Image.open(image_path).convert('RGB')
         draw = ImageDraw.Draw(img)
         
-        # Try to load fonts - prefer hand-written style fonts
         try:
             font_paths = [
-                # Hand-written style fonts
                 "/System/Library/Fonts/Supplemental/Chalkduster.ttf",
                 "/System/Library/Fonts/Supplemental/Marker Felt.ttf",
                 "/System/Library/Fonts/Supplemental/Comic Sans MS.ttf",
@@ -404,7 +369,6 @@ class LinkedInRosterAgent:
             for path in font_paths:
                 if os.path.exists(path):
                     try:
-                        # Larger fonts for handwritten look
                         large_font = ImageFont.truetype(path, 48)
                         medium_font = ImageFont.truetype(path, 40)
                         small_font = ImageFont.truetype(path, 36)
@@ -423,11 +387,9 @@ class LinkedInRosterAgent:
         
         width, height = img.size
         
-        # Get sections to annotate
         sections = profile_data.get("sections", [])
         roster_suggestions = self.roster_suggestions or profile_data.get("roster_suggestions", [])
         
-        # If no sections, create default sections
         if not sections:
             sections = [
                 {
@@ -452,7 +414,6 @@ class LinkedInRosterAgent:
         
         print(f"Roasting {len(sections)} sections with COMPLETE text...")
         
-        # VIBRANT TEXT COLORS (no boxes, just colored text)
         color_schemes = {
             "high": {
                 "roast_color": (255, 0, 0),  # Bright Red for roast
@@ -474,13 +435,11 @@ class LinkedInRosterAgent:
             }
         }
         
-        # Create overlay
         overlay = Image.new('RGBA', (width, height), (0, 0, 0, 0))
         overlay_draw = ImageDraw.Draw(overlay)
         
-        # Draw text directly on screenshot - handwritten style annotations
         line_height = 50
-        current_y_positions = {}  # Track Y positions to avoid overlap
+        current_y_positions = {}
         
         for idx, section in enumerate(sections):
             section_name = section.get("section_name", f"Section {idx+1}")
@@ -491,24 +450,19 @@ class LinkedInRosterAgent:
             if not improvements:
                 continue
             
-            # Get section position
             x_start, y_start, x_end, y_end = self._get_section_position(location_desc, width, height)
             section_center_x = (x_start + x_end) // 2
             section_center_y = (y_start + y_end) // 2
             
             scheme = color_schemes.get(priority, color_schemes["medium"])
             
-            # Get roast and improvement
             roast_text = improvements[0] if improvements else "Needs improvement!"
             improve_text = improvements[1] if len(improvements) > 1 else "Focus on specific achievements and metrics."
             
-            # Get roster for this section
             roster_idx = idx % len(roster_suggestions) if roster_suggestions else 0
             roster_text = roster_suggestions[roster_idx] if roster_suggestions else f"{section_name} Roster"
             
-            # Position text near section - vary positions
             if idx % 4 == 0:
-                # Top left
                 text_x = max(30, x_start - 50)
                 text_y = max(40, y_start - 180)
                 arrow_start_x = text_x + 200
@@ -516,7 +470,6 @@ class LinkedInRosterAgent:
                 arrow_end_x = x_start
                 arrow_end_y = y_start
             elif idx % 4 == 1:
-                # Top right
                 text_x = min(width - 400, x_end + 30)
                 text_y = max(40, y_start - 180)
                 arrow_start_x = text_x
@@ -524,7 +477,6 @@ class LinkedInRosterAgent:
                 arrow_end_x = x_end
                 arrow_end_y = y_start
             elif idx % 4 == 2:
-                # Bottom left
                 text_x = max(30, x_start - 50)
                 text_y = min(height - 200, y_end + 40)
                 arrow_start_x = text_x + 200
@@ -532,7 +484,6 @@ class LinkedInRosterAgent:
                 arrow_end_x = x_start
                 arrow_end_y = y_end
             else:
-                # Bottom right
                 text_x = min(width - 400, x_end + 30)
                 text_y = min(height - 200, y_end + 40)
                 arrow_start_x = text_x
@@ -540,11 +491,9 @@ class LinkedInRosterAgent:
                 arrow_end_x = x_end
                 arrow_end_y = y_end
             
-            # Ensure text doesn't go off screen
             text_x = max(20, min(text_x, width - 380))
             text_y = max(30, min(text_y, height - 180))
             
-            # Draw arrow pointing to section (hand-drawn style)
             overlay_draw.line(
                 [(arrow_start_x, arrow_start_y), (arrow_end_x, arrow_end_y)],
                 fill=(0, 0, 0),

@@ -19,11 +19,6 @@ from .tools import (
     list_reference_images,
 )
 
-
-# ============================================================================
-# Helper Tool Agent (wraps google_search)
-# ============================================================================
-
 search_agent = LlmAgent(
     name="SearchAgent",
     model="gemini-2.5-flash",
@@ -31,11 +26,6 @@ search_agent = LlmAgent(
     instruction="Use google_search to find current renovation information, costs, materials, and trends. Be concise and cite sources.",
     tools=[google_search],
 )
-
-
-# ============================================================================
-# Utility Tools
-# ============================================================================
 
 def estimate_renovation_cost(
     room_type: str,
@@ -52,7 +42,6 @@ def estimate_renovation_cost(
     Returns:
         Estimated cost range
     """
-    # Cost per sq ft estimates (2024 ranges)
     rates = {
         "kitchen": {"cosmetic": (50, 100), "moderate": (150, 250), "full": (300, 500), "luxury": (600, 1200)},
         "bathroom": {"cosmetic": (75, 125), "moderate": (200, 350), "full": (400, 600), "luxury": (800, 1500)},
@@ -101,11 +90,6 @@ def calculate_timeline(
     
     return f"⏱️ Estimated Timeline: {timeline}"
 
-
-# ============================================================================
-# Specialist Agent 1: Info Agent (for general inquiries)
-# ============================================================================
-
 info_agent = LlmAgent(
     name="InfoAgent",
     model="gemini-2.5-flash",
@@ -127,11 +111,6 @@ EXAMPLE:
 Be enthusiastic about home improvement and helpful!
 """,
 )
-
-
-# ============================================================================
-# Specialist Agent 2: Rendering Editor (for iterative refinements)
-# ============================================================================
 
 rendering_editor = LlmAgent(
     name="RenderingEditor",
@@ -168,11 +147,6 @@ After editing, briefly confirm the change.
 """,
     tools=[edit_renovation_rendering, list_renovation_renderings],
 )
-
-
-# ============================================================================
-# Specialist Agents 3-5: Full Planning Pipeline (SequentialAgent)
-# ============================================================================
 
 visual_assessor = LlmAgent(
     name="VisualAssessor",
@@ -382,11 +356,6 @@ planning_pipeline = SequentialAgent(
         project_coordinator,
     ],
 )
-
-
-# ============================================================================
-# Coordinator/Dispatcher (Root Agent)
-# ============================================================================
 
 root_agent = LlmAgent(
     name="HomeRenovationPlanner",

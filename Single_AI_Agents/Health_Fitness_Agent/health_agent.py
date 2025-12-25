@@ -6,7 +6,6 @@ from agno.agent import Agent
 from agno.run.agent import RunOutput
 from agno.models.openai import OpenAIChat
 
-# Load environment variables from .env file in root directory
 env_path = Path('/Users/anuj/Desktop/Anuj-AI-ML-Lab/.env')
 if not env_path.exists():
     root_dir = Path(__file__).parent.parent.parent
@@ -17,10 +16,8 @@ if env_path.exists():
 else:
     load_dotenv(override=True)
 
-# Get DeepSeek API key from environment
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "").strip()
 
-# Configure DeepSeek API (OpenAI-compatible)
 if DEEPSEEK_API_KEY:
     os.environ["OPENAI_API_KEY"] = DEEPSEEK_API_KEY
     os.environ["OPENAI_BASE_URL"] = "https://api.deepseek.com"
@@ -121,7 +118,6 @@ def main():
         
     if DEEPSEEK_API_KEY:
         try:
-            # Patch to convert developer role to system role for DeepSeek compatibility
             try:
                 from agno.models.openai.chat import OpenAIChat as OpenAIChatClass
                 original_format_message = OpenAIChatClass._format_message

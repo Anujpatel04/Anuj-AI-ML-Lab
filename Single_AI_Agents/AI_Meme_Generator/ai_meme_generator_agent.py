@@ -9,15 +9,12 @@ from langchain_anthropic import ChatAnthropic
 from langchain_core.messages import HumanMessage
 import re
 
-# Load environment variables from root .env file
 env_path = Path("/Users/anuj/Desktop/Anuj-AI-ML-Lab/.env")
 load_dotenv(env_path)
 
-# Get DeepSeek API key from environment
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 async def generate_meme(query: str, model_choice: str, api_key: str) -> None:
-    # Initialize the appropriate LLM based on user selection
     if model_choice == "Claude":
         llm = ChatAnthropic(
             model="claude-3-5-sonnet-20241022",
@@ -60,10 +57,8 @@ async def generate_meme(query: str, model_choice: str, api_key: str) -> None:
 
     history = await agent.run()
     
-    # Extract final result from agent history
     final_result = history.final_result()
     
-    # Use regex to find the meme URL in the result
     url_match = re.search(r'https://imgflip\.com/i/(\w+)', final_result)
     if url_match:
         meme_id = url_match.group(1)
@@ -71,17 +66,12 @@ async def generate_meme(query: str, model_choice: str, api_key: str) -> None:
     return None
 
 def main():
-    # Custom CSS styling
-
-
     st.title("🥸 AI Meme Generator Agent - Browser Use")
     st.info("This AI browser agent does browser automation to generate memes based on your input with browser use. Please enter your API key and describe the meme you want to generate.")
     
-    # Sidebar configuration
     with st.sidebar:
         st.markdown('<p class="sidebar-header">⚙️ Model Configuration</p>', unsafe_allow_html=True)
         
-        # Model selection
         model_choice = st.selectbox(
             "Select AI Model",
             ["Deepseek", "Claude", "OpenAI"],
@@ -89,7 +79,6 @@ def main():
             help="Choose which LLM to use for meme generation"
         )
         
-        # API key input based on model selection
         api_key = ""
         if model_choice == "Deepseek":
             if DEEPSEEK_API_KEY:
@@ -106,7 +95,6 @@ def main():
             api_key = st.text_input("OpenAI API Key", type="password",
                                   help="Get your API key from https://platform.openai.com")
 
-    # Main content area
     st.markdown('<p class="header-text">🎨 Describe Your Meme Concept</p>', unsafe_allow_html=True)
     
     query = st.text_input(

@@ -6,7 +6,6 @@ from textwrap import dedent
 import yaml
 from pathlib import Path
 
-# Add root directory to path to access shared config
 root_dir = Path(__file__).parent.parent.parent
 if str(root_dir) not in sys.path:
     sys.path.insert(0, str(root_dir))
@@ -17,9 +16,6 @@ try:
 except ImportError:
     USE_SHARED_CONFIG = False
 
-# Patch Azure OpenAI support BEFORE importing mcp-agent modules
-# mcp-agent doesn't pass default_query for api_version, so we need to monkey-patch
-# Try to use shared config first, then fallback to local config file
 _base_url = ""
 _api_version = ""
 
@@ -44,7 +40,6 @@ if _base_url and "azure.com" in _base_url and _api_version:
         _original_async_openai = AsyncOpenAI
         
         def _patched_async_openai(*args, **kwargs):
-            # Add default_query with api-version for Azure
             if 'default_query' not in kwargs:
                 kwargs['default_query'] = {'api-version': _api_version}
             elif 'api-version' not in kwargs.get('default_query', {}):
@@ -54,25 +49,21 @@ if _base_url and "azure.com" in _base_url and _api_version:
                     kwargs['default_query'] = {'api-version': _api_version}
             return _original_async_openai(*args, **kwargs)
         
-        # Patch before mcp-agent imports it
         import mcp_agent.workflows.llm.augmented_llm_openai as _openai_module
         _openai_module.AsyncOpenAI = _patched_async_openai
     except Exception:
-        pass  # If patch fails, continue without patch
+        pass
 
 from mcp_agent.app import MCPApp
 from mcp_agent.agents.agent import Agent
 from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
 from mcp_agent.workflows.llm.augmented_llm import RequestParams
 
-# Load API key from secrets file or shared config
 def load_api_key_from_secrets():
     """Load API key from shared config, secrets file, or environment variables"""
-    # Priority: Environment > Shared Config > Secrets File
     if os.getenv("OPENAI_API_KEY") or os.getenv("AZURE_OPENAI_API_KEY"):
         return
     
-    # Try shared config first
     if USE_SHARED_CONFIG:
         try:
             os.environ["OPENAI_API_KEY"] = AZURE_KEY
@@ -81,7 +72,6 @@ def load_api_key_from_secrets():
         except Exception:
             pass
     
-    # Fallback to secrets file
     secrets_file = Path("mcp_agent.secrets.yaml")
     if secrets_file.exists():
         try:
@@ -95,34 +85,26 @@ def load_api_key_from_secrets():
         except Exception as e:
             st.warning(f"Could not load secrets file: {e}")
 
-# Load API key at startup
 load_api_key_from_secrets()
 
-# Page config
 st.set_page_config(page_title="Browser MCP Agent", page_icon="🌐", layout="wide")
 
-# Title and description
 st.markdown("# 🌐 Browser MCP Agent")
 st.markdown("### Control a web browser with natural language commands using AI-powered automation")
 
-# Status indicator
 api_key_status = "✅ Configured" if os.getenv("OPENAI_API_KEY") else "❌ Not Configured"
 st.markdown(f"**API Key Status:** {api_key_status}")
 if not os.getenv("OPENAI_API_KEY"):
     st.warning("⚠️ Please configure your OpenAI API key in `mcp_agent.secrets.yaml`")
 
-# Compatibility warning for DeepSeek
-# Check if DeepSeek is actually being used (not just in comments)
 try:
     import yaml
     with open("mcp_agent.config.yaml", "r") as f:
         config = yaml.safe_load(f)
-        # Check if base_url is set to DeepSeek (not commented out)
         openai_config = config.get("openai", {})
         base_url = openai_config.get("base_url", "")
         model = openai_config.get("default_model", "")
         
-        # Only show warning if DeepSeek is actively configured (not commented)
         if base_url and "deepseek.com" in base_url:
             st.error("""
             ⚠️ **DeepSeek API Compatibility Issue**
@@ -140,7 +122,6 @@ except:
 
 st.markdown("---")
 
-# Setup sidebar with example commands
 with st.sidebar:
     st.markdown("## 🎯 Quick Examples")
     st.markdown("---")
@@ -210,15 +191,12 @@ if 'initialized' not in st.session_state:
     st.session_state.is_processing = False
     st.session_state.example_query = None
 
-# Setup function that runs only once
 async def setup_agent():
     if not st.session_state.initialized:
         try:
-            # Create context manager and store it in session state
             st.session_state.mcp_context = st.session_state.mcp_app.run()
             st.session_state.mcp_agent_app = await st.session_state.mcp_context.__aenter__()
             
-            # Create and initialize agent
             st.session_state.browser_agent = Agent(
                 name="browser",
                 instruction="""You are an autonomous web browsing agent. Your ONLY job is to execute browser commands using tools.
@@ -239,32 +217,24 @@ After executing tools, briefly summarize what you did.""",
                 server_names=["playwright"],
             )
             
-            # Initialize agent and attach LLM
-            # (Azure OpenAI patch is already applied at module import time)
             await st.session_state.browser_agent.initialize()
             st.session_state.llm = await st.session_state.browser_agent.attach_llm(OpenAIAugmentedLLM)
             
-            # List tools once
             logger = st.session_state.mcp_agent_app.logger
             tools = await st.session_state.browser_agent.list_tools()
             logger.info("Tools available:", data=tools)
             
-            # Mark as initialized
             st.session_state.initialized = True
         except Exception as e:
             return f"Error during initialization: {str(e)}"
     return None
 
-# Main function to run agent
 async def run_mcp_agent(message):
-    # Ensure API key is loaded (reload in case secrets file was updated)
     load_api_key_from_secrets()
     
-    # Support both DEEPSEEK_API_KEY and OPENAI_API_KEY (for compatibility)
     deepseek_key = os.getenv("DEEPSEEK_API_KEY")
     openai_key = os.getenv("OPENAI_API_KEY")
     
-    # If DEEPSEEK_API_KEY is set, use it as OPENAI_API_KEY (since DeepSeek is OpenAI-compatible)
     if deepseek_key and not openai_key:
         os.environ["OPENAI_API_KEY"] = deepseek_key
     
@@ -272,17 +242,11 @@ async def run_mcp_agent(message):
         return "Error: DeepSeek API key not provided. Please set DEEPSEEK_API_KEY environment variable or OPENAI_API_KEY, or configure it in mcp_agent.secrets.yaml"
     
     try:
-        # Make sure agent is initialized
         error = await setup_agent()
         if error:
             return error
         
-        # Generate response without recreating agents
-        # Note: Azure OpenAI gpt-4o supports max 4096 completion tokens
-        # Using use_history=False to avoid JSON deserialization errors
-        # Make the message explicit about executing the command
         if message and message.strip():
-            # Add explicit instruction to execute the command
             explicit_message = f"""EXECUTE THIS COMMAND NOW: {message}
 
 You MUST use the available browser tools to execute this command. Do NOT just respond with text - actually perform the action using playwright_browser_navigate, playwright_browser_click, or other browser tools.
@@ -300,14 +264,13 @@ Execute the command now."""
                 message=explicit_message, 
                 request_params=RequestParams(use_history=False, maxTokens=4096)
             ),
-            timeout=180.0  # 3 minutes timeout for LLM call
+            timeout=180.0
         )
         return result
     except asyncio.TimeoutError:
         return "❌ **Error: The request took too long to complete (timeout after 3 minutes).**\n\n**Possible causes:**\n- The website is slow or unresponsive\n- The task is too complex\n- Network connectivity issues\n\n**Try:**\n- Simplifying your command\n- Breaking it into smaller steps\n- Checking your internet connection"
     except Exception as e:
         error_msg = str(e)
-        # Provide more helpful error messages
         if "API key" in error_msg or "authentication" in error_msg.lower():
             return f"❌ **Authentication Error:**\n\n```\n{error_msg}\n```\n\n**Solution:** Please check your API key in `mcp_agent.secrets.yaml`"
         elif "quota" in error_msg.lower() or "insufficient_quota" in error_msg.lower() or "429" in error_msg:
@@ -372,7 +335,6 @@ DeepSeek API has a compatibility issue with how mcp-agent formats tool call resp
         else:
             return f"❌ **Error:**\n\n```\n{error_msg}\n```\n\n**Troubleshooting:**\n- Check the logs for more details\n- Try a simpler command\n- Ensure all dependencies are installed"
 
-# Defaults
 if 'is_processing' not in st.session_state:
     st.session_state.is_processing = False
 if 'last_result' not in st.session_state:
@@ -381,7 +343,6 @@ if 'last_result' not in st.session_state:
 def start_run():
     st.session_state.is_processing = True
 
-# Buttons row
 col1, col2 = st.columns([3, 1])
 with col1:
     st.button(
@@ -397,11 +358,9 @@ with col2:
         st.session_state.last_result = None
         st.rerun()
 
-# If we’re in a processing run, do the work now
 if st.session_state.is_processing:
     with st.spinner("Processing your request..."):
         try:
-            # Add timeout to prevent hanging (5 minutes max)
             result = st.session_state.loop.run_until_complete(
                 asyncio.wait_for(run_mcp_agent(query), timeout=300.0)
             )
@@ -409,19 +368,15 @@ if st.session_state.is_processing:
             result = "❌ **Error: Request timed out after 5 minutes.**\n\nThis might happen if:\n- The website is slow to load\n- The agent is performing many steps\n- There's a network issue\n\n**Try:**\n- Simplifying your command\n- Checking your internet connection\n- Trying again with a shorter task"
         except Exception as e:
             result = f"❌ **Error occurred:**\n\n```\n{str(e)}\n```\n\n**Troubleshooting:**\n- Check if your DeepSeek API key is valid\n- Ensure you have internet connectivity\n- Try a simpler command first"
-    # persist result across the next rerun
     st.session_state.last_result = result
-    # unlock the button and refresh UI
     st.session_state.is_processing = False
     st.rerun()
 
-# Render the most recent result (after the rerun)
 if st.session_state.last_result:
     st.markdown("### 📋 Response")
     st.markdown(st.session_state.last_result)
     st.markdown("---")
 
-# Display help text for first-time users when no result is shown
 if not st.session_state.last_result:
     st.markdown("## 📖 How to Use This App")
     

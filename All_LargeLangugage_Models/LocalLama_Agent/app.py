@@ -14,7 +14,6 @@ from agno.tools.exa import ExaTools
 from dotenv import load_dotenv
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFLoader, WebBaseLoader
-# Prefer langchain-ollama (new), fallback to deprecated import if needed
 try:
     from langchain_ollama import OllamaEmbeddings  # type: ignore
 except Exception:  # pragma: no cover
@@ -24,10 +23,6 @@ from langchain_qdrant import QdrantVectorStore
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams
 
-
-# -----------------------------------------------------------------------------
-# Env: load repo-root .env (so no API keys live inside this folder)
-# -----------------------------------------------------------------------------
 ROOT_DIR = Path(__file__).resolve().parents[2]
 load_dotenv(ROOT_DIR / ".env")
 
@@ -141,7 +136,6 @@ def process_web(url: str) -> List:
 def create_or_get_vector_store(client: QdrantClient) -> Optional[QdrantVectorStore]:
     try:
         embedder = OllamaEmbeddings(model=st.session_state.embed_model)
-        # Qdrant vector size must match embedding dimension
         embed_dim = len(embedder.embed_query("dimension_check"))
 
         try:
@@ -161,7 +155,6 @@ def create_or_get_vector_store(client: QdrantClient) -> Optional[QdrantVectorSto
 
 
 def get_web_search_agent(search_domains: List[str]) -> Agent:
-    # agno Agent kwargs differ across versions; only pass supported kwargs.
     agent_kwargs = {
         "tools": [
             ExaTools(
@@ -224,7 +217,6 @@ def main() -> None:
     st.title("Local RAG (Ollama)")
     st.caption("Local chat with optional RAG (Qdrant) and optional web-search fallback (Exa).")
 
-    # Main controls (no sidebar)
     top_left, top_right = st.columns([0.75, 0.25])
     with top_left:
         st.info(f"Using local Ollama model: `{LLM_MODEL_ID}`")
@@ -250,7 +242,6 @@ def main() -> None:
             value=st.session_state.use_web_search,
         )
 
-        # Load EXA key from root .env only (no UI input)
         st.session_state.exa_api_key = os.getenv("EXA_API_KEY", st.session_state.exa_api_key)
         if st.session_state.use_web_search:
             if st.session_state.exa_api_key:
@@ -262,10 +253,8 @@ def main() -> None:
         custom_domains = st.text_input("Web search domains (comma-separated)", value=",".join(default_domains))
         search_domains: List[str] = [d.strip() for d in custom_domains.split(",") if d.strip()]
 
-    # RAG config + upload (main page)
     qdrant_client: Optional[QdrantClient] = None
     if st.session_state.rag_enabled:
-        # Load Qdrant + embed config from root .env only (no UI input)
         st.session_state.qdrant_url = os.getenv("QDRANT_URL", st.session_state.qdrant_url)
         st.session_state.qdrant_api_key = os.getenv("QDRANT_API_KEY", st.session_state.qdrant_api_key)
         st.session_state.embed_model = os.getenv("OLLAMA_EMBED_MODEL", st.session_state.embed_model)
@@ -281,7 +270,6 @@ def main() -> None:
             if qdrant_client and st.session_state.vector_store is None:
                 st.session_state.vector_store = create_or_get_vector_store(qdrant_client)
 
-            # Bundled PDF (local) - index without uploading
             bundled_pdf_path = Path(__file__).resolve().parent / BUNDLED_PDF_NAME
             if bundled_pdf_path.exists():
                 if st.button(f"Index bundled PDF: {BUNDLED_PDF_NAME}", use_container_width=True):
@@ -325,18 +313,15 @@ def main() -> None:
                 for src in st.session_state.processed_documents:
                     st.write(f"- {src}")
     else:
-        # still needed later for web fallback
         default_domains = ["arxiv.org", "wikipedia.org", "github.com", "medium.com"]
         search_domains = default_domains
 
-    # Chat input + force web toggle
     chat_col, toggle_col = st.columns([0.9, 0.1])
     with chat_col:
         prompt = st.chat_input("Ask about your documents..." if st.session_state.rag_enabled else "Ask me anything...")
     with toggle_col:
         st.session_state.force_web_search = st.toggle("Web", help="Force web search")
 
-    # Render history
     for msg in st.session_state.history:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
@@ -348,7 +333,6 @@ def main() -> None:
             st.info("Ask a question to chat locally with Llama.")
         return
 
-    # User message
     st.session_state.history.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
@@ -367,7 +351,6 @@ def main() -> None:
             context = "\n\n".join([d.page_content for d in docs])
             st.info(f"Found {len(docs)} relevant chunks (threshold {st.session_state.similarity_threshold}).")
 
-    # Web fallback
     if (st.session_state.force_web_search or not context) and st.session_state.use_web_search:
         if not st.session_state.exa_api_key:
             st.warning("Web search is enabled, but EXA_API_KEY is missing.")

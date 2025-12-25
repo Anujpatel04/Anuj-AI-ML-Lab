@@ -7,18 +7,15 @@ from pathlib import Path
 from dotenv import load_dotenv
 import sys
 
-# Add parent directory to path to import config (optional, for Azure OpenAI if needed)
 try:
     sys.path.insert(0, str(Path(__file__).parent.parent.parent))
     from config import get_azure_config, AZURE_KEY, AZURE_BASE_URL, AZURE_MODEL, API_VERSION
 except ImportError:
-    # Config not available, but we're using DeepSeek anyway
     AZURE_KEY = None
     AZURE_BASE_URL = None
     AZURE_MODEL = None
     API_VERSION = None
 
-# Load environment variables from .env file in root directory
 env_path = Path('/Users/anuj/Desktop/Anuj-AI-ML-Lab/.env')
 if not env_path.exists():
     root_dir = Path(__file__).parent.parent.parent
@@ -29,29 +26,21 @@ if env_path.exists():
 else:
     load_dotenv(override=True)
 
-# Get DeepSeek API key from environment
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "").strip()
 
-# Set Serper API key (hardcoded)
 SERPER_API_KEY = "2fa4e03c517e5df96ebdeb528ee6782b72217fdd"
 
-# Streamlit app setup
 st.set_page_config(page_title="AI Meeting Agent 📝", layout="wide")
 st.title("AI Meeting Preparation Agent 📝")
 
-# Show warning if DeepSeek API key is not found
 if not DEEPSEEK_API_KEY:
     st.error("⚠️ DEEPSEEK_API_KEY not found in .env file. Please add it to your .env file in the root directory.")
 
-# Check if API keys are available
 if DEEPSEEK_API_KEY:
-    # Set API keys as environment variables
     os.environ["OPENAI_API_KEY"] = DEEPSEEK_API_KEY
     os.environ["OPENAI_BASE_URL"] = "https://api.deepseek.com"
     os.environ["SERPER_API_KEY"] = SERPER_API_KEY
 
-    # Create DeepSeek LLM (OpenAI-compatible)
-    # CrewAI LLM uses OpenAI client, so we configure it via environment variables
     deepseek_llm = LLM(
         model="deepseek-chat",
         temperature=0.7,
@@ -59,14 +48,12 @@ if DEEPSEEK_API_KEY:
     )
     search_tool = SerperDevTool()
 
-    # Input fields
     company_name = st.text_input("Enter the company name:")
     meeting_objective = st.text_input("Enter the meeting objective:")
     attendees = st.text_area("Enter the attendees and their roles (one per line):")
     meeting_duration = st.number_input("Enter the meeting duration (in minutes):", min_value=15, max_value=180, value=60, step=15)
     focus_areas = st.text_input("Enter any specific areas of focus or concerns:")
 
-    # Define the agents
     context_analyzer = Agent(
         role='Meeting Context Specialist',
         goal='Analyze and summarize key background information for the meeting',
@@ -105,7 +92,6 @@ if DEEPSEEK_API_KEY:
         llm=deepseek_llm,
     )
 
-    # Define the tasks
     context_analysis_task = Task(
         description=f"""
         Analyze the context for the meeting with {company_name}, considering:
@@ -191,7 +177,6 @@ if DEEPSEEK_API_KEY:
         expected_output="A comprehensive executive brief including summary, key talking points, Q&A preparation, and strategic recommendations, formatted in markdown with main headings (H1), section headings (H2), and subsection headings (H3) where appropriate. Use bullet points, numbered lists, and emphasis (bold/italic) for key information."
     )
 
-    # Create the crew
     meeting_prep_crew = Crew(
         agents=[context_analyzer, industry_insights_generator, strategy_formulator, executive_briefing_creator],
         tasks=[context_analysis_task, industry_analysis_task, strategy_development_task, executive_brief_task],
@@ -199,7 +184,6 @@ if DEEPSEEK_API_KEY:
         process=Process.sequential
     )
 
-    # Run the crew when the user clicks the button
     if st.button("Prepare Meeting"):
         with st.spinner("AI agents are preparing your meeting..."):
             result = meeting_prep_crew.kickoff()        

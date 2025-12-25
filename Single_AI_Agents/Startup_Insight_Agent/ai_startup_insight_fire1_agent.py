@@ -2,168 +2,55 @@ from firecrawl import FirecrawlApp
 import streamlit as st
 import os
 import json
-from pathlib import Path
-from dotenv import load_dotenv
 from agno.agent import Agent
 from agno.run.agent import RunOutput
 from agno.models.openai import OpenAIChat
 
-# Load environment variables from .env file in root directory
-env_path = Path('/Users/anuj/Desktop/Anuj-AI-ML-Lab/.env')
-if not env_path.exists():
-    root_dir = Path(__file__).parent.parent.parent
-    env_path = root_dir / '.env'
-
-if env_path.exists():
-    load_dotenv(env_path, override=True)
-else:
-    load_dotenv(override=True)
-
-# Get DeepSeek API key from environment
-DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "").strip()
-
-# Set Firecrawl API key (hardcoded)
-FIRECRAWL_API_KEY = "fc-1f2b3a8e651549c0bfa02a1a53e2aad3"
-
-# Configure DeepSeek API (OpenAI-compatible)
-if DEEPSEEK_API_KEY:
-    os.environ["OPENAI_API_KEY"] = DEEPSEEK_API_KEY
-    os.environ["OPENAI_BASE_URL"] = "https://api.deepseek.com"
-
-# Set page configuration
 st.set_page_config(
-    page_title="AI Startup Insight Agent",
-    page_icon="🚀",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    page_title="Startup Info Extraction",
+    page_icon="🔍",
+    layout="wide"
 )
 
-# Custom CSS for professional UI
-st.markdown("""
-<style>
-    .main-header {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        padding: 2rem;
-        border-radius: 10px;
-        color: white;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-    .stButton button {
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        font-weight: bold;
-        border-radius: 10px;
-        padding: 0.75rem 2rem;
-        border: none;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        width: 100%;
-    }
-    .stButton button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-    .info-box {
-        background-color: #f0f2f6;
-        padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 4px solid #667eea;
-        margin: 1rem 0;
-    }
-    .success-box {
-        background-color: #d4edda;
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 4px solid #28a745;
-        margin: 1rem 0;
-    }
-    .error-box {
-        background-color: #f8d7da;
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 4px solid #dc3545;
-        margin: 1rem 0;
-    }
-</style>
-""", unsafe_allow_html=True)
+st.title("AI Startup Insight with Firecrawl's FIRE-1 Agent")
 
-# Main title
-st.markdown("""
-<div class="main-header">
-    <h1>🚀 AI Startup Insight Agent</h1>
-    <p>Powered by Firecrawl FIRE-1 & DeepSeek AI</p>
-</div>
-""", unsafe_allow_html=True)
-
-# Sidebar
 with st.sidebar:
-    st.header("📋 About")
-    st.markdown("""
-    This professional tool extracts comprehensive company information from websites 
-    using Firecrawl's FIRE-1 agent and provides AI-powered business analysis.
-    """)
+    st.header("API Configuration")
+    firecrawl_api_key = st.text_input("Firecrawl API Key", type="password")
+    openai_api_key = st.text_input("OpenAI API Key", type="password")
+    st.caption("Your API keys are securely stored and not shared.")
     
     st.markdown("---")
-    st.markdown("### 🔄 How It Works")
-    st.markdown("""
-    1. **🔍 FIRE-1 Agent** - Extracts structured data from websites
-    2. **🧠 DeepSeek AI** - Analyzes data for business insights
-    3. **📊 Results** - Professional presentation of findings
-    """)
+    st.markdown("### About")
+    st.markdown("This tool extracts company information from websites using Firecrawl's FIRE-1 agent and provides AI-powered business analysis.")
     
-    st.markdown("---")
-    st.markdown("### ⚙️ Configuration")
-    if DEEPSEEK_API_KEY:
-        st.success("✅ DeepSeek API: Configured")
-    else:
-        st.error("❌ DeepSeek API: Not found in .env")
-    
-    st.success("✅ Firecrawl API: Configured")
-    
-    st.markdown("---")
-    st.markdown("### 📚 Features")
-    st.markdown("""
-    - Advanced web extraction
-    - AI-powered analysis
-    - Multi-URL processing
-    - Structured data output
-    """)
+    st.markdown("### How It Works")
+    st.markdown("1. 🔍 **FIRE - 1 Agent** extracts structured data from websites")
+    st.markdown("2. 🧠 **Agno Agent** analyzes the data for business insights")
+    st.markdown("3. 📊 **Results** are presented in an organized format")
     
 
-# Show warning if DeepSeek API key is not found
-if not DEEPSEEK_API_KEY:
-    st.error("⚠️ **DEEPSEEK_API_KEY not found in .env file.** Please add it to your .env file in the root directory.")
-
-# Main content
-st.markdown("## 🔥 Firecrawl FIRE-1 Agent Capabilities")
+st.markdown("## 🔥 Firecrawl FIRE 1 Agent Capabilities")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.info("**🌐 Advanced Web Extraction**\n\nFirecrawl's FIRE-1 agent intelligently navigates websites to extract structured data from complex layouts and dynamic content.")
+    st.info("**Advanced Web Extraction**\n\nFirecrawl's FIRE 1 agent combined with the extract endpoint can intelligently navigate websites to extract structured data, even from complex layouts and dynamic content.")
     
-    st.success("**🖱️ Interactive Navigation**\n\nThe agent interacts with buttons, links, input fields, and dynamic elements to access comprehensive information.")
+    st.success("**Interactive Navigation**\n\nThe agent can interact with buttons, links, input fields, and other dynamic elements to access hidden information.")
 
 with col2:
-    st.warning("**📄 Multi-page Processing**\n\nFIRE handles pagination and multi-step processes, gathering data across entire websites.")
+    st.warning("**Multi-page Processing**\n\nFIRE can handle pagination and multi-step processes, allowing it to gather comprehensive data across entire websites.")
     
-    st.info("**📊 Intelligent Data Structuring**\n\nThe agent automatically structures extracted information according to your specified schema for immediate use.")
+    st.error("**Intelligent Data Structuring**\n\nThe agent automatically structures extracted information according to your specified schema, making it immediately usable.")
 
 st.markdown("---")
 
-# Input section
-st.markdown("## 🌐 Enter Website URLs")
-st.markdown("Provide one or more company website URLs (one per line) to extract comprehensive information.")
+st.markdown("### 🌐 Enter Website URLs")
+st.markdown("Provide one or more company website URLs (one per line) to extract information.")
 
-website_urls = st.text_area(
-    "Website URLs (one per line)", 
-    placeholder="https://example.com\nhttps://another-company.com",
-    height=120,
-    help="Enter one or more website URLs, each on a new line"
-)
+website_urls = st.text_area("Website URLs (one per line)", placeholder="https://example.com\nhttps://another-company.com")
 
-# Define a JSON schema directly without Pydantic
 extraction_schema = {
     "type": "object",
     "properties": {
@@ -196,57 +83,53 @@ extraction_schema = {
 
 
 
-# Start extraction when button is clicked
+st.markdown("""
+<style>
+.stButton button {
+    background-color: #FF4B4B;
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+.stButton button:hover {
+    background-color: #FF2B2B;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+.css-1r6slb0 {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+</style>
+""", unsafe_allow_html=True)
+
 if st.button("🚀 Start Analysis", type="primary"):
-    if not DEEPSEEK_API_KEY:
-        st.error("⚠️ Please configure DEEPSEEK_API_KEY in your .env file before proceeding.")
-    elif not website_urls.strip():
-        st.error("❌ Please enter at least one website URL")
+    if not website_urls.strip():
+        st.error("Please enter at least one website URL")
     else:
         try:
-            with st.spinner("🔍 Initializing Firecrawl agent..."):
-                # Initialize the FirecrawlApp with the API key
-                app = FirecrawlApp(api_key=FIRECRAWL_API_KEY)
+            with st.spinner("Extracting information from website..."):
+                app = FirecrawlApp(api_key=firecrawl_api_key)
                 
-                # Parse the input URLs more robustly
-                # Split by newline, strip whitespace from each line, and filter out empty lines
+
                 urls = [url.strip() for url in website_urls.split('\n') if url.strip()]
                 
-                # Debug: Show the parsed URLs
                 st.info(f"Attempting to process these URLs: {urls}")
                 
                 if not urls:
-                    st.error("❌ No valid URLs found after parsing. Please check your input.")
+                    st.error("No valid URLs found after parsing. Please check your input.")
+                elif not openai_api_key:
+                    st.warning("Please provide an OpenAI API key in the sidebar to get AI analysis.")
                 else:
-                    # Create tabs for each URL
-                    tabs = st.tabs([f"Website {i+1}: {url[:50]}..." if len(url) > 50 else f"Website {i+1}: {url}" for i, url in enumerate(urls)])
+                    tabs = st.tabs([f"Website {i+1}: {url}" for i, url in enumerate(urls)])
                     
-                    # Initialize the Agno agent once (outside the loop)
-                    # Patch to convert developer role to system role for DeepSeek compatibility
-                    try:
-                        from agno.models.openai.chat import OpenAIChat as OpenAIChatClass
-                        original_format_message = OpenAIChatClass._format_message
-                        
-                        def patched_format_message(self, message):
-                            """Patch to convert developer role to system role for DeepSeek compatibility"""
-                            formatted = original_format_message(self, message)
-                            if isinstance(formatted, dict):
-                                if formatted.get('role') == 'developer':
-                                    formatted['role'] = 'system'
-                            elif hasattr(formatted, 'role') and formatted.role == 'developer':
-                                formatted.role = 'system'
-                            return formatted
-                        
-                        OpenAIChatClass._format_message = patched_format_message
-                    except Exception:
-                        pass
-                    
+                    if openai_api_key:
                         agno_agent = Agent(
-                        model=OpenAIChat(
-                            id="deepseek-chat",
-                            api_key=DEEPSEEK_API_KEY,
-                            base_url="https://api.deepseek.com"
-                        ),
+                            model=OpenAIChat(id="gpt-4o", api_key=openai_api_key),
                             instructions="""You are an expert business analyst who provides concise, insightful summaries of companies.
                             You will be given structured data about a company including its name, description, mission, and product features.
                             Your task is to analyze this information and provide a brief, compelling summary that highlights:
@@ -259,17 +142,17 @@ if st.button("🚀 Start Analysis", type="primary"):
                             markdown=True
                         )
                     
-                    # Process each URL one at a time
                     for i, (url, tab) in enumerate(zip(urls, tabs)):
                         with tab:
                             st.markdown(f"### 🔍 Analyzing: {url}")
-                            st.markdown("---")
+                            st.markdown("<hr style='border: 2px solid #FF4B4B; border-radius: 5px;'>", unsafe_allow_html=True)
                             
                             with st.spinner(f"FIRE agent is extracting information from {url}..."):
                                 try:
-                                    # Extract data for this single URL
-                                    # Firecrawl extract method takes parameters directly, not in a params dict
-                                    extraction_prompt = '''
+                                    data = app.extract(
+                                        [url],  # Pass as a list with a single URL
+                                        params={
+                                            'prompt': '''
 Analyze this company website thoroughly and extract comprehensive information.
 
 1. Company Information:
@@ -299,77 +182,48 @@ Important guidelines:
 - If information is not available, do not make assumptions
 - For each piece of information, provide a brief, simple explanation of what it means and why it's important
 - Include a layman's explanation of what the company does, as if explaining to someone with no prior knowledge of the industry or technology involved
-'''
-                                    
-                                    # Call extract with parameters as keyword arguments
-                                    # The extract method signature: extract(urls, prompt, schema, agent, ...)
-                                    try:
-                                        from firecrawl.v2.types import AgentOptions
-                                        agent_options = AgentOptions(model="FIRE-1")
-                                    except (ImportError, TypeError):
-                                        # Fallback: use dict if AgentOptions not available or doesn't work
-                                        agent_options = {"model": "FIRE-1"}
-                                    
-                                    data = app.extract(
-                                        urls=[url],
-                                        prompt=extraction_prompt,
-                                        schema=extraction_schema,
-                                        agent=agent_options
+''',
+                                            'schema': extraction_schema,
+                                            'agent': {"model": "FIRE-1"}
+                                        }
                                     )
                                     
-                                    # Check if extraction was successful
-                                    # ExtractResponse is a Pydantic model, access attributes directly
-                                    if data and data.data:
-                                        # Display extracted data
+                                    if data and data.get('data'):
                                         st.subheader("📊 Extracted Information")
-                                        company_data = data.data
+                                        company_data = data.get('data')
                                         
-                                        # Display company name prominently
-                                        if 'company_name' in company_data and company_data['company_name']:
-                                            st.markdown(f"### 🏢 {company_data['company_name']}")
-                                            st.markdown("---")
+                                        if 'company_name' in company_data:
+                                            st.markdown(f"{company_data['company_name']}")
+                                            
                                         
-                                        # Display other extracted fields in a professional format
                                         for key, value in company_data.items():
                                             if key == 'company_name':
                                                 continue  # Already displayed above
                                                 
-                                            display_key = key.replace('_', ' ').title()
+                                            display_key = key.replace('_', ' ').capitalize()
                                             
                                             if value:  # Only display if there's a value
-                                                with st.container():
                                                 if isinstance(value, list):
-                                                        st.markdown(f"#### {display_key}")
+                                                    st.markdown(f"**{display_key}:**")
                                                     for item in value:
-                                                            st.markdown(f"• {item}")
+                                                        st.markdown(f"- {item}")
                                                 elif isinstance(value, str):
-                                                        st.markdown(f"#### {display_key}")
-                                                        st.markdown(f"{value}")
+                                                    st.markdown(f"**{display_key}:** {value}")
                                                 elif isinstance(value, bool):
-                                                        st.markdown(f"**{display_key}:** {'Yes' if value else 'No'}")
+                                                    st.markdown(f"**{display_key}:** {str(value)}")
                                                 else:
-                                                        st.markdown(f"**{display_key}:** {value}")
-                                                    st.markdown("---")
+                                                    st.write(f"**{display_key}:**", value)
                                         
-                                        # Process with Agno agent
-                                        with st.spinner("🧠 Generating AI-powered business analysis..."):
-                                            try:
-                                                # Run the agent with the extracted data
+                                        if openai_api_key:
+                                            with st.spinner("Generating AI analysis..."):
                                                 agent_response: RunOutput = agno_agent.run(f"Analyze this company data and provide insights: {json.dumps(company_data)}")
                                                 
-                                                # Display the agent's analysis in a highlighted box
                                                 st.subheader("🧠 AI Business Analysis")
-                                                st.markdown("---")
                                                 st.markdown(agent_response.content)
-                                            except Exception as e:
-                                                st.warning(f"⚠️ AI analysis could not be generated: {str(e)}")
                                         
-                                        # Show raw data in expander
                                         with st.expander("🔍 View Raw API Response"):
-                                            # Convert Pydantic model to dict for JSON display
-                                            st.json(data.model_dump() if hasattr(data, 'model_dump') else data.dict() if hasattr(data, 'dict') else str(data))
+                                            st.json(data)
                                             
-                                        # Add processing details
                                         with st.expander("ℹ️ Processing Details"):
                                             st.markdown("**FIRE Agent Actions:**")
                                             st.markdown("- 🔍 Scanned website content and structure")
@@ -377,19 +231,15 @@ Important guidelines:
                                             st.markdown("- 📊 Extracted and structured data according to schema")
                                             st.markdown("- 🧠 Applied AI reasoning to identify relevant information")
                                             
-                                            if data.status:
-                                                st.markdown(f"**Status:** {data.status}")
-                                            if data.expires_at:
-                                                st.markdown(f"**Data Expires:** {data.expires_at}")
-                                            if data.id:
-                                                st.markdown(f"**Extraction ID:** {data.id}")
+                                            if 'status' in data:
+                                                st.markdown(f"**Status:** {data['status']}")
+                                            if 'expiresAt' in data:
+                                                st.markdown(f"**Data Expires:** {data['expiresAt']}")
                                     else:
-                                        st.error(f"❌ No data was extracted from {url}. The website might be inaccessible, or the content structure may not match the expected format.")
+                                        st.error(f"No data was extracted from {url}. The website might be inaccessible, or the content structure may not match the expected format.")
                                         
                                 except Exception as e:
-                                    st.error(f"❌ Error processing {url}: {str(e)}")
-                                    st.exception(e)
+                                    st.error(f"Error processing {url}: {str(e)}")
         except Exception as e:
-            st.error(f"❌ Error during extraction: {str(e)}")
-            st.exception(e)
+            st.error(f"Error during extraction: {str(e)}")
 

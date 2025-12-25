@@ -27,7 +27,7 @@ def main():
     X_test_scaled = scaler.transform(X_test)
 
     svm_clf = SVC(
-        kernel='rbf',      # 'linear', 'poly', 'rbf'
+        kernel='rbf',
         C=1.0,
         gamma='scale',
         decision_function_shape='ovr',
@@ -44,7 +44,6 @@ def main():
     print("\nClassification Report:")
     print(classification_report(y_test, y_test_pred))
 
-    # Confusion Matrix Plot
     plt.figure(figsize=(6, 5))
     sns.heatmap(
         confusion_matrix(y_test, y_test_pred),
@@ -58,7 +57,6 @@ def main():
     plt.tight_layout()
     plt.show()
 
-    # Classification Boundary Plot
     X_range = np.linspace(X['MedInc'].min(), X['MedInc'].max(), 300).reshape(-1, 1)
     X_range_scaled = scaler.transform(X_range)
     y_range_pred = svm_clf.predict(X_range_scaled)

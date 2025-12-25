@@ -7,13 +7,11 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
 from scipy.cluster.hierarchy import dendrogram, linkage
 
-# Load Data
 data = load_iris()
 df = pd.DataFrame(data.data, columns=data.feature_names)
 
 X = df[['sepal length (cm)', 'sepal width (cm)']]
 
-# Scale the data
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
@@ -25,7 +23,6 @@ print("Silhouette Score:", silhouette_score(X_scaled, labels))
 
 df['Cluster'] = labels
 
-# Plot
 plt.figure(figsize=(10, 6))
 plt.scatter(X.iloc[:, 0], X.iloc[:, 1], c=labels, cmap='viridis', s=50, alpha=0.7)
 
@@ -34,8 +31,6 @@ plt.ylabel("Sepal Width (cm)")
 plt.title("Hierarchical (Agglomerative) Clustering on Iris Dataset (2 Features)")
 plt.show()
 
-
-# ------------- Dendrogram -------------
 plt.figure(figsize=(10, 6))
 linked = linkage(X_scaled, method='ward')
 

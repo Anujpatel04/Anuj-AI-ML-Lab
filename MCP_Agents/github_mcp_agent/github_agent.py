@@ -11,20 +11,14 @@ from agno.run.agent import RunOutput
 from agno.tools.mcp import MCPTools
 from mcp import StdioServerParameters
 
-# Suppress known MCP client cleanup warnings
 logging.getLogger("mcp").setLevel(logging.ERROR)
 warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*cancel scope.*")
 
-# Add root directory to path to access shared config
-# github_agent.py is in MCP_Agents/github_mcp_agent/
-# So we need to go up 2 levels to reach the root
 try:
     script_dir = Path(__file__).resolve().parent
     root_dir = script_dir.parent.parent
 except (NameError, AttributeError):
-    # If __file__ is not available, try multiple approaches
     script_dir = Path.cwd()
-    # Try to find the root by looking for config.py
     root_dir = script_dir
     max_depth = 10
     depth = 0
@@ -34,11 +28,9 @@ except (NameError, AttributeError):
         root_dir = root_dir.parent
         depth += 1
 
-# Add root to path if not already there
 if str(root_dir) not in sys.path:
     sys.path.insert(0, str(root_dir))
 
-# Try to load shared Azure config
 USE_SHARED_CONFIG = False
 AZURE_KEY = None
 AZURE_BASE_URL = None
@@ -48,7 +40,6 @@ AZURE_MODEL = "gpt-4o"
 try:
     config_path = root_dir / "config.py"
     if config_path.exists():
-        # Import using the absolute path
         import importlib.util
         spec = importlib.util.spec_from_file_location("config", config_path)
         config_module = importlib.util.module_from_spec(spec)
@@ -63,7 +54,6 @@ try:
         if AZURE_KEY:
             USE_SHARED_CONFIG = True
 except (ImportError, Exception) as e:
-    # If import fails, try to load from environment variables
     USE_SHARED_CONFIG = False
 
 st.set_page_config(page_title="GitHub MCP Agent", page_icon="", layout="wide")
@@ -71,12 +61,10 @@ st.set_page_config(page_title="GitHub MCP Agent", page_icon="", layout="wide")
 st.markdown("<h1 class='main-header'>GitHub MCP Agent</h1>", unsafe_allow_html=True)
 st.markdown("Explore GitHub repositories with natural language using the Model Context Protocol")
 
-# Load Azure OpenAI config automatically (no user input needed)
 if USE_SHARED_CONFIG and AZURE_KEY:
     os.environ["OPENAI_API_KEY"] = AZURE_KEY
     openai_key = AZURE_KEY
 else:
-    # Fallback: try to get from environment
     openai_key = os.getenv("OPENAI_API_KEY")
     if not openai_key:
         st.error("Azure OpenAI not configured. Please check config.py or set OPENAI_API_KEY environment variable.")
@@ -85,7 +73,6 @@ else:
 with st.sidebar:
     st.header("Authentication")
     
-    # Show Azure OpenAI status
     if USE_SHARED_CONFIG and AZURE_KEY:
         st.success("Azure OpenAI configured from shared config")
     else:
@@ -96,7 +83,6 @@ with st.sidebar:
     if github_token:
         os.environ["GITHUB_TOKEN"] = github_token
     
-    # Check Docker status
     st.markdown("---")
     st.markdown("### System Status")
     import subprocess
@@ -200,41 +186,33 @@ async def run_github_agent(message):
             }
         )
         
-        # Redirect stderr to suppress MCP client cleanup errors
         import contextlib
         import sys
         from io import StringIO
         
-        # Create a custom stderr redirector that filters out known cleanup errors
         class FilteredStderr:
             def __init__(self, original_stderr):
                 self.original_stderr = original_stderr
                 self.buffer = StringIO()
-                self.error_lines = []  # Buffer to check multi-line errors
+                self.error_lines = []
                 
             def write(self, text):
-                # Buffer the text to check for multi-line error patterns
                 self.error_lines.append(text)
                 
-                # Check if this is part of the known cleanup error
-                full_text = ''.join(self.error_lines[-10:])  # Check last 10 lines
+                full_text = ''.join(self.error_lines[-10:])
                 
-                # Filter out known non-fatal cleanup errors
                 if any(keyword in full_text.lower() for keyword in [
                     "cancel scope", "different task", "async_generator", 
                     "stdio_client", "an error occurred during closing",
                     "exception group", "generatorexit", "runtimeerror: attempted to exit",
                     "attempted to exit cancel scope"
                 ]):
-                    # Suppress these errors - they're non-fatal cleanup issues
-                    self.error_lines = []  # Clear buffer after suppressing
-                    return len(text)  # Return length to pretend we wrote it
+                    self.error_lines = []
+                    return len(text)
                 
-                # If buffer gets too large, flush old lines
                 if len(self.error_lines) > 20:
                     self.error_lines = self.error_lines[-10:]
                 
-                # Write everything else to original stderr
                 return self.original_stderr.write(text)
                 
             def flush(self):
@@ -243,7 +221,6 @@ async def run_github_agent(message):
             def __getattr__(self, name):
                 return getattr(self.original_stderr, name)
         
-        # Use filtered stderr during MCP operations
         original_stderr = sys.stderr
         filtered_stderr = FilteredStderr(original_stderr)
         
@@ -251,14 +228,9 @@ async def run_github_agent(message):
             sys.stderr = filtered_stderr
         
         async with MCPTools(server_params=server_params) as mcp_tools:
-                # Configure Azure OpenAI if using shared config
-                # agno uses environment variables for OpenAI configuration
                 if USE_SHARED_CONFIG and AZURE_BASE_URL:
                     os.environ["OPENAI_API_KEY"] = AZURE_KEY
                     os.environ["OPENAI_BASE_URL"] = AZURE_BASE_URL
-                    # Azure OpenAI requires api-version as query parameter
-                    # Set it via base_url with query string or use default_query
-                    # For agno, we'll set it in the base_url
                     if "?" not in AZURE_BASE_URL:
                         azure_base_url_with_version = f"{AZURE_BASE_URL}?api-version={API_VERSION}"
                     else:
@@ -282,12 +254,9 @@ async def run_github_agent(message):
             response: RunOutput = await asyncio.wait_for(agent.arun(message), timeout=120.0)
                 result = response.content
         finally:
-            # Restore original stderr and give cleanup time to complete
             sys.stderr = original_stderr
-            await asyncio.sleep(0.2)  # Small delay to let cleanup complete
-            # Restore original stderr
+            await asyncio.sleep(0.2)
             sys.stderr = original_stderr
-            # Give a small delay for cleanup to complete
             await asyncio.sleep(0.1)
         
         return result
@@ -299,11 +268,8 @@ async def run_github_agent(message):
             return "Error: Docker is not running. Please start Docker Desktop and try again."
         return f"Error: {str(e)}"
     except RuntimeError as e:
-        # Handle async cleanup errors that are non-fatal
         error_msg = str(e)
         if "cancel scope" in error_msg.lower() or "different task" in error_msg.lower():
-            # This is a known MCP client cleanup issue, but the query may have succeeded
-            # Check if we can still get a result or return a helpful message
             return "Warning: Connection cleanup issue occurred. Please try your query again."
         raise
     except Exception as e:

@@ -11,7 +11,6 @@ df = pd.DataFrame(data.data, columns=data.feature_names)
 df['Target'] = data.target
 
 
-# Create 3 classes based on quantiles
 df['Target_Class'] = pd.qcut(df['Target'], q=3, labels=['Low', 'Medium', 'High'])
 X = df[['MedInc']]                    
 y = df['Target_Class']     
@@ -26,7 +25,6 @@ clf.fit(X_train, y_train)
 
 y_pred = clf.predict(X_test)
 
-# Evaluation
 print("\nDecision Tree Classification Metrics:")
 print(f"Accuracy: {accuracy_score(y_test, y_pred):.4f}")
 print("\nClassification Report:")

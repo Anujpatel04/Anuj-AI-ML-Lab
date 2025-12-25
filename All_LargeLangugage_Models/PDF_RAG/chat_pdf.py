@@ -6,7 +6,6 @@ from embedchain import App
 from dotenv import load_dotenv
 from streamlit_chat import message
 
-# Page configuration for Streamlit Cloud
 st.set_page_config(
     page_title="PDF Chat Assistant",
     page_icon="📄",
@@ -14,7 +13,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for better styling
 st.markdown("""
     <style>
     .main-header {
@@ -58,10 +56,8 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Load environment variables - support both .env file and Streamlit secrets
 def get_api_key():
     """Get API key from Streamlit secrets (for Cloud) or .env file (for local)"""
-    # First, try Streamlit secrets (for Streamlit Cloud)
     try:
         if hasattr(st, 'secrets') and st.secrets is not None:
             if 'DEEPSEEK_API_KEY' in st.secrets:
@@ -71,7 +67,6 @@ def get_api_key():
     except Exception:
         pass
     
-    # Fallback to .env file (for local development)
     try:
         script_dir = os.path.dirname(os.path.abspath(__file__))
         root_dir = os.path.dirname(script_dir)
@@ -83,7 +78,6 @@ def get_api_key():
     api_key = os.getenv("DEEPSEEK_API_KEY", "").strip()
     return api_key if api_key and api_key != "your-deepseek-api-key-here" else None
 
-# Initialize session state
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 if 'app' not in st.session_state:
@@ -136,18 +130,14 @@ def reset_app():
             pass
     st.session_state.db_path = None
 
-# Get API key
 DEEPSEEK_API_KEY = get_api_key()
 
-# Header
 st.markdown('<h1 class="main-header">📄 PDF Chat Assistant</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Ask questions about your PDF documents using AI-powered chat</p>', unsafe_allow_html=True)
 
-# Sidebar
 with st.sidebar:
     st.header("⚙️ Settings")
     
-    # API Key Status
     if DEEPSEEK_API_KEY:
         st.success("✅ API Key Configured")
     else:
@@ -168,7 +158,6 @@ with st.sidebar:
     
     st.divider()
     
-    # PDF Status
     if st.session_state.pdf_uploaded:
         st.success(f"📄 PDF Loaded: {st.session_state.pdf_name}")
     else:
@@ -176,7 +165,6 @@ with st.sidebar:
     
     st.divider()
     
-    # Action buttons
     col1, col2 = st.columns(2)
     with col1:
         if st.button("🗑️ Clear Chat", use_container_width=True):
@@ -190,10 +178,8 @@ with st.sidebar:
     
     st.divider()
     
-    # Info
     st.caption("💡 **Tip:** Upload a PDF and ask questions about its content")
 
-# Main content area
 if not DEEPSEEK_API_KEY:
     st.error("⚠️ **API Key Required**")
     st.info("""
@@ -214,12 +200,10 @@ if not DEEPSEEK_API_KEY:
     ```
     """)
 else:
-    # Initialize app if not already done
     if st.session_state.app is None:
         st.session_state.db_path = tempfile.mkdtemp()
         st.session_state.app = embedchain_bot(st.session_state.db_path, DEEPSEEK_API_KEY)
     
-    # PDF Upload Section
     st.subheader("📤 Upload PDF Document")
     pdf_file = st.file_uploader(
         "Choose a PDF file",
@@ -229,7 +213,6 @@ else:
     )
     
     if pdf_file is not None:
-        # Check if it's a new file
         if not st.session_state.pdf_uploaded or st.session_state.pdf_name != pdf_file.name:
             with st.spinner("📥 Processing PDF... This may take a moment."):
                 try:
@@ -244,13 +227,11 @@ else:
                     st.session_state.pdf_name = pdf_file.name
                     st.success(f"✅ **{pdf_file.name}** has been successfully loaded!")
                     
-                    # Clear previous chat when new PDF is uploaded
                     st.session_state.messages = []
                 except Exception as e:
                     st.error(f"❌ Error processing PDF: {str(e)}")
                     st.session_state.pdf_uploaded = False
         
-        # Show uploaded file info
         if st.session_state.pdf_uploaded:
             st.markdown(f"""
             <div class="uploaded-file">
@@ -260,13 +241,11 @@ else:
     
     st.divider()
     
-    # Chat Section
     st.subheader("💬 Chat with Your PDF")
     
     if not st.session_state.pdf_uploaded:
         st.info("👆 Please upload a PDF file first to start chatting")
     else:
-        # Display chat history
         chat_container = st.container()
         with chat_container:
             if st.session_state.messages:
@@ -278,14 +257,11 @@ else:
             else:
                 st.info("👋 Hi! I'm ready to answer questions about your PDF. What would you like to know?")
         
-        # Chat input
         user_input = st.chat_input("Ask a question about your PDF...")
         
         if user_input and st.session_state.pdf_uploaded:
-            # Add user message to history
             st.session_state.messages.append({"role": "user", "content": user_input})
             
-            # Get response
             with st.spinner("🤔 Thinking..."):
                 try:
                     response = st.session_state.app.chat(user_input)
@@ -297,6 +273,5 @@ else:
             
             st.rerun()
 
-# Footer
 st.markdown("---")
 st.caption("Powered by DeepSeek AI | Built with Streamlit & EmbedChain")
