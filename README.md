@@ -4,7 +4,7 @@ A comprehensive collection of AI agents, RAG applications, and machine learning 
 
 ## Status
 
->** Active Development: This repository is under active development and undergoes frequent changes.  
+> Active Development: This repository is under active development and undergoes frequent changes.  
 If you find this project useful, please consider **starring** and **forking** to stay updated with the latest features and experiment with your own modifications.
 
 ## Overview
