@@ -62,6 +62,7 @@ streamlit.log
 *.ckpt
 models/
 data/
+!All_LargeLangugage_Models/chat-with-tarots/data/
 datasets/
 *.db
 *.sqlite
