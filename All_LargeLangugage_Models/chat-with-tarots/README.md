@@ -2,8 +2,6 @@
 
 An AI-powered tarot reading application that combines local language models with traditional tarot card interpretations to provide personalized readings based on natural language queries.
 
-This project is part of the [Anuj AI/ML Lab](https://github.com/Anujpatel04/Anuj-AI-ML-Lab) repository.
-
 ## Overview
 
 This application uses a local AI model (phi4 via Ollama) to analyze tarot card draws and provide contextual interpretations. Users can ask questions in natural language, and the system will draw cards, analyze their meanings, and generate insights based on traditional tarot symbolism.
