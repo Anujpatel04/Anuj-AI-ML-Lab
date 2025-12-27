@@ -9,7 +9,7 @@ judgement_dir = os.path.join(input_dataset_dir, "IN-Ext/judgement/")
 full_summary_dir = os.path.join(input_dataset_dir, "IN-Ext/summary/full/")
 segment_summary_dir = os.path.join(input_dataset_dir, "IN-Ext/summary/segment-wise/")
 output_dir = os.path.join(output_dataset_dir, "processed-IN-Ext/")
-os.makedirs(output_dir, exist_ok=True)  # Create output directory if it doesn't exist
+os.makedirs(output_dir, exist_ok=True)  
 
 def load_full_summaries(judgement_dir, full_summary_dir, author):
     """
@@ -41,7 +41,7 @@ def load_segment_summaries(segment_summary_dir, author):
             for segment in segments:
                 segment_path = os.path.join(segment_summary_dir, author, segment, filename)
                 if os.path.exists(segment_path):
-                    # Try reading with UTF-8, fallback to Latin-1 if decoding fails
+                    
                     try:
                         with open(segment_path, "r", encoding="utf-8") as f:
                             segment_text[segment] = f.read()
