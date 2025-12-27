@@ -2,8 +2,6 @@ import os
 import json
 from tqdm import tqdm
 
-# Define paths for input and output directories
-# Using absolute paths - input data is in LegalDocs/dataset, output goes to FineTunning_Projects/dataset
 input_dataset_dir = "/Users/anuj/Desktop/Anuj-AI-ML-Lab/FineTunning_Projects/LegalDocs/dataset"
 output_dataset_dir = "/Users/anuj/Desktop/Anuj-AI-ML-Lab/FineTunning_Projects/dataset"
 
@@ -53,7 +51,6 @@ def load_segment_summaries(segment_summary_dir, author):
             data.append({"filename": filename, "segments": segment_text, "author": author})
     return data
 
-# Load full and segment summaries
 print("Loading full summaries...")
 full_summaries_A1 = load_full_summaries(judgement_dir, full_summary_dir, "A1")
 full_summaries_A2 = load_full_summaries(judgement_dir, full_summary_dir, "A2")
@@ -62,10 +59,8 @@ print("Loading segment-wise summaries...")
 segment_summaries_A1 = load_segment_summaries(segment_summary_dir, "A1")
 segment_summaries_A2 = load_segment_summaries(segment_summary_dir, "A2")
 
-# Save the datasets
 print("Saving datasets...")
 
-# Save full summaries
 with open(os.path.join(output_dir, "full_summaries_A1.jsonl"), "w", encoding="utf-8") as f:
     for item in full_summaries_A1:
         f.write(json.dumps(item) + "\n")
@@ -74,7 +69,6 @@ with open(os.path.join(output_dir, "full_summaries_A2.jsonl"), "w", encoding="ut
     for item in full_summaries_A2:
         f.write(json.dumps(item) + "\n")
 
-# Save segment summaries
 with open(os.path.join(output_dir, "segment_summaries_A1.jsonl"), "w", encoding="utf-8") as f:
     for item in segment_summaries_A1:
         f.write(json.dumps(item) + "\n")

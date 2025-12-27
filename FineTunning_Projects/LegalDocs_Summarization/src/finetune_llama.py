@@ -5,18 +5,14 @@ from datasets import Dataset, concatenate_datasets
 from trl import SFTTrainer, SFTConfig  # Import SFTTrainer from trl
 from peft import LoraConfig, get_peft_model
 
-# Set up directories
-# Using absolute paths
 preprocessed_data_dir = "/Users/anuj/Desktop/Anuj-AI-ML-Lab/FineTunning_Projects/dataset/processed-IN-Ext/"
 output_dir = "/Users/anuj/Desktop/Anuj-AI-ML-Lab/FineTunning_Projects/LegalDocs/results_lora"
 model_save_dir = "/Users/anuj/Desktop/Anuj-AI-ML-Lab/FineTunning_Projects/LegalDocs/fine_tuned_lora_model"
 
-# Load the tokenizer and model
 model_name = "meta-llama/Llama-2-7b-hf"  # Replace with your model name
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token  # Set padding token to eos_token
 
-# Load model with 8-bit quantization (requires bitsandbytes)
 from transformers import BitsAndBytesConfig
 quantization_config = BitsAndBytesConfig(
     load_in_8bit=True,
@@ -28,7 +24,6 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map="auto"
 )
 
-# Set up LoRA configuration
 lora_config = LoraConfig(
     lora_alpha=8,          # Scaling factor for low-rank matrices
     lora_dropout=0.1,      # Dropout rate for LoRA layers
@@ -37,13 +32,10 @@ lora_config = LoraConfig(
     task_type="CAUSAL_LM"  # Task type for causal language modeling
 )
 
-# Apply LoRA to the model
 model = get_peft_model(model, lora_config)
 
-# Print the number of trainable parameters
 model.print_trainable_parameters()
 
-# Load and preprocess the dataset
 def load_dataset(jsonl_file):
     """
     Load preprocessed data and format it into a structured text field.
@@ -51,10 +43,8 @@ def load_dataset(jsonl_file):
     with open(jsonl_file, "r", encoding="utf-8") as f:
         data = [json.loads(line) for line in f]
 
-    # Define a system prompt (instruction)
     system_prompt = "Summarize the following legal text."
 
-    # Format each example with clear distinction
     texts = []
     for item in data:
         text = f"""### Instruction: {system_prompt}
@@ -67,21 +57,17 @@ def load_dataset(jsonl_file):
 """.strip()
         texts.append(text)
 
-    # Create a dataset with a single "text" column
     dataset = Dataset.from_dict({"text": texts})
     return dataset
 
-# Load datasets
 train_file_A1 = os.path.join(preprocessed_data_dir, "full_summaries_A1.jsonl")
 train_file_A2 = os.path.join(preprocessed_data_dir, "full_summaries_A2.jsonl")
 
 train_dataset_A1 = load_dataset(train_file_A1)
 train_dataset_A2 = load_dataset(train_file_A2)
 
-# Combine datasets
 train_data = concatenate_datasets([train_dataset_A1, train_dataset_A2])
 
-# Set up training parameters
 train_params = SFTConfig(
     output_dir=output_dir,                # Output directory for model checkpoints
     num_train_epochs=3,                  # Number of epochs
@@ -103,7 +89,6 @@ train_params = SFTConfig(
     max_seq_length=4096                  # Maximum sequence length for input text
 )
 
-# Initialize Trainer with LoRA model
 fine_tuning = SFTTrainer(
     model=model,
     train_dataset=train_data,
@@ -112,11 +97,9 @@ fine_tuning = SFTTrainer(
     args=train_params
 )
 
-# Start fine-tuning the model
 print("Starting fine-tuning...")
 fine_tuning.train()
 
-# Save the fine-tuned model
 print("Saving the fine-tuned model...")
 os.makedirs(model_save_dir, exist_ok=True)
 model.save_pretrained(model_save_dir)
