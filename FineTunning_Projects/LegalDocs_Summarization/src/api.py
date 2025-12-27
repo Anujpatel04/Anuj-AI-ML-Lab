@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from rag_pipeline import pipeline  # Import the RAG pipeline function
+from rag_pipeline import pipeline  
 import uvicorns
 
 app = FastAPI()
