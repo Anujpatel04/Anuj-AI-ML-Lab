@@ -1,0 +1,53 @@
+# Dataset files (too large for git)
+dataset/
+dataset 2/
+datasets/
+*.zip
+
+# Model files
+fine_tuned_lora_model/
+results_lora/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# Training outputs
+checkpoints/
+logs/
+runs/
+wandb/
+
+# Processed data (can be regenerated)
+processed-*/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment
+.env
+.venv
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Temporary files
+*.tmp
+*.bak
+*.log
