@@ -4,17 +4,20 @@ A comprehensive collection of AI agents, RAG applications, and machine learning 
 
 ## Status
 
->  Active Development: This repository is under active development and undergoes frequent changes.  
-> If you find this project useful, please consider **starring** and **forking** to stay updated with the latest features and experiment with your own modifications.
+Active Development: This repository is under active development and undergoes frequent changes.  
+If you find this project useful, please consider **starring** and **forking** to stay updated with the latest features and experiment with your own modifications.
 
 ## Overview
 
-This lab contains a curated set of projects organized into four main categories:
+This lab contains a curated set of projects organized into the following categories:
 
 - **LLM/RAG Applications**: Interactive applications for chatting with your data sources (PDFs, YouTube videos, Gmail inbox) using retrieval-augmented generation
-- **Single-Purpose AI Agents**: Specialized agents designed for specific tasks such as content generation, web scraping, meeting transcription, and business intelligence
+- **AI Agents**: Specialized agents designed for specific tasks such as content generation, web scraping, meeting transcription, and business intelligence
 - **Machine Learning Algorithms**: Implementations of supervised and unsupervised learning algorithms from scratch, suitable for educational purposes and experimentation
+- **Fine-Tuning Projects**: LLM fine-tuning implementations using techniques like LoRA for domain-specific applications
+- **Voice Agents**: Voice-powered AI agents for customer support and web interaction
 - **MCP Agents**: Model Context Protocol agents that integrate with external tools and services for enhanced functionality
+- **Automation Workflows**: N8N workflow configurations for automated AI-powered processes
 
 
 
@@ -57,6 +60,19 @@ python3 <script_file>.py
 - Each project includes its own `requirements.txt` for dependency management
 - Browser-based projects (using Playwright) may require additional setup steps documented in their respective READMEs
 - MCP agents may require additional configuration files (see individual project documentation)
+
+## Project Structure
+
+```
+Anuj-AI-ML-Lab/
+├── All_LargeLangugage_Models/    # LLM/RAG applications
+├── AI_AGENTS/                     # Specialized AI agents
+├── ALL_MachineLearning_Algos/     # ML algorithm implementations
+├── FineTunning_Projects/          # LLM fine-tuning projects
+├── VOICE_AGENTS/                  # Voice-powered AI agents
+├── MCP_AGENTS/                    # Model Context Protocol agents
+└── Automation_WorkFlows/          # N8N workflow configurations
+```
 
 ## Features
 
