@@ -137,18 +137,4 @@ python src/rag_pipeline.py
 1. **Increase Token Limit**: The current model supports up to 4096 tokens. Future work can explore extending this limit for longer documents.
 2. **Expand to UK Dataset**: Adapt the model for summarizing UK legal documents, which are typically larger and more complex.
 3. **Optimize Retrieval**: Improve the RAG pipeline for faster and more accurate document retrieval.
-
 ---
-
-## References
-
-1. [Anuj-AI-ML-Lab Repository](https://github.com/Anujpatel04/Anuj-AI-ML-Lab) - Main repository containing this and other AI/ML projects
-2. [Llama 2 Documentation](https://huggingface.co/docs/transformers/model_doc/llama2)
-3. [LoRA Fine-Tuning with AMD ROCm](https://rocm.blogs.amd.com/artificial-intelligence/llama2-lora/README.html)
-4. [SFTTrainer Documentation](https://huggingface.co/docs/trl/en/sft_trainer)
-5. [4-bit Quantization with Bitsandbytes](https://huggingface.co/blog/4bit-transformers-bitsandbytes)
-6. [Fine-Tuning LLMs with Domain Knowledge](https://github.com/aws-samples/fine-tuning-llm-with-domain-knowledge)
-
----
-
-This project provides a robust framework for fine-tuning LLMs for legal document summarization and integrating them into a RAG pipeline for efficient retrieval and generation.
