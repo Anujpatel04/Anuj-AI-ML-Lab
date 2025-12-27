@@ -2,21 +2,21 @@ import os
 import json
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from datasets import Dataset, concatenate_datasets
-from trl import SFTTrainer, SFTConfig  # Import SFTTrainer from trl
+from trl import SFTTrainer, SFTConfig  
 from peft import LoraConfig, get_peft_model
 
 preprocessed_data_dir = "/Users/anuj/Desktop/Anuj-AI-ML-Lab/FineTunning_Projects/dataset/processed-IN-Ext/"
 output_dir = "/Users/anuj/Desktop/Anuj-AI-ML-Lab/FineTunning_Projects/LegalDocs/results_lora"
 model_save_dir = "/Users/anuj/Desktop/Anuj-AI-ML-Lab/FineTunning_Projects/LegalDocs/fine_tuned_lora_model"
 
-model_name = "meta-llama/Llama-2-7b-hf"  # Replace with your model name
+model_name = "meta-llama/Llama-2-7b-hf"  
 tokenizer = AutoTokenizer.from_pretrained(model_name)
-tokenizer.pad_token = tokenizer.eos_token  # Set padding token to eos_token
+tokenizer.pad_token = tokenizer.eos_token  
 
 from transformers import BitsAndBytesConfig
 quantization_config = BitsAndBytesConfig(
     load_in_8bit=True,
-    llm_int8_enable_fp32_cpu_offload=True  # Allow CPU offloading for modules that can't fit in GPU
+    llm_int8_enable_fp32_cpu_offload=True  
 )
 model = AutoModelForCausalLM.from_pretrained(
     model_name, 
@@ -25,11 +25,11 @@ model = AutoModelForCausalLM.from_pretrained(
 )
 
 lora_config = LoraConfig(
-    lora_alpha=8,          # Scaling factor for low-rank matrices
-    lora_dropout=0.1,      # Dropout rate for LoRA layers
-    r=8,                   # Rank (size of low-rank matrices)
-    bias="none",           # No bias in LoRA layers
-    task_type="CAUSAL_LM"  # Task type for causal language modeling
+    lora_alpha=8,          
+    lora_dropout=0.1,      
+    r=8,                   
+    bias="none",           
+    task_type="CAUSAL_LM"  
 )
 
 model = get_peft_model(model, lora_config)
@@ -69,7 +69,7 @@ train_dataset_A2 = load_dataset(train_file_A2)
 train_data = concatenate_datasets([train_dataset_A1, train_dataset_A2])
 
 train_params = SFTConfig(
-    output_dir=output_dir,                # Output directory for model checkpoints
+    output_dir=output_dir,               # Output directory for model checkpoints
     num_train_epochs=3,                  # Number of epochs
     per_device_train_batch_size=1,       # Batch size per device
     gradient_accumulation_steps=1,       # Accumulate gradients before updating model
