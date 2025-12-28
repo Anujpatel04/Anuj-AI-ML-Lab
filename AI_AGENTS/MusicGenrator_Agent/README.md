@@ -60,7 +60,3 @@ Access at `http://localhost:8501`
 - streamlit
 - requests
 - python-dotenv
-
-## License
-
-Part of [Anuj-AI-ML-Lab](https://github.com/Anujpatel04/Anuj-AI-ML-Lab) - MIT License
