@@ -4,20 +4,20 @@ A comprehensive collection of AI agents, RAG applications, and machine learning 
 
 ## Status
 
-> Active Development: This repository is under active development and undergoes frequent changes.  
+Active Development: This repository is under active development and undergoes frequent changes.  
 If you find this project useful, please consider **starring** and **forking** to stay updated with the latest features and experiment with your own modifications.
 
 ## Overview
 
 This lab contains a curated set of projects organized into the following categories:
 
-- **LLM/RAG Applications**: Interactive applications for chatting with your data sources (PDFs, YouTube videos, Gmail inbox) using retrieval-augmented generation
-- **AI Agents**: Specialized agents designed for specific tasks such as content generation, web scraping, meeting transcription, and business intelligence
+- **AI Agents**: Specialized agents for content generation, web scraping, meeting transcription, business intelligence, and LLM/RAG applications (chat with Gmail, YouTube, PDFs, Tarot cards)
+- **RAG Applications**: Retrieval-augmented generation implementations for document processing and knowledge retrieval
 - **Machine Learning Algorithms**: Implementations of supervised and unsupervised learning algorithms from scratch, suitable for educational purposes and experimentation
 - **Fine-Tuning Projects**: LLM fine-tuning implementations using techniques like LoRA for domain-specific applications
 - **Voice Agents**: Voice-powered AI agents for customer support and web interaction
 - **MCP Agents**: Model Context Protocol agents that integrate with external tools and services for enhanced functionality
-- **Automation Workflows**: N8N workflow configurations for automated AI-powered processes
+- **N8N Automation Workflows**: N8N workflow configurations for automated AI-powered processes
 
 
 
@@ -55,6 +55,18 @@ python3 <script_file>.py
 
 ## Configuration
 
+### Environment Variables
+
+Most projects use a centralized `.env` file in the root directory for API key management. Create a `.env` file in the project root:
+
+```env
+OPENAI_API_KEY=your_key
+QDRANT_URL=your_url
+QDRANT_API_KEY=your_key
+FIRECRAWL_API_KEY=your_key
+MODELSLAB_API_KEY=your_key
+```
+
 ### Project-Specific Configuration
 
 - Each project includes its own `requirements.txt` for dependency management
@@ -65,13 +77,20 @@ python3 <script_file>.py
 
 ```
 Anuj-AI-ML-Lab/
-├── All_LargeLangugage_Models/    # LLM/RAG applications
-├── AI_AGENTS/                     # Specialized AI agents
+├── AI_AGENTS/                     # AI agents and LLM applications
+│   ├── chat_with_gmail/          # Gmail chat application
+│   ├── chat_youtube/             # YouTube chat application
+│   ├── chat-with-tarots/         # Tarot card chat application
+│   ├── LocalLama_Agent/          # Local Llama agent
+│   ├── MusicGenrator_Agent/      # Music generation agent
+│   └── [other specialized agents]
+├── RAGs/                          # RAG implementations
+│   └── PDF_RAG/                  # PDF-based RAG application
 ├── ALL_MachineLearning_Algos/     # ML algorithm implementations
 ├── FineTunning_Projects/          # LLM fine-tuning projects
 ├── VOICE_AGENTS/                  # Voice-powered AI agents
 ├── MCP_AGENTS/                    # Model Context Protocol agents
-└── Automation_WorkFlows/          # N8N workflow configurations
+└── N8N_Automation_WorkFlows/      # N8N workflow configurations
 ```
 
 ## Features
