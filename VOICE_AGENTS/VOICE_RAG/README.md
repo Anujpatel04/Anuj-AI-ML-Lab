@@ -1,71 +1,130 @@
-## 🎙️ Voice RAG with OpenAI SDK
+# Voice RAG Agent
 
-### 🎓 FREE Step-by-Step Tutorial 
-**👉 [Click here to follow our complete step-by-step tutorial](https://www.theunwindai.com/p/build-a-voice-rag-agent) and learn how to build this from scratch with detailed code walkthroughs, explanations, and best practices.**
+> **Part of [Anuj-AI-ML-Lab](https://github.com/Anujpatel04/Anuj-AI-ML-Lab)** - A comprehensive collection of AI/ML projects, LLM applications, agents, RAG systems, and core machine learning implementations.
 
-This script demonstrates how to build a voice-enabled Retrieval-Augmented Generation (RAG) system using OpenAI's SDK and Streamlit. The application allows users to upload PDF documents, ask questions, and receive both text and voice responses using OpenAI's text-to-speech capabilities.
+A voice-enabled Retrieval-Augmented Generation (RAG) system that allows users to upload PDF documents, ask questions, and receive both text and voice responses using OpenAI's SDK and text-to-speech capabilities.
 
-### Features
+## Features
 
-- Creates a voice-enabled RAG system using OpenAI's SDK
-- Supports PDF document processing and chunking
-- Uses Qdrant as the vector database for efficient similarity search
-- Implements real-time text-to-speech with multiple voice options
-- Provides a user-friendly Streamlit interface
-- Allows downloading of generated audio responses
-- Supports multiple document uploads and tracking
+- **Document Processing**: Upload and process PDF documents with automatic chunking and embedding
+- **Vector Search**: Uses Qdrant vector database for efficient similarity search
+- **Intelligent Querying**: Multi-agent architecture for generating clear, conversational responses
+- **Voice Responses**: Real-time text-to-speech with multiple voice options
+- **Audio Download**: Download generated audio responses as MP3 files
+- **Professional Interface**: Clean, modern Streamlit interface for seamless interaction
 
-### How to get Started?
+## Architecture
 
-1. Clone the GitHub repository
+### Document Processing
+- PDF documents are split into chunks using LangChain's RecursiveCharacterTextSplitter
+- Each chunk is embedded using FastEmbed
+- Embeddings are stored in Qdrant for efficient retrieval
+
+### Query Processing
+1. User questions are converted to embeddings
+2. Similar document chunks are retrieved from Qdrant
+3. A processing agent generates clear, spoken-word friendly responses
+4. A TTS agent optimizes responses for speech synthesis
+
+### Voice Generation
+- Text responses are converted to speech using OpenAI's TTS API
+- Multiple voice options available (alloy, ash, ballad, coral, echo, fable, onyx, nova, sage, shimmer, verse)
+- Audio can be played directly or downloaded as MP3
+
+## Prerequisites
+
+- Python 3.11+ (Python 3.14 is not compatible with fastembed)
+- OpenAI API key
+- Qdrant Cloud account (or self-hosted Qdrant instance)
+
+## Installation
+
+1. Navigate to the project directory:
 ```bash
-git clone https://github.com/Shubhamsaboo/awesome-llm-apps.git
-cd awesome-llm-apps/rag_tutorials/voice_rag_openaisdk
+cd VOICE_AGENTS/VOICE_RAG
 ```
 
-2. Install the required dependencies:
+2. Create a virtual environment:
+```bash
+python3 -m venv venv
+```
+
+3. Activate the virtual environment:
+```bash
+source venv/bin/activate
+```
+
+4. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Set up your API keys:
-- Get your [OpenAI API key](https://platform.openai.com/)
-- Set up a [Qdrant Cloud](https://cloud.qdrant.io/) account and get your API key and URL
-- Create a `.env` file with your credentials:
-```bash
-OPENAI_API_KEY='your-openai-api-key'
-QDRANT_URL='your-qdrant-url'
-QDRANT_API_KEY='your-qdrant-api-key'
+## Configuration
+
+Add your API keys to the root `.env` file:
+
+```env
+OPENAI_API_KEY=your-openai-api-key
+QDRANT_URL=your-qdrant-url
+QDRANT_API_KEY=your-qdrant-api-key
 ```
 
-4. Run the Voice RAG application:
+The application will automatically load API keys from the root `.env` file. No manual configuration required.
+
+## Usage
+
+### Option 1: Using the virtual environment
+
 ```bash
+source venv/bin/activate
 streamlit run rag_voice.py
 ```
 
-5. Open your web browser and navigate to the URL provided in the console output to interact with the Voice RAG system.
+### Option 2: Direct execution
 
-### How it works?
+```bash
+./venv/bin/streamlit run rag_voice.py
+```
 
-1. **Document Processing:** 
-   - Upload PDF documents through the Streamlit interface
-   - Documents are split into chunks using LangChain's RecursiveCharacterTextSplitter
-   - Each chunk is embedded using FastEmbed and stored in Qdrant
+The app will be available at `http://localhost:8501` or `http://localhost:8502`
 
-2. **Query Processing:**
-   - User questions are converted to embeddings
-   - Similar documents are retrieved from Qdrant
-   - A processing agent generates a clear, spoken-word friendly response
-   - A TTS agent optimizes the response for speech synthesis
+### Using the Application
 
-3. **Voice Generation:**
-   - Text responses are converted to speech using OpenAI's TTS
-   - Users can choose from multiple voice options
-   - Audio can be played directly or downloaded as MP3
+1. **Upload Document**: Click "Upload PDF Document" and select a PDF file
+2. **Wait for Processing**: The document will be processed and embedded automatically
+3. **Ask Questions**: Enter your question in the query interface
+4. **Receive Response**: Get both text and audio responses
+5. **Download Audio**: Download the audio response as an MP3 file
 
-4. **Features:**
-   - Real-time audio streaming
-   - Multiple voice personality options
-   - Document source tracking
-   - Download capability for audio responses
-   - Progress tracking for document processing
+## API Keys
+
+- **OpenAI API Key**: Get from [OpenAI Platform](https://platform.openai.com/api-keys)
+- **Qdrant URL & API Key**: Get from [Qdrant Cloud](https://cloud.qdrant.io/) or use self-hosted instance
+
+## Dependencies
+
+- openai-agents
+- streamlit
+- qdrant-client
+- fastembed
+- langchain
+- langchain-community
+- langchain-openai
+- langchain-text-splitters
+- openai
+- pypdf
+- python-dotenv
+- sounddevice
+
+## Project Structure
+
+```
+VOICE_RAG/
+├── rag_voice.py          # Main Streamlit application
+├── requirements.txt      # Python dependencies
+└── README.md            # Project documentation
+```
+
+## License
+
+Part of [Anuj-AI-ML-Lab](https://github.com/Anujpatel04/Anuj-AI-ML-Lab) - MIT License
