@@ -73,35 +73,6 @@ MODELSLAB_API_KEY=your_key
 - Browser-based projects (using Playwright) may require additional setup steps documented in their respective READMEs
 - MCP agents may require additional configuration files (see individual project documentation)
 
-## Project Structure
-
-```
-Anuj-AI-ML-Lab/
-├── AI_AGENTS/                     # AI agents and LLM applications
-│   ├── chat_with_gmail/          # Gmail chat application
-│   ├── chat_youtube/             # YouTube chat application
-│   ├── chat-with-tarots/         # Tarot card chat application
-│   ├── LocalLama_Agent/          # Local Llama agent
-│   ├── MusicGenrator_Agent/      # Music generation agent
-│   └── [other specialized agents]
-├── RAGs/                          # RAG implementations
-│   └── PDF_RAG/                  # PDF-based RAG application
-├── ALL_MachineLearning_Algos/     # ML algorithm implementations
-├── FineTunning_Projects/          # LLM fine-tuning projects
-├── VOICE_AGENTS/                  # Voice-powered AI agents
-├── MCP_AGENTS/                    # Model Context Protocol agents
-└── N8N_Automation_WorkFlows/      # N8N workflow configurations
-```
-
-## Features
-
-- **Modular Design**: Each project is independent and can be run standalone
-- **Comprehensive Documentation**: Every project includes a detailed README with setup instructions
-- **Production-Ready Code**: Clean, well-structured code suitable for learning and adaptation
-- **Multiple LLM Support**: Projects support various LLM providers (OpenAI, Anthropic, DeepSeek, Ollama)
-- **RAG Implementations**: Multiple RAG patterns and vector database integrations
-- **Educational Focus**: ML algorithms implemented from scratch for learning purposes
-
 ## Contributing
 
 This is a personal learning lab, but suggestions and improvements are welcome. Please feel free to fork the repository and adapt the code for your own projects.
