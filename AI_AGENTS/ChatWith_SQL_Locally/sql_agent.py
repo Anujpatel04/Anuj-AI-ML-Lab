@@ -8,7 +8,6 @@ import pandas as pd
 import streamlit as st
 from dotenv import load_dotenv
 
-# Check for required packages
 try:
     from openai import OpenAI
 except ImportError:
@@ -29,7 +28,6 @@ except ImportError:
     st.error("❌ Missing required package: plotly. Please install it with: pip install plotly")
     st.stop()
 
-# Load environment variables from root .env file
 env_path = Path('/Users/anuj/Desktop/Anuj-AI-ML-Lab/.env')
 if not env_path.exists():
     root_dir = Path(__file__).parent.parent.parent
@@ -40,18 +38,15 @@ if env_path.exists():
 else:
     load_dotenv(override=True)
 
-# Load DeepSeek API key from root .env file
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "").strip()
 DEEPSEEK_BASE_URL = os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com/v1")
 
-# Streamlit page configuration
 st.set_page_config(
     page_title="SQL Chat Agent",
     page_icon="💬",
     layout="wide"
 )
 
-# Custom CSS for professional look
 st.markdown("""
     <style>
     .main-header {
@@ -87,7 +82,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state
 if 'messages' not in st.session_state:
     st.session_state.messages = []
 if 'db_engine' not in st.session_state:
@@ -122,7 +116,6 @@ def get_database_schema(engine) -> str:
 def generate_sql_from_natural_language(natural_language: str, schema: str, db_type: str, client: OpenAI) -> str:
     """Convert natural language query to SQL using DeepSeek"""
     
-    # Database-specific instructions
     db_instructions = ""
     if db_type == "MySQL":
         db_instructions = """
@@ -189,7 +182,6 @@ SQL Query:"""
         
         sql_query = response.choices[0].message.content.strip()
         
-        # Remove markdown code blocks if present
         sql_query = re.sub(r'```sql\n?', '', sql_query)
         sql_query = re.sub(r'```\n?', '', sql_query)
         sql_query = sql_query.strip()
@@ -201,16 +193,13 @@ SQL Query:"""
 
 def is_safe_query(sql_query: str) -> bool:
     """Check if query is safe (only SELECT statements)"""
-    # Remove comments and normalize
     sql_clean = re.sub(r'--.*', '', sql_query, flags=re.MULTILINE)
     sql_clean = re.sub(r'/\*.*?\*/', '', sql_clean, flags=re.DOTALL)
     sql_clean = sql_clean.strip().upper()
     
-    # Check if it starts with SELECT
     if not sql_clean.startswith('SELECT'):
         return False
     
-    # Check for dangerous keywords
     dangerous_keywords = ['DROP', 'DELETE', 'INSERT', 'UPDATE', 'ALTER', 'CREATE', 'TRUNCATE', 'EXEC', 'EXECUTE']
     for keyword in dangerous_keywords:
         if keyword in sql_clean:
@@ -220,7 +209,6 @@ def is_safe_query(sql_query: str) -> bool:
 
 def execute_sql_query(engine, sql_query: str) -> Optional[pd.DataFrame]:
     """Execute SQL query and return results as DataFrame"""
-    # Safety check
     if not is_safe_query(sql_query):
         st.error("Only SELECT queries are allowed for security reasons.")
         return None
@@ -244,8 +232,7 @@ def generate_natural_language_response(query: str, results: pd.DataFrame, client
     if results.empty:
         return "The query returned no results."
     
-    # Convert DataFrame to a readable format
-    results_summary = results.head(20).to_string()  # Limit to first 20 rows for context
+    results_summary = results.head(20).to_string()  
     
     prompt = f"""The user asked: "{query}"
 
@@ -275,19 +262,11 @@ def should_create_visualization(df: pd.DataFrame) -> bool:
     if df.empty or len(df) == 0:
         return False
     
-    # Check if we have numeric columns suitable for visualization
     numeric_cols = df.select_dtypes(include=['number']).columns.tolist()
     if len(numeric_cols) == 0:
         return False
     
-    # Check if we have date/time columns
     date_cols = df.select_dtypes(include=['datetime64']).columns.tolist()
-    
-    # Good candidates for visualization:
-    # - 2+ numeric columns (scatter, line, bar)
-    # - 1 numeric + 1 categorical (bar, pie)
-    # - 1 numeric + 1 date (line, bar over time)
-    # - Single numeric column with reasonable number of rows (histogram)
     
     categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
     
@@ -310,7 +289,6 @@ def create_visualization(df: pd.DataFrame) -> Optional[go.Figure]:
     date_cols = df.select_dtypes(include=['datetime64']).columns.tolist()
     
     try:
-        # Case 1: Time series data (date + numeric)
         if len(date_cols) >= 1 and len(numeric_cols) >= 1:
             date_col = date_cols[0]
             numeric_col = numeric_cols[0]
@@ -318,38 +296,31 @@ def create_visualization(df: pd.DataFrame) -> Optional[go.Figure]:
                          title=f"{numeric_col} over Time")
             return fig
         
-        # Case 2: Categorical + Numeric (Bar chart)
         if len(categorical_cols) >= 1 and len(numeric_cols) >= 1:
             cat_col = categorical_cols[0]
             num_col = numeric_cols[0]
-            # Limit categories for readability
             if len(df[cat_col].unique()) <= 20:
                 fig = px.bar(df, x=cat_col, y=num_col,
                            title=f"{num_col} by {cat_col}")
                 fig.update_xaxes(tickangle=45)
                 return fig
         
-        # Case 3: Two numeric columns (Scatter plot)
         if len(numeric_cols) >= 2:
             fig = px.scatter(df, x=numeric_cols[0], y=numeric_cols[1],
                            title=f"{numeric_cols[1]} vs {numeric_cols[0]}")
             return fig
         
-        # Case 4: Single numeric column (Histogram or Bar)
         if len(numeric_cols) == 1:
             num_col = numeric_cols[0]
             if len(df) <= 50:
-                # Bar chart for small datasets
                 fig = px.bar(df, y=num_col, title=f"Distribution of {num_col}")
             else:
-                # Histogram for larger datasets
                 fig = px.histogram(df, x=num_col, title=f"Distribution of {num_col}")
             return fig
         
-        # Case 5: Multiple numeric columns (Line chart)
         if len(numeric_cols) > 2:
             fig = go.Figure()
-            for col in numeric_cols[:5]:  # Limit to 5 columns
+            for col in numeric_cols[:5]:  
                 fig.add_trace(go.Scatter(
                     y=df[col],
                     mode='lines+markers',
@@ -374,7 +345,6 @@ def connect_to_database(connection_string: str, db_type: str):
         elif db_type == "PostgreSQL":
             engine = create_engine(connection_string, echo=False)
         elif db_type == "MySQL":
-            # Try using raw credentials from session state if available (more reliable)
             if hasattr(st.session_state, 'mysql_host') and st.session_state.mysql_host:
                 host = st.session_state.mysql_host
                 port = st.session_state.mysql_port
@@ -382,8 +352,6 @@ def connect_to_database(connection_string: str, db_type: str):
                 username = st.session_state.mysql_username
                 password = st.session_state.mysql_password
                 
-                # Build connection string without URL encoding in the base URL
-                # Pass password directly in connect_args for better compatibility
                 base_url = f"mysql+pymysql://{host}:{port}/{database}"
                 engine = create_engine(
                     base_url,
@@ -396,7 +364,6 @@ def connect_to_database(connection_string: str, db_type: str):
                     }
                 )
             else:
-                # Fallback: use connection string with URL encoding
                 engine = create_engine(
                     connection_string, 
                     echo=False,
@@ -409,7 +376,6 @@ def connect_to_database(connection_string: str, db_type: str):
             st.error(f"Unsupported database type: {db_type}")
             return None
         
-        # Test connection
         with engine.connect() as conn:
             conn.execute(text("SELECT 1"))
         
@@ -444,11 +410,9 @@ def connect_to_database(connection_string: str, db_type: str):
         st.error(f"Error connecting to database: {str(e)}")
         return None
 
-# Main UI
 st.markdown('<h1 class="main-header">SQL Chat Agent</h1>', unsafe_allow_html=True)
 st.markdown('<p class="sub-header">Ask questions in natural language and get SQL-powered insights with visualizations</p>', unsafe_allow_html=True)
 
-# Sidebar for database configuration
 with st.sidebar:
     st.title("Database Configuration")
     
@@ -472,7 +436,6 @@ with st.sidebar:
         username = st.text_input("Username", value="root")
         password = st.text_input("Password", type="password")
         if all([host, port, database, username, password]):
-            # URL-encode username and password to handle special characters
             encoded_username = quote_plus(username)
             encoded_password = quote_plus(password)
             connection_string = f"mysql+pymysql://{encoded_username}:{encoded_password}@{host}:{port}/{database}"
@@ -485,13 +448,12 @@ with st.sidebar:
         username = st.text_input("Username", value="postgres")
         password = st.text_input("Password", type="password")
         if all([host, port, database, username, password]):
-            # URL-encode username and password to handle special characters
             encoded_username = quote_plus(username)
             encoded_password = quote_plus(password)
             connection_string = f"postgresql://{encoded_username}:{encoded_password}@{host}:{port}/{database}"
         else:
             connection_string = None
-    else:  # SQLite
+    else:  
         db_path = st.text_input(
             "Database Path",
             value="analytics_chatdb.db",
@@ -502,9 +464,7 @@ with st.sidebar:
     
     if st.button("Connect to Database"):
         if connection_string:
-            # For MySQL, also pass raw credentials for debugging
             if db_type == "MySQL":
-                # Store raw values for connection
                 st.session_state.mysql_host = host
                 st.session_state.mysql_port = port
                 st.session_state.mysql_database = database
@@ -513,7 +473,6 @@ with st.sidebar:
             engine = connect_to_database(connection_string, db_type)
             if engine:
                 st.success("✓ Connected to database")
-                # Show schema
                 try:
                     schema = get_database_schema(engine)
                     with st.expander("Database Schema"):
@@ -531,7 +490,6 @@ with st.sidebar:
             st.session_state.db_type = None
             st.rerun()
 
-# Main chat interface
 if not DEEPSEEK_API_KEY:
     st.error("Please configure DEEPSEEK_API_KEY in your root .env file")
 elif not st.session_state.db_engine:
@@ -539,7 +497,6 @@ elif not st.session_state.db_engine:
 else:
     client = init_openai_client()
     
-    # Display chat history
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
@@ -551,22 +508,17 @@ else:
             if "visualization" in message and message["visualization"]:
                 st.plotly_chart(message["visualization"], use_container_width=True)
     
-    # User input
     user_query = st.chat_input("Ask a question about your database...")
     
     if user_query:
-        # Add user message to chat
         st.session_state.messages.append({"role": "user", "content": user_query})
         with st.chat_message("user"):
             st.markdown(user_query)
         
-        # Process query
         with st.chat_message("assistant"):
             with st.spinner("Processing your question..."):
-                # Get database schema
                 schema = get_database_schema(st.session_state.db_engine)
                 
-                # Generate SQL
                 db_type = st.session_state.db_type
                 sql_query = generate_sql_from_natural_language(user_query, schema, db_type, client)
                 
@@ -574,11 +526,9 @@ else:
                     st.error("Failed to generate SQL query")
                     st.stop()
                 
-                # Show SQL query
                 with st.expander("Generated SQL Query"):
                     st.code(sql_query, language="sql")
                 
-                # Execute SQL
                 with st.spinner("Executing query..."):
                     results_df = execute_sql_query(st.session_state.db_engine, sql_query)
                 
@@ -586,18 +536,15 @@ else:
                     st.error("Failed to execute SQL query")
                     st.stop()
                 
-                # Display results
                 if not results_df.empty:
                     st.dataframe(results_df, use_container_width=True)
                     
-                    # Generate natural language response
                     with st.spinner("Generating response..."):
                         natural_response = generate_natural_language_response(
                             user_query, results_df, client
                         )
                     st.markdown(natural_response)
                     
-                    # Create visualization if appropriate
                     visualization = None
                     if should_create_visualization(results_df):
                         with st.spinner("Creating visualization..."):
@@ -605,7 +552,6 @@ else:
                         if visualization:
                             st.plotly_chart(visualization, use_container_width=True)
                     
-                    # Store message with all data
                     message_data = {
                         "role": "assistant",
                         "content": natural_response,

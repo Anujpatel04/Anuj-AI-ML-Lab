@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Simple script to test MySQL connection
 Run this to verify your MySQL credentials work
@@ -6,14 +5,11 @@ Run this to verify your MySQL credentials work
 from urllib.parse import quote_plus
 from sqlalchemy import create_engine, text
 
-# Connection details - UPDATE THESE
 HOST = "localhost"
 PORT = "3306"
 DATABASE = "analytics_chatdb"
 USERNAME = "root"
-PASSWORD = "Test@123"  # Update this if different
-
-# Build connection string
+PASSWORD = "Test@123"  
 encoded_username = quote_plus(USERNAME)
 encoded_password = quote_plus(PASSWORD)
 connection_string = f"mysql+pymysql://{encoded_username}:{encoded_password}@{HOST}:{PORT}/{DATABASE}"
@@ -37,12 +33,10 @@ try:
         print(f"✅ Connection successful!")
         print(f"MySQL Version: {version}")
         
-        # Test database access
         result = conn.execute(text(f"SELECT DATABASE()"))
         current_db = result.fetchone()[0]
         print(f"Current Database: {current_db}")
         
-        # List tables
         result = conn.execute(text("SHOW TABLES"))
         tables = result.fetchall()
         if tables:
