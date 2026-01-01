@@ -75,7 +75,7 @@ MODELSLAB_API_KEY=your_key
 
 ## Contributing
 
-This is a personal learning lab, but suggestions and improvements are welcome. Please feel free to fork the repository and adapt the code for your own projects.
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to this project.
 
 ## License
 
