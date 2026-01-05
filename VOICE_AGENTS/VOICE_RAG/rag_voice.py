@@ -350,31 +350,31 @@ def main() -> None:
                 help="Select the voice for audio responses"
             )
     
-        if uploaded_file:
-            file_name = uploaded_file.name
-            if file_name not in st.session_state.processed_documents:
+    if uploaded_file:
+        file_name = uploaded_file.name
+        if file_name not in st.session_state.processed_documents:
                 with st.spinner('Processing document...'):
-                    try:
-                        # Setup Qdrant if not already done
-                        if not st.session_state.client:
-                            client, embedding_model = setup_qdrant()
-                            st.session_state.client = client
-                            st.session_state.embedding_model = embedding_model
-                        
-                        # Process and store document
-                        documents = process_pdf(uploaded_file)
-                        if documents:
-                            store_embeddings(
-                                st.session_state.client,
-                                st.session_state.embedding_model,
-                                documents,
-                                COLLECTION_NAME
-                            )
-                            st.session_state.processed_documents.append(file_name)
+                try:
+                    # Setup Qdrant if not already done
+                    if not st.session_state.client:
+                        client, embedding_model = setup_qdrant()
+                        st.session_state.client = client
+                        st.session_state.embedding_model = embedding_model
+                    
+                    # Process and store document
+                    documents = process_pdf(uploaded_file)
+                    if documents:
+                        store_embeddings(
+                            st.session_state.client,
+                            st.session_state.embedding_model,
+                            documents,
+                            COLLECTION_NAME
+                        )
+                        st.session_state.processed_documents.append(file_name)
                             st.success(f"Document processed successfully: **{file_name}**")
-                            st.session_state.setup_complete = True
-                    except Exception as e:
-                        st.error(f"Error processing document: {str(e)}")
+                        st.session_state.setup_complete = True
+                except Exception as e:
+                    st.error(f"Error processing document: {str(e)}")
     
     st.divider()
     
@@ -419,15 +419,15 @@ def main() -> None:
                         with col1:
                             st.audio(result["audio_path"], format="audio/mp3", start_time=0)
                         with col2:
-                            with open(result["audio_path"], "rb") as audio_file:
-                                audio_bytes = audio_file.read()
-                                st.download_button(
+                        with open(result["audio_path"], "rb") as audio_file:
+                            audio_bytes = audio_file.read()
+                            st.download_button(
                                     label="Download Audio",
-                                    data=audio_bytes,
+                                data=audio_bytes,
                                     file_name=f"response_{st.session_state.selected_voice}.mp3",
                                     mime="audio/mp3",
                                     use_container_width=True
-                                )
+                            )
                         
                         st.caption(f"Voice: {st.session_state.selected_voice.title()}")
                     
@@ -435,7 +435,7 @@ def main() -> None:
                     if result.get("sources"):
                         st.divider()
                         st.markdown('<div class="section-header">Document Sources</div>', unsafe_allow_html=True)
-                        for source in result["sources"]:
+                    for source in result["sources"]:
                             st.markdown(f"• {source}")
                 else:
                     status.update(label="Error processing query", state="error")
