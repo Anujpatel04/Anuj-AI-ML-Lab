@@ -34,7 +34,3 @@ streamlit run app.py
 ```
 
 Upload resume → Click "Analyze Resume" → Review results
-
-## License
-
-Part of [Anuj-AI-ML-Lab](https://github.com/Anujpatel04/Anuj-AI-ML-Lab) - MIT License
