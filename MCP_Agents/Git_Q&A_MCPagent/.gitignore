@@ -1,0 +1,234 @@
+# ============================================
+# DATA FILES - Never commit these
+# ============================================
+
+# Index files and vector store
+*.faiss
+*.faiss.*
+*.chunks.pkl
+.codebase_index.faiss
+.codebase_index.faiss.chunks.pkl
+*.index
+*.index.*
+index/
+indices/
+
+# MCP Context and data
+.mcp_context.json
+*.context.json
+context/
+data/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# ============================================
+# PYTHON - Cache and compiled files
+# ============================================
+
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+.Python
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+dmypy.json
+
+# Build and distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+eggs/
+*.egg
+wheels/
+*.whl
+
+# ============================================
+# VIRTUAL ENVIRONMENTS
+# ============================================
+
+env/
+venv/
+ENV/
+.venv
+venv*/
+env.bak/
+venv.bak/
+.conda/
+
+# ============================================
+# IDE AND EDITOR FILES
+# ============================================
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# ============================================
+# OS FILES
+# ============================================
+
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ============================================
+# LOGS AND TEMPORARY FILES
+# ============================================
+
+*.log
+*.log.*
+logs/
+log/
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+temp/
+tmp/
+.tmp/
+
+# ============================================
+# STREAMLIT
+# ============================================
+
+.streamlit/
+streamlit_cache/
+
+# ============================================
+# SECRETS AND API KEYS - CRITICAL
+# ============================================
+
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+secrets.yaml
+secrets.yml
+*.key
+*.pem
+*.p12
+*.pfx
+credentials.json
+config.local.json
+*.secret
+
+# ============================================
+# TEST FILES
+# ============================================
+
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.hypothesis/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# ============================================
+# JUPYTER NOTEBOOKS
+# ============================================
+
+.ipynb_checkpoints/
+*.ipynb
+.ipynb_checkpoints/
+
+# ============================================
+# MODEL FILES (Large files)
+# ============================================
+
+*.bin
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+*.h5
+*.hdf5
+models/
+checkpoints/
+weights/
+*.onnx
+*.tflite
+*.pb
+
+# ============================================
+# DATASETS AND DATA FILES
+# ============================================
+
+*.csv
+*.tsv
+*.parquet
+*.arrow
+datasets/
+data/
+*.data
+*.dat
+
+# ============================================
+# CACHED FILES
+# ============================================
+
+.cache/
+*.cache
+cache/
+.cached/
+
+# ============================================
+# MISC
+# ============================================
+
+# Downloaded repositories (temporary clones)
+cloned_repos/
+temp_repos/
+*.zip
+*.tar.gz
+*.rar
+
+# MacOS
+.AppleDouble
+.LSOverride
+
+# Windows
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
