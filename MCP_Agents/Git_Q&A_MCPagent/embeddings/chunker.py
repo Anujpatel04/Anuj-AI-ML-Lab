@@ -192,3 +192,7 @@ class CodeChunker:
         num_overlap_lines = max(1, self.chunk_overlap // 50)  # Approximate lines
         return lines[-num_overlap_lines:] if len(lines) > num_overlap_lines else lines
 
+
+
+
+
