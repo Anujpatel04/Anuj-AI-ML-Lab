@@ -1,0 +1,376 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "jsonSchemaExample": "{\n\t\"caption_title\": \"\",\n\t\"caption_text\": \"\"\n}"
+        },
+        "id": "6a3cff95-2b0a-42bc-9d54-f9b9b1b40d5e",
+        "name": "Structured Output Parser",
+        "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+        "position": [
+          1936,
+          1712
+        ],
+        "typeVersion": 1.2
+      },
+      {
+        "parameters": {
+          "operation": "information"
+        },
+        "id": "a82b7daa-0f68-4429-9d88-15729e93dd2f",
+        "name": "Get Info",
+        "type": "n8n-nodes-base.editImage",
+        "position": [
+          1568,
+          1392
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "operation": "resize",
+          "width": 512,
+          "height": 512,
+          "options": {}
+        },
+        "id": "4f58ce80-69a9-4d0a-a0e3-938aa4f3071c",
+        "name": "Resize For AI",
+        "type": "n8n-nodes-base.editImage",
+        "position": [
+          1568,
+          1552
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "mode": "runOnceForEachItem",
+          "jsCode": "const { size, output } = $input.item.json;\n\nconst lineHeight = 35;\nconst fontSize = Math.round(size.height / lineHeight);\nconst maxLineLength = Math.round(size.width/fontSize) * 2;\nconst text = `\"${output.caption_title}\". ${output.caption_text}`;\nconst numLinesOccupied = Math.round(text.length / maxLineLength);\n\nconst verticalPadding = size.height * 0.02;\nconst horizontalPadding = size.width * 0.02;\nconst rectPosX = 0;\nconst rectPosY = size.height - (verticalPadding * 2.5) - (numLinesOccupied * fontSize);\nconst textPosX = horizontalPadding;\nconst textPosY = size.height - (numLinesOccupied * fontSize) - (verticalPadding/2);\n\nreturn {\n caption: {\n fontSize,\n maxLineLength,\n numLinesOccupied,\n rectPosX,\n rectPosY,\n textPosX,\n textPosY,\n verticalPadding,\n horizontalPadding,\n }\n}\n"
+        },
+        "id": "32aee81c-3502-41af-91b3-3176a0e8f6bb",
+        "name": "Calculate Positioning",
+        "type": "n8n-nodes-base.code",
+        "position": [
+          2480,
+          1712
+        ],
+        "typeVersion": 2
+      },
+      {
+        "parameters": {
+          "operation": "multiStep",
+          "operations": {
+            "operations": [
+              {
+                "operation": "draw",
+                "color": "=#0000008c",
+                "startPositionX": "={{ $json.caption.rectPosX }}",
+                "startPositionY": "={{ $json.caption.rectPosY }}",
+                "endPositionX": "={{ $json.size.width }}",
+                "endPositionY": "={{ $json.size.height }}"
+              },
+              {
+                "operation": "text",
+                "text": "=\"{{ $json.output.caption_title }}\". {{ $json.output.caption_text }}",
+                "fontSize": "={{ $json.caption.fontSize }}",
+                "fontColor": "#FFFFFF",
+                "positionX": "={{ $json.caption.textPosX }}",
+                "positionY": "={{ $json.caption.textPosY }}",
+                "lineLength": "={{ $json.caption.maxLineLength }}",
+                "font": "/usr/share/fonts/truetype/msttcorefonts/Arial.ttf"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "0f3058e3-711c-4276-bde7-ce75b9f01e44",
+        "name": "Apply Caption to Image",
+        "type": "n8n-nodes-base.editImage",
+        "position": [
+          2848,
+          1552
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {}
+        },
+        "id": "9eedf867-709d-4ff1-b2d9-a41c97574ebf",
+        "name": "Merge Image & Caption",
+        "type": "n8n-nodes-base.merge",
+        "position": [
+          2080,
+          1392
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combineBy": "combineByPosition",
+          "options": {}
+        },
+        "id": "7cd765c4-1545-4b18-95fd-7096d5bc38f4",
+        "name": "Merge Caption & Positions",
+        "type": "n8n-nodes-base.merge",
+        "position": [
+          2656,
+          1552
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "url": "https://images.pexels.com/photos/1080884/pexels-photo-1080884.jpeg",
+          "options": {}
+        },
+        "id": "057fd11f-bf60-4752-a56e-906d0d353084",
+        "name": "Get Image",
+        "type": "n8n-nodes-base.httpRequest",
+        "position": [
+          1136,
+          1296
+        ],
+        "typeVersion": 4.2
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "Generate a caption for this image.",
+          "hasOutputParser": true,
+          "messages": {
+            "messageValues": [
+              {
+                "message": "=You role is to provide an appropriate image caption for user provided images.\n\nThe individual components of a caption are as follows: who, when, where, context and miscellaneous. For a really good caption, follow this template: who + when + where + context + miscellaneous\n\nGive the caption a punny title."
+              },
+              {
+                "type": "HumanMessagePromptTemplate",
+                "messageType": "imageBinary"
+              }
+            ]
+          }
+        },
+        "id": "cfd925d8-b37a-4c89-8c6e-5e035bd6cd83",
+        "name": "Image Captioning Agent",
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "position": [
+          1744,
+          1552
+        ],
+        "typeVersion": 1.4
+      },
+      {
+        "parameters": {
+          "content": "## 1. Import an Image \n\n\nFor this demonstration, we'll grab an image off Pexels.com - a popular free stock photography site - by using the HTTP request node to download.\n\nIn your own workflows, this can be replaces by other triggers such as webhooks.",
+          "height": 486.25,
+          "width": 586.25,
+          "color": 7
+        },
+        "id": "9665a84d-9cd9-4a83-89ff-70d28a1c088a",
+        "name": "Sticky Note6",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          800,
+          1072
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## 2. Using Vision Model to Generate Caption\n\n\nn8n's basic LLM node supports multimodal input by allowing you to specify either a binary or an image url to send to a compatible LLM. This makes it easy to start utilising this powerful feature for visual classification or OCR tasks which have previously depended on more dedicated OCR models.\n\nHere, we've simply passed our image binary as a \"user message\" option, asking the LLM to help us generate a caption title and text which is appropriate for the given subject. Once generated, we'll pass this text along with the image to combine them both.",
+          "height": 783.75,
+          "width": 888.75,
+          "color": 7
+        },
+        "id": "61a1346e-2e3f-45ce-8a21-a50db78b0ac4",
+        "name": "Sticky Note7",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          1424,
+          1136
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "## 3. Overlay Caption on Image \n\nFinally, we’ll perform some basic calculations to place the generated caption onto the image. With n8n's user-friendly image editing features, this can be done entirely within the workflow!\n\nThe Code node tool is ideal for these types of calculations and is used here to position the caption at the bottom of the image. To create the overlay, the Edit Image node enables us to insert text onto the image, which we’ll use to add the generated caption.",
+          "height": 635,
+          "width": 753.75,
+          "color": 7
+        },
+        "id": "17602235-a9eb-4993-8655-e9f83678de0f",
+        "name": "Sticky Note8",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          2416,
+          1264
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.manualTrigger",
+        "typeVersion": 1,
+        "position": [
+          960,
+          1296
+        ],
+        "id": "2175803e-ece0-4f17-9e01-c6ed3075b619",
+        "name": "When clicking ‘Execute workflow’"
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          1632,
+          1760
+        ],
+        "id": "0140bbd1-f3cc-4d05-8ea9-f99c3e3c2f4c",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "T26uPZgqaCpd62g0",
+            "name": "OpenAi account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Structured Output Parser": {
+        "ai_outputParser": [
+          [
+            {
+              "node": "Image Captioning Agent",
+              "type": "ai_outputParser",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Info": {
+        "main": [
+          [
+            {
+              "node": "Merge Image & Caption",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Resize For AI": {
+        "main": [
+          [
+            {
+              "node": "Image Captioning Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Calculate Positioning": {
+        "main": [
+          [
+            {
+              "node": "Merge Caption & Positions",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Merge Image & Caption": {
+        "main": [
+          [
+            {
+              "node": "Calculate Positioning",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge Caption & Positions",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge Caption & Positions": {
+        "main": [
+          [
+            {
+              "node": "Apply Caption to Image",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Image": {
+        "main": [
+          [
+            {
+              "node": "Resize For AI",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get Info",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Image Captioning Agent": {
+        "main": [
+          [
+            {
+              "node": "Merge Image & Caption",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "When clicking ‘Execute workflow’": {
+        "main": [
+          [
+            {
+              "node": "Get Image",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "Image Captioning Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "41c436da7030a9268d66e2cd109e9f80e81014f04f6a92061ed9b2b8e2ca9040"
+    }
+  }
