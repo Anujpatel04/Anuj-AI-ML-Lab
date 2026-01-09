@@ -1,5 +1,7 @@
 # AI-Driven Image Captioning and Overlay Workflow (n8n)
 
+![Workflow](https://raw.githubusercontent.com/Anujpatel04/Anuj-AI-ML-Lab/main/N8N_Automation_WorkFlows/EasyImageCaptioning_openai/Workflow.png)
+
 An end-to-end automated image captioning pipeline that combines multimodal LLMs with n8n's image processing capabilities. The workflow generates structured captions using vision-enabled models and overlays them directly onto images.
 
 ## Overview
