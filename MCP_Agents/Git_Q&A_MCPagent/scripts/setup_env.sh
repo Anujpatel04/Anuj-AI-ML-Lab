@@ -1,11 +1,6 @@
 #!/bin/bash
 # Setup script for Codebase Q&A MCP Agent
 
-# Get the directory where this script is located
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
-cd "$PROJECT_ROOT"
-
 echo "Setting up virtual environment..."
 
 # Create virtual environment
@@ -29,6 +24,4 @@ echo "  source venv/bin/activate"
 echo ""
 echo "Then you can run:"
 echo "  python main.py \"/path/to/repo\" --index"
-echo "  or"
-echo "  ./scripts/run_frontend.sh"
 

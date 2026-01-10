@@ -1,0 +1,705 @@
+{
+  "repo_metadata": {
+    "repo_path": "/Users/anuj/Desktop/Anuj-AI-ML-Lab",
+    "total_files": 788,
+    "languages": {
+      "null": 659,
+      "markdown": 31,
+      "python": 72,
+      "yaml": 3,
+      "json": 21,
+      "html": 1,
+      "bash": 1
+    },
+    "git_info": {
+      "is_git_repo": true,
+      "branch": "main"
+    }
+  },
+  "architecture_overview": {
+    "total_files": 788,
+    "languages": {
+      "null": 659,
+      "markdown": 31,
+      "python": 72,
+      "yaml": 3,
+      "json": 21,
+      "html": 1,
+      "bash": 1
+    },
+    "total_chunks": 8156,
+    "index_size": 8156
+  },
+  "ast_summaries": {
+    "README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "CONTRIBUTING.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "RAGs/PDF_RAG/chat_pdf.py": {
+      "functions": 4,
+      "classes": 0,
+      "imports": 7
+    },
+    "RAGs/PDF_RAG/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "VOICE_AGENTS/VOICE_RAG/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "VOICE_AGENTS/VOICE_RAG/rag_voice.py": {
+      "functions": 7,
+      "classes": 0,
+      "imports": 17
+    },
+    "VOICE_AGENTS/RoleBased_VoiceAgent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "VOICE_AGENTS/RoleBased_VoiceAgent/app.py": {
+      "functions": 12,
+      "classes": 0,
+      "imports": 11
+    },
+    "VOICE_AGENTS/Tour_Agent/tour_agent.py": {
+      "functions": 2,
+      "classes": 0,
+      "imports": 10
+    },
+    "VOICE_AGENTS/Tour_Agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "VOICE_AGENTS/Tour_Agent/agent.py": {
+      "functions": 0,
+      "classes": 6,
+      "imports": 3
+    },
+    "VOICE_AGENTS/Tour_Agent/printer.py": {
+      "functions": 6,
+      "classes": 1,
+      "imports": 4
+    },
+    "VOICE_AGENTS/Tour_Agent/manager.py": {
+      "functions": 2,
+      "classes": 1,
+      "imports": 15
+    },
+    "VOICE_AGENTS/Websupport_voiceAgent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "VOICE_AGENTS/Websupport_voiceAgent/WebDescribingAgent.py": {
+      "functions": 7,
+      "classes": 0,
+      "imports": 17
+    },
+    "FineTunning_Projects/LegalDocs_Summarization/readme.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LegalDocs_Summarization/src/data_preprocessing.py": {
+      "functions": 2,
+      "classes": 0,
+      "imports": 3
+    },
+    "FineTunning_Projects/LegalDocs_Summarization/src/finetune_llama.py": {
+      "functions": 1,
+      "classes": 0,
+      "imports": 7
+    },
+    "FineTunning_Projects/LegalDocs_Summarization/src/llama_inference.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 5
+    },
+    "FineTunning_Projects/LegalDocs_Summarization/src/api.py": {
+      "functions": 0,
+      "classes": 1,
+      "imports": 4
+    },
+    "FineTunning_Projects/LegalDocs_Summarization/src/rag_pipeline.py": {
+      "functions": 3,
+      "classes": 0,
+      "imports": 7
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/prepare_dataset.py": {
+      "functions": 7,
+      "classes": 0,
+      "imports": 6
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/config.yaml": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/inference.py": {
+      "functions": 5,
+      "classes": 0,
+      "imports": 7
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/evaluate.py": {
+      "functions": 5,
+      "classes": 0,
+      "imports": 7
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/train_lora.py": {
+      "functions": 7,
+      "classes": 0,
+      "imports": 11
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-100/tokenizer_config.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-100/special_tokens_map.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-100/tokenizer.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-100/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-100/adapter_config.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-100/trainer_state.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-114/tokenizer_config.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-114/special_tokens_map.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-114/tokenizer.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-114/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-114/adapter_config.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/checkpoint-114/trainer_state.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/final_model/tokenizer_config.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/final_model/special_tokens_map.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/final_model/tokenizer.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/final_model/training_config.yaml": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "FineTunning_Projects/LocalTrained_CodeModel/outputs/final_model/adapter_config.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "ALL_MachineLearning_Algos/Unsupervised_Learning/Gaussian_mixturemetrix.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Unsupervised_Learning/KMeans_Clustering.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Unsupervised_Learning/Hierarchical_Clustering.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 8
+    },
+    "ALL_MachineLearning_Algos/Unsupervised_Learning/DBSCAN_Clustring.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/AdaBoost_Regression.py": {
+      "functions": 5,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/PolynomialRegression.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 8
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/LogisticRegression.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/DecisionTreeClassification.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/AdaBoost_Classification.py": {
+      "functions": 5,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/RandomForestClassiication.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 8
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/gradientBoosting_regression.py": {
+      "functions": 5,
+      "classes": 0,
+      "imports": 6
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/LinearRegression.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/DecisionTreeRegression.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/RandomForestRegression.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "ALL_MachineLearning_Algos/Supervised_Learning/SupportVectorMachine_Classification.py": {
+      "functions": 1,
+      "classes": 0,
+      "imports": 9
+    },
+    "N8N_Automation_WorkFlows/Deepsek_Scrapper.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "N8N_Automation_WorkFlows/SpotWorkplace_DiscriminationPatterns.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "N8N_Automation_WorkFlows/PDF_GoogleDrive_RAG.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "N8N_Automation_WorkFlows/ConvertURLHTML2Markdown_Format .json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "N8N_Automation_WorkFlows/AI_Researcher.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "N8N_Automation_WorkFlows/Chat_ResearchAgent.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "N8N_Automation_WorkFlows/Invoice_ExtractionWorkflow.json": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/LINKEDIN_ROSTER/linkedin_roster_agent.py": {
+      "functions": 13,
+      "classes": 1,
+      "imports": 11
+    },
+    "AI_AGENTS/LINKEDIN_ROSTER/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/LINKEDIN_ROSTER/app.py": {
+      "functions": 5,
+      "classes": 0,
+      "imports": 8
+    },
+    "AI_AGENTS/LINKEDIN_ROSTER/templates/index.html": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/Home_Renovation_agent/tools.py": {
+      "functions": 6,
+      "classes": 2,
+      "imports": 8
+    },
+    "AI_AGENTS/Home_Renovation_agent/__init__.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 1
+    },
+    "AI_AGENTS/Home_Renovation_agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/Home_Renovation_agent/agent.py": {
+      "functions": 2,
+      "classes": 0,
+      "imports": 4
+    },
+    "AI_AGENTS/LocalLama_Agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/LocalLama_Agent/app.py": {
+      "functions": 10,
+      "classes": 0,
+      "imports": 20
+    },
+    "AI_AGENTS/Simple_ScrapingAgent/ollama_scrapper.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 2
+    },
+    "AI_AGENTS/Simple_ScrapingAgent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/Simple_ScrapingAgent/DeepSek_scrapper.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 5
+    },
+    "AI_AGENTS/chat_with_gmail/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/chat_with_gmail/chat_gmail.py": {
+      "functions": 1,
+      "classes": 0,
+      "imports": 5
+    },
+    "AI_AGENTS/Startup_Insight_Agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/Startup_Insight_Agent/ai_startup_insight_fire1_agent.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "AI_AGENTS/MusicGenrator_Agent/music_generator_agent.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 10
+    },
+    "AI_AGENTS/MusicGenrator_Agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/Health_Fitness_Agent/health_agent.py": {
+      "functions": 4,
+      "classes": 0,
+      "imports": 8
+    },
+    "AI_AGENTS/Health_Fitness_Agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/Meeting_Agent/meeting_agent.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 9
+    },
+    "AI_AGENTS/Meeting_Agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/ChatWith_SQL_Locally/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/ChatWith_SQL_Locally/test_mysql_connection.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 2
+    },
+    "AI_AGENTS/ChatWith_SQL_Locally/sql_agent.py": {
+      "functions": 9,
+      "classes": 0,
+      "imports": 14
+    },
+    "AI_AGENTS/chat-with-tarots/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/chat-with-tarots/app.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 7
+    },
+    "AI_AGENTS/chat-with-tarots/helpers/help_func.py": {
+      "functions": 3,
+      "classes": 0,
+      "imports": 2
+    },
+    "AI_AGENTS/ResumeJOB_Suggestions/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/ResumeJOB_Suggestions/app.py": {
+      "functions": 3,
+      "classes": 0,
+      "imports": 9
+    },
+    "AI_AGENTS/chat_youtube/chat_youtube.py": {
+      "functions": 3,
+      "classes": 0,
+      "imports": 7
+    },
+    "AI_AGENTS/chat_youtube/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/Journalist_Agent/journalist_agent.py": {
+      "functions": 1,
+      "classes": 0,
+      "imports": 11
+    },
+    "AI_AGENTS/Journalist_Agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/movie_production_agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/movie_production_agent/MovieProductionAgent.py": {
+      "functions": 1,
+      "classes": 0,
+      "imports": 11
+    },
+    "AI_AGENTS/AI_Meme_Generator/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "AI_AGENTS/AI_Meme_Generator/ai_meme_generator_agent.py": {
+      "functions": 1,
+      "classes": 0,
+      "imports": 10
+    },
+    "MCP_AGENTS/github_mcp_agent/github_agent.py": {
+      "functions": 4,
+      "classes": 1,
+      "imports": 18
+    },
+    "MCP_AGENTS/github_mcp_agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/SETUP.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/run.sh": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/main.py": {
+      "functions": 5,
+      "classes": 1,
+      "imports": 13
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/ingestion/__init__.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 1
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/ingestion/repo_scanner.py": {
+      "functions": 6,
+      "classes": 1,
+      "imports": 5
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/embeddings/chunker.py": {
+      "functions": 6,
+      "classes": 1,
+      "imports": 2
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/embeddings/__init__.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 2
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/embeddings/embedder.py": {
+      "functions": 6,
+      "classes": 1,
+      "imports": 4
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/config/__init__.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 1
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/config/settings.py": {
+      "functions": 2,
+      "classes": 1,
+      "imports": 4
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/qa/qa_engine.py": {
+      "functions": 4,
+      "classes": 1,
+      "imports": 4
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/qa/__init__.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 1
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/mcp_context/context_manager.py": {
+      "functions": 14,
+      "classes": 1,
+      "imports": 4
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/mcp_context/__init__.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 1
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/retrieval/vector_store.py": {
+      "functions": 7,
+      "classes": 1,
+      "imports": 6
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/retrieval/__init__.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 1
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/parsing/ast_parser.py": {
+      "functions": 7,
+      "classes": 1,
+      "imports": 5
+    },
+    "MCP_AGENTS/Git_Q&A_MCPagent/parsing/__init__.py": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 1
+    },
+    "MCP_AGENTS/Browser_mcp_agent/mcp_agent.config.yaml": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "MCP_AGENTS/Browser_mcp_agent/README.md": {
+      "functions": 0,
+      "classes": 0,
+      "imports": 0
+    },
+    "MCP_AGENTS/Browser_mcp_agent/main.py": {
+      "functions": 3,
+      "classes": 0,
+      "imports": 15
+    }
+  },
+  "module_relationships": {},
+  "conversation_history": [
+    {
+      "query": "Which files handle database connections?",
+      "answer": "Based on the provided code context, the following files handle database connections:\n\n1. **AI_AGENTS/ChatWith_SQL_Locally/sql_agent.py** - This is the primary file that handles database connections. It contains:\n   - The `connect_to_database()` function (lines 340-360) that creates SQLAlchemy engines for different database types (SQLite, PostgreSQL, MySQL)\n   - Connection logic in the Streamlit interface that collects database credentials and establishes connections\n   - MySQL-specific connection handling with host, port, database, username, and password parameters\n\n2. **AI_AGENTS/ChatWith_SQL_Locally/test_mysql_connection.py** - This file contains a test script for MySQL database connections (lines 32-55), demonstrating how to connect to MySQL and execute basic queries.\n\n**Key Connection Details:**\n- The system supports multiple database types: SQLite, PostgreSQL, and MySQL\n- For MySQL connections, it uses `mysql+pymysql://` URL format with SQLAlchemy\n- Connection parameters are stored in session state (not persisted for security)\n- The code shows proper error handling and connection verification\n\n**Code Snippet from sql_agent.py:**\n```python\ndef connect_to_database(connection_string: str, db_type: str):\n    \"\"\"Connect to database using SQLAlchemy\"\"\"\n    try:\n        if db_type == \"SQLite\":\n            engine = create_engine(connection_string, echo=False)\n        elif db_type == \"PostgreSQL\":\n            engine = create_engine(connection_string, echo=False)\n        elif db_type == \"MySQL\":\n            # MySQL-specific connection logic\n            ...\n```\n\nThe connection flow involves collecting database credentials through a Streamlit UI, constructing the appropriate connection string, and using SQLAlchemy's `create_engine()` to establish the database connection.",
+      "context_used": [
+        "AI_AGENTS/ChatWith_SQL_Locally/test_mysql_connection.py",
+        "AI_AGENTS/ChatWith_SQL_Locally/sql_agent.py",
+        "AI_AGENTS/ChatWith_SQL_Locally/README.md",
+        "AI_AGENTS/ChatWith_SQL_Locally/sql_agent.py",
+        "AI_AGENTS/ChatWith_SQL_Locally/sql_agent.py"
+      ]
+    },
+    {
+      "query": "Where is authentication implemented?",
+      "answer": "Based on the provided code context, authentication is implemented in the following files:\n\n1. **`auth/middleware.py` (lines 15-45)** - Contains the authentication middleware\n2. **`auth/utils.py` (lines 10-30)** - Has JWT token validation functions\n\nThis information comes from a sample Q&A session in the documentation where the system was asked the exact same question. The answer shows that authentication is handled through a middleware approach with JWT token validation utilities.\n\n**Key Details:**\n- The authentication middleware (`auth/middleware.py`) likely intercepts requests to validate authentication before they reach the main application logic\n- The utility functions (`auth/utils.py`) handle JWT token validation, which is a common authentication method for APIs\n- The system uses similarity scoring (0.85 and 0.78 respectively) to identify the most relevant code sections for authentication\n\n**Note:** While the context shows this as an example answer from a Q&A system, no actual authentication code files are present in the provided context. The repository appears to contain multiple AI agent projects with various authentication approaches mentioned (API keys in environment variables, session-based credentials, etc.), but the specific authentication implementation referenced here is not included in the given source files.",
+      "context_used": [
+        "MCP_AGENTS/Git_Q&A_MCPagent/SETUP.md",
+        "AI_AGENTS/Home_Renovation_agent/README.md",
+        "AI_AGENTS/ChatWith_SQL_Locally/README.md",
+        "MCP_AGENTS/Browser_mcp_agent/README.md",
+        "MCP_AGENTS/github_mcp_agent/github_agent.py"
+      ]
+    }
+  ]
+}
