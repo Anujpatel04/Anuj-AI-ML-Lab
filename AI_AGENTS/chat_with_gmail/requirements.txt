@@ -2,3 +2,7 @@ streamlit
 embedchain[gmail]
 python-dotenv
 sentence-transformers
+pydantic-settings
+chromadb<0.4.22
+langchain-community
+langchain-text-splitters
