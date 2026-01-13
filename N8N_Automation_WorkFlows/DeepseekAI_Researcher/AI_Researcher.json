@@ -1,0 +1,585 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "fcc97354-b9f6-4459-a004-46e87902c77c",
+                "name": "company_input",
+                "type": "string",
+                "value": "={{ $json.input }}"
+              },
+              {
+                "id": "e5415c49-5204-45b1-a0e9-814157127b12",
+                "name": "row_number",
+                "type": "number",
+                "value": "={{ $json.row_number }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "f8673bbf-884e-459e-a034-e100be573b40",
+        "name": "Input1",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          -720,
+          1632
+        ],
+        "typeVersion": 3.3
+      },
+      {
+        "parameters": {
+          "name": "get_website_content",
+          "description": "This tool will return the text from the given URL. ",
+          "source": "parameter",
+          "workflowJson": "{\n  \"meta\": {\n    \"templateCredsSetupCompleted\": true,\n    \"instanceId\": \"2b1cc1a8b0a2fb9caab11ab2d5eb3712f9973066051b2e898cf4041a1f2a7757\"\n  },\n  \"nodes\": [\n    {\n      \"parameters\": {},\n      \"id\": \"475eaf3c-7e11-457e-8b72-4d3e683e2f80\",\n      \"name\": \"Execute Workflow Trigger\",\n      \"type\": \"n8n-nodes-base.executeWorkflowTrigger\",\n      \"typeVersion\": 1,\n      \"position\": [\n        260,\n        340\n      ]\n    },\n    {\n      \"parameters\": {\n        \"url\": \"={{ $json.query.url }}\",\n        \"options\": {}\n      },\n      \"id\": \"321fbc74-d749-4f9b-954e-7cad37601ddf\",\n      \"name\": \"Visit Website\",\n      \"type\": \"n8n-nodes-base.httpRequest\",\n      \"typeVersion\": 4.2,\n      \"position\": [\n        440,\n        340\n      ]\n    },\n    {\n      \"parameters\": {\n        \"operation\": \"extractHtmlContent\",\n        \"extractionValues\": {\n          \"values\": [\n            {\n              \"key\": \"body\",\n              \"cssSelector\": \"html\",\n              \"skipSelectors\": \"head\"\n            }\n          ]\n        },\n        \"options\": {\n          \"cleanUpText\": true\n        }\n      },\n      \"id\": \"6e51732a-4999-4805-838b-f692e9965197\",\n      \"name\": \"HTML\",\n      \"type\": \"n8n-nodes-base.html\",\n      \"typeVersion\": 1.2,\n      \"position\": [\n        620,\n        340\n      ]\n    }\n  ],\n  \"connections\": {\n    \"Execute Workflow Trigger\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"Visit Website\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    },\n    \"Visit Website\": {\n      \"main\": [\n        [\n          {\n            \"node\": \"HTML\",\n            \"type\": \"main\",\n            \"index\": 0\n          }\n        ]\n      ]\n    }\n  },\n  \"pinData\": {\n    \"Execute Workflow Trigger\": [\n      {\n        \"query\": {\n          \"url\": \"https://www.lemlist.com\"\n        }\n      }\n    ]\n  }\n}",
+          "responsePropertyName": "body",
+          "specifyInputSchema": true,
+          "jsonSchemaExample": "{\n\t\"url\": \"https://www.lemlist.com\"\n}"
+        },
+        "id": "f25ac882-bb75-4194-acb5-35965bcb3389",
+        "name": "Get website content1",
+        "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+        "position": [
+          528,
+          1968
+        ],
+        "typeVersion": 1.1
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "853b1e5d-cd58-4e41-ac1c-f27d10a825cd",
+        "name": "SerpAPI - Search Google1",
+        "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+        "position": [
+          240,
+          1952
+        ],
+        "typeVersion": 1,
+        "credentials": {
+          "serpApi": {
+            "id": "pLAZOml4mSub898t",
+            "name": "SerpAPI account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schemaType": "manual",
+          "inputSchema": "{\n\t\"type\": \"object\",\n\t\"properties\": {\n\t\t\"case_study_link\": {\n\t\t\t\"type\":[\"string\", \"null\"]\n\t\t},\n      \t\t\"domain\": {\n\t\t\t\"type\": [\"string\", \"null\"]\n\t\t},\n           \"linkedinUrl\": {\n\t\t\t\"type\": [\"string\", \"null\"]\n\t\t},\n     \t\"market\": {\n\t\t\t\"type\": [\"string\", \"null\"]\n\t\t},\n\t\t\"cheapest_plan\": {\n\t\t\t\"type\": [\"number\", \"null\"]\n\t\t},\n\t\"has_enterprise_plan\": {\n\t\t\t\"type\": [\"boolean\", \"null\"]\n\t\t},\n\t\"has_API\": {\n\t\t\t\"type\": [\"boolean\", \"null\"]\n\t\t},\n\t\"has_free_trial\": {\n\t\t\t\"type\": [\"boolean\", \"null\"]\n\t\t},\n\t\"integrations\": {\n\t\t\t\"type\": [\"array\",\"null\"],\n      \"items\": {\n\t\t\t\t\"type\": \"string\"\n\t\t\t}\n\t\t}\n\t}\n}"
+        },
+        "id": "34ab9a46-c3c4-4e2d-97c8-f74265ba8703",
+        "name": "Structured Output Parser1",
+        "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+        "position": [
+          832,
+          1952
+        ],
+        "typeVersion": 1.2
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "id": "761297d3-046f-4066-9fde-015e206ea9fc",
+        "name": "Loop Over Items1",
+        "type": "n8n-nodes-base.splitInBatches",
+        "position": [
+          -448,
+          1632
+        ],
+        "typeVersion": 3
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "4109ca11-1bb8-4f5c-8bec-a962f44b0746",
+                "name": "domain",
+                "type": "string",
+                "value": "={{ $json.output.domain }}"
+              },
+              {
+                "id": "7f492768-375e-48fa-866b-644b2b5cbd68",
+                "name": "linkedinUrl",
+                "type": "string",
+                "value": "={{ $json.output.linkedinUrl }}"
+              },
+              {
+                "id": "e30b0d07-68db-45a1-9593-fd6ce24a1d50",
+                "name": "market",
+                "type": "string",
+                "value": "={{ $json.output.market }}"
+              },
+              {
+                "id": "0c03a51e-2c07-4583-85c6-d3d2ee81c5d1",
+                "name": "cheapest_plan",
+                "type": "number",
+                "value": "={{ $json.output.cheapest_plan }}"
+              },
+              {
+                "id": "0c9622d0-8446-4663-9a94-964b5df851f1",
+                "name": "has_enterprise_plan",
+                "type": "boolean",
+                "value": "={{ $json.output.has_enterprise_plan }}"
+              },
+              {
+                "id": "564cf6ea-457f-4762-bc19-6900b7d5743c",
+                "name": "has_API",
+                "type": "boolean",
+                "value": "={{ $json.output.has_API }}"
+              },
+              {
+                "id": "7fd39897-65c3-45d6-9563-8254f55ecef0",
+                "name": "has_free_trial",
+                "type": "boolean",
+                "value": "={{ $json.output.has_free_trial }}"
+              },
+              {
+                "id": "26477939-d407-4cae-92b2-9a9dc0f53a64",
+                "name": "integrations",
+                "type": "array",
+                "value": "={{ $json.output.integrations }}"
+              },
+              {
+                "id": "f0cc61d1-6b6b-4142-8627-4a4c721b19a1",
+                "name": "case_study_link",
+                "type": "string",
+                "value": "={{ $json.output.case_study_link }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "id": "dbcaf3cf-5f3c-482f-8c7d-ffceea4b25ba",
+        "name": "AI Researcher Output Data1",
+        "type": "n8n-nodes-base.set",
+        "position": [
+          912,
+          1632
+        ],
+        "typeVersion": 3.3
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "documentId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "19U7gAgkUEz6mbFcnygf1zKDdGvY6OAdUqq3bZQWgjxE",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19U7gAgkUEz6mbFcnygf1zKDdGvY6OAdUqq3bZQWgjxE/edit?usp=drivesdk",
+            "cachedResultName": "Enrich companies using AI agents"
+          },
+          "sheetName": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gid=0",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19U7gAgkUEz6mbFcnygf1zKDdGvY6OAdUqq3bZQWgjxE/edit#gid=0",
+            "cachedResultName": "Sheet1"
+          },
+          "columns": {
+            "value": {
+              "domain": "={{ $json.domain }}",
+              "market": "={{ $json.market }}",
+              "row_number": "={{ $json.row_number }}",
+              "linkedinUrl": "={{ $json.linkedinUrl }}",
+              "integrations": "={{ $json.integrations }}",
+              "cheapest_plan": "={{ $json.cheapest_plan }}",
+              "has_free_trial": "={{ $json.has_free_trial }}",
+              "enrichment_status": "done",
+              "has_entreprise_plan": "={{ $json.has_enterprise_plan }}",
+              "last_case_study_link": "={{ $json.case_study_link }}"
+            },
+            "schema": [
+              {
+                "id": "input",
+                "type": "string",
+                "display": true,
+                "removed": true,
+                "required": false,
+                "displayName": "input",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "domain",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "displayName": "domain",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "linkedinUrl",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "displayName": "linkedinUrl",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "has_free_trial",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "displayName": "has_free_trial",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "cheapest_plan",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "displayName": "cheapest_plan",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "has_entreprise_plan",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "displayName": "has_entreprise_plan",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "last_case_study_link",
+                "type": "string",
+                "display": true,
+                "removed": false,
+                "required": false,
+                "displayName": "last_case_study_link",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "market",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "displayName": "market",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "integrations",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "displayName": "integrations",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "enrichment_status",
+                "type": "string",
+                "display": true,
+                "required": false,
+                "displayName": "enrichment_status",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "row_number",
+                "type": "string",
+                "display": true,
+                "removed": false,
+                "readOnly": true,
+                "required": false,
+                "displayName": "row_number",
+                "defaultMatch": false,
+                "canBeUsedToMatch": true
+              }
+            ],
+            "mappingMode": "defineBelow",
+            "matchingColumns": [
+              "row_number"
+            ]
+          },
+          "options": {}
+        },
+        "id": "6b121973-12a4-4cef-8a6b-7e29e9e3baa6",
+        "name": "Google Sheets - Update Row with data1",
+        "type": "n8n-nodes-base.googleSheets",
+        "position": [
+          1552,
+          1984
+        ],
+        "typeVersion": 4.3,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "qIaXj1U69I6wQiyb",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "mode": "combine",
+          "combinationMode": "mergeByPosition",
+          "options": {}
+        },
+        "id": "aa6637d6-0f4f-406f-b9a0-62febca01ee6",
+        "name": "Merge data1",
+        "type": "n8n-nodes-base.merge",
+        "position": [
+          1184,
+          1472
+        ],
+        "typeVersion": 2.1
+      },
+      {
+        "parameters": {
+          "documentId": {
+            "__rl": true,
+            "mode": "list",
+            "value": "19U7gAgkUEz6mbFcnygf1zKDdGvY6OAdUqq3bZQWgjxE",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19U7gAgkUEz6mbFcnygf1zKDdGvY6OAdUqq3bZQWgjxE/edit?usp=drivesdk",
+            "cachedResultName": "Enrich companies using AI agents"
+          },
+          "sheetName": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gid=0",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/19U7gAgkUEz6mbFcnygf1zKDdGvY6OAdUqq3bZQWgjxE/edit#gid=0",
+            "cachedResultName": "Sheet1"
+          },
+          "filtersUI": {
+            "values": [
+              {
+                "lookupColumn": "enrichment_status"
+              }
+            ]
+          },
+          "options": {
+            "returnAllMatches": "returnAllMatches"
+          }
+        },
+        "id": "10426f31-39d2-4e2a-943b-9e703fc55d3a",
+        "name": "Get rows to enrich1",
+        "type": "n8n-nodes-base.googleSheets",
+        "position": [
+          -928,
+          1632
+        ],
+        "typeVersion": 4.3,
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "qIaXj1U69I6wQiyb",
+            "name": "Google Sheets account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours",
+                "hoursInterval": 2
+              }
+            ]
+          }
+        },
+        "id": "195d7e2a-7ffc-475c-b376-943fbcec879c",
+        "name": "Schedule Trigger1",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "position": [
+          -1136,
+          1872
+        ],
+        "typeVersion": 1.2
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=This is the company I want you to research info about:\n{{ $json.company_input }}\n\nReturn me:\n- the linkedin URL of the company\n- the domain of the company. in this format ([domain].[tld])\n- market: if they are B2B or B2C. Only reply by \"B2B\" or \"B2B\"\n- the lowest paid plan the company is offering. If you are not sure, reply null.\n- the latest case study URL published on the website (find case study hub using google, and return the first case study link)\n- tell me if the company offer an API\n- tell me if the company has an enterprise plan\n- tell me if the company has a free trial mentionned in their homepage. reply false if you don't find strong evidence.\n- return an array with up to 5 tools the company is integrated with",
+          "hasOutputParser": true,
+          "options": {
+            "maxIterations": 10
+          }
+        },
+        "id": "7e1aa386-82d0-4aaf-a6a5-ca3ec75b6b03",
+        "name": "AI company researcher1",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          144,
+          1632
+        ],
+        "typeVersion": 1.6
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+        "typeVersion": 1,
+        "position": [
+          -32,
+          1952
+        ],
+        "id": "86269751-9f79-4084-8cea-adb6edaa2d9c",
+        "name": "DeepSeek Chat Model1",
+        "credentials": {
+          "deepSeekApi": {
+            "id": "frYw4RwGT7ZElyz5",
+            "name": "DeepSeek account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Input1": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get website content1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI company researcher1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SerpAPI - Search Google1": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI company researcher1",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Structured Output Parser1": {
+        "ai_outputParser": [
+          [
+            {
+              "node": "AI company researcher1",
+              "type": "ai_outputParser",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items1": {
+        "main": [
+          [],
+          [
+            {
+              "node": "AI company researcher1",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Merge data1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Researcher Output Data1": {
+        "main": [
+          [
+            {
+              "node": "Merge data1",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "Google Sheets - Update Row with data1": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge data1": {
+        "main": [
+          [
+            {
+              "node": "Google Sheets - Update Row with data1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get rows to enrich1": {
+        "main": [
+          [
+            {
+              "node": "Input1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger1": {
+        "main": [
+          [
+            {
+              "node": "Get rows to enrich1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI company researcher1": {
+        "main": [
+          [
+            {
+              "node": "AI Researcher Output Data1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "DeepSeek Chat Model1": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI company researcher1",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "41c436da7030a9268d66e2cd109e9f80e81014f04f6a92061ed9b2b8e2ca9040"
+    }
+  }
