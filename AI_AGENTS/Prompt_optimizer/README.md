@@ -1,13 +1,15 @@
 # Prompt Optimization Agent
 
-A CLI-based agent that takes a weak user prompt and returns a clear, structured, and LLM-optimized version using the OpenAI API. It also reports detected intent and issues in the original prompt.
+A lightweight agent that upgrades weak prompts into clear, structured, and LLM-optimized prompts using the OpenAI API.
+
+> Note: This project is part of the Anuj-AI-ML-Lab repository.
 
 ## What it does
 
 - Accepts a raw prompt string
-- Infers intent, task type, and missing context
-- Produces a higher-quality prompt with constraints and output format
-- Returns results in a strict JSON schema
+- Detects intent and common prompt issues
+- Generates an optimized prompt with constraints and format
+- Returns strict JSON output
 
 ## How to run
 
@@ -65,8 +67,8 @@ Output:
 
 ## Design decisions
 
-- **Single OpenAI call** for deterministic, low-latency optimization
-- **Strict JSON validation** to guarantee schema compliance
-- **Single file** for easy portability and setup
-- **CLI + Streamlit** for terminal and UI usage
-- **Environment-based config** for API key and model selection
+- Single OpenAI call for deterministic optimization
+- Strict JSON validation to guarantee schema compliance
+- Single-file implementation for portability
+- CLI + Streamlit for terminal and UI usage
+- Environment-based config for API key and model
