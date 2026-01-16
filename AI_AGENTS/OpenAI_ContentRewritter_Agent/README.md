@@ -18,17 +18,6 @@ Set your API key in `/Users/anuj/Desktop/Anuj-AI-ML-Lab/.env`:
 ```
 OPENAI_API_KEY=your-api-key
 OPENAI_MODEL=gpt-4o-mini
-```
-
-Run with CLI arguments:
-
-```bash
-python app.py \
-  --content "We launched a new analytics feature for small teams." \
-  --platform "LinkedIn" \
-  --tone "Professional" \
-  --constraints "End with a CTA and keep under 120 words"
-```
 
 Or run interactively:
 
