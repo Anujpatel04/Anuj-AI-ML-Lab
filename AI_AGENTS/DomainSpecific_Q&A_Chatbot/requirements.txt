@@ -1,5 +1,6 @@
 openai
 requests
-chromadb
 tiktoken
 streamlit
+python-dotenv
+pinecone
