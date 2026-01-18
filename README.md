@@ -18,7 +18,13 @@ This lab contains a curated set of projects organized into the following categor
 - **Voice Agents**: Voice-powered AI agents for customer support and web interaction
 - **MCP Agents**: Model Context Protocol agents that integrate with external tools and services for enhanced functionality
 - **N8N Automation Workflows**: N8N workflow configurations for automated AI-powered processes
+ - **LLM Projects**: Production-style applications and enterprise-ready systems (including submodules)
 
+## LLM Projects (Submodules)
+
+- `LLM_PROJECTS/AIExpense-ManagementSystem` — AI-powered expense management platform
+- `LLM_PROJECTS/DailyNews_IncrementalModel` — Incremental news intelligence system
+- `LLM_PROJECTS/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol` — Multi-agent orchestrator with A2A protocol
 
 
 ## Quick Start
@@ -53,19 +59,6 @@ For command-line scripts:
 python3 <script_file>.py
 ```
 
-## Configuration
-
-### Environment Variables
-
-Most projects use a centralized `.env` file in the root directory for API key management. Create a `.env` file in the project root:
-
-```env
-OPENAI_API_KEY=your_key
-QDRANT_URL=your_url
-QDRANT_API_KEY=your_key
-FIRECRAWL_API_KEY=your_key
-MODELSLAB_API_KEY=your_key
-```
 
 ### Project-Specific Configuration
 
