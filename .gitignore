@@ -87,3 +87,7 @@ Desktop.ini
 # Project specific
 rough2/
 testfile.txt
+
+npm-debug.log*
+.npm-cache
+.npm-cache/
