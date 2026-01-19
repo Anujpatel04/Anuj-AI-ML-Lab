@@ -7,3 +7,6 @@
 [submodule "LLM_PROJECTS/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol"]
 	path = LLM_PROJECTS/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol
 	url = https://github.com/Anujpatel04/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol
+[submodule "LLM_PROJECTS/MemoryBase_Chatbot"]
+	path = LLM_PROJECTS/MemoryBase_Chatbot
+	url = https://github.com/Anujpatel04/MemoryBase_Chatbot
