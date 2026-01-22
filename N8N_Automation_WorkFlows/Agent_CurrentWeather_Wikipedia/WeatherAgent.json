@@ -1,0 +1,223 @@
+{
+    "nodes": [
+      {
+        "parameters": {
+          "content": "### The conversation history(last 20 messages) is stored in a buffer memory",
+          "height": 205,
+          "width": 300
+        },
+        "id": "b7b02d8a-886a-451e-b696-4085f72424f8",
+        "name": "Sticky Note4",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -688,
+          336
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {},
+        "id": "155f1bba-34e8-49e6-828b-7cd88ff1df38",
+        "name": "On new manual Chat Message",
+        "type": "@n8n/n8n-nodes-langchain.manualChatTrigger",
+        "position": [
+          -944,
+          48
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {},
+        "id": "82a25481-a826-48e4-8d31-c664d70aa75d",
+        "name": "Wikipedia",
+        "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+        "position": [
+          -144,
+          448
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "### Tools which agent can use to accomplish the task",
+          "height": 205,
+          "width": 300
+        },
+        "id": "8b9448ba-a2e8-4b44-b4a8-01a3ca428dcd",
+        "name": "Sticky Note3",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -352,
+          336
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "content": "### Conversational agent will utilise available tools to answer the prompt. ",
+          "height": 211,
+          "width": 422
+        },
+        "id": "6372fea4-44b2-4e29-842d-c9c89248837e",
+        "name": "Sticky Note6",
+        "type": "n8n-nodes-base.stickyNote",
+        "position": [
+          -736,
+          -48
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "contextWindowLength": 20
+        },
+        "id": "2711d4b5-2bea-4950-b1e6-179d4606545d",
+        "name": "Window Buffer Memory",
+        "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+        "position": [
+          -592,
+          400
+        ],
+        "typeVersion": 1
+      },
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.input }}",
+          "options": {
+            "systemMessage": "=You are a helpful assistant, with weather tool and wiki tool. find out the latitude and longitude information of a location then use the weather tool for current weather and weather forecast. For general info, use the wiki tool."
+          }
+        },
+        "id": "2486d9af-4eec-4c80-bba2-0783536ae172",
+        "name": "AI Agent",
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "position": [
+          -656,
+          48
+        ],
+        "typeVersion": 1.6
+      },
+      {
+        "parameters": {
+          "toolDescription": "Fetch current temperature for given coordinates.",
+          "url": "https://api.open-meteo.com/v1/forecast",
+          "sendQuery": true,
+          "parametersQuery": {
+            "values": [
+              {
+                "name": "latitude"
+              },
+              {
+                "name": "longitude"
+              },
+              {
+                "name": "forecast_days",
+                "valueProvider": "fieldValue",
+                "value": "1"
+              },
+              {
+                "name": "hourly",
+                "valueProvider": "fieldValue",
+                "value": "temperature_2m"
+              }
+            ]
+          }
+        },
+        "id": "0f990438-4db0-4753-8f48-9036ba871392",
+        "name": "Weather HTTP Request",
+        "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+        "position": [
+          -304,
+          416
+        ],
+        "notesInFlow": true,
+        "typeVersion": 1.1
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "gpt-4.1-mini"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+        "typeVersion": 1.2,
+        "position": [
+          -848,
+          384
+        ],
+        "id": "ec4f5840-b869-4ebf-a547-4b794a79b12e",
+        "name": "OpenAI Chat Model",
+        "credentials": {
+          "openAiApi": {
+            "id": "T26uPZgqaCpd62g0",
+            "name": "OpenAi account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "On new manual Chat Message": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Wikipedia": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Window Buffer Memory": {
+        "ai_memory": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_memory",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Weather HTTP Request": {
+        "ai_tool": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_tool",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "OpenAI Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "pinData": {},
+    "meta": {
+      "templateCredsSetupCompleted": true,
+      "instanceId": "41c436da7030a9268d66e2cd109e9f80e81014f04f6a92061ed9b2b8e2ca9040"
+    }
+  }
