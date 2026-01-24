@@ -10,3 +10,6 @@
 [submodule "LLM_PROJECTS/MemoryBase_Chatbot"]
 	path = LLM_PROJECTS/MemoryBase_Chatbot
 	url = https://github.com/Anujpatel04/MemoryBase_Chatbot
+[submodule "LLM_PROJECTS/Synthetic_Data_Factory"]
+	path = LLM_PROJECTS/Synthetic_Data_Factory
+	url = https://github.com/Anujpatel04/Synthetic_Data_Factory
