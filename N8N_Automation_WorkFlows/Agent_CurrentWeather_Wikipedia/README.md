@@ -1,3 +1,5 @@
+![Workflow](Workflow.png)
+
 ## Weather + Wikipedia Agent (n8n)
 
 This workflow implements a simple conversational agent that can answer:

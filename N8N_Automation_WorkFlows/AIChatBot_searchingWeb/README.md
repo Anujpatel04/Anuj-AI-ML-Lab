@@ -1,3 +1,5 @@
+![Workflow](Workflow.png)
+
 ## Conversational AI Agent with Tool Use (n8n + LangChain)
 
 This workflow implements a conversational agent in n8n using LangChain. It
