@@ -7,8 +7,8 @@
 [![Status](https://img.shields.io/badge/Status-Active%20Development-success?style=for-the-badge)](https://github.com)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/yourusername/Anuj-AI-ML-Lab?style=for-the-badge&logo=github)](https://github.com)
-[![Forks](https://img.shields.io/github/forks/yourusername/Anuj-AI-ML-Lab?style=for-the-badge&logo=github)](https://github.com)
+[![Stars](https://img.shields.io/github/stars/Anujpatel04/Anuj-AI-ML-Lab?style=for-the-badge&logo=github)](https://github.com/Anujpatel04/Anuj-AI-ML-Lab)
+[![Forks](https://img.shields.io/github/forks/Anujpatel04/Anuj-AI-ML-Lab?style=for-the-badge&logo=github)](https://github.com/Anujpatel04/Anuj-AI-ML-Lab)
 
 <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=28&duration=3000&pause=1000&color=2E9EF7&center=true&vCenter=true&width=800&lines=AI+Agents+%7C+RAG+Systems+%7C+ML+From+Scratch;Production+Ready+%7C+Educational+%7C+Experimental;Voice+Agents+%7C+MCP+Integration+%7C+LLM+Fine-tuning" alt="Typing SVG" />
 
@@ -198,7 +198,7 @@ pip3 --version
 
 **Step 1: Clone the Repository**
 ```bash
-git clone https://github.com/yourusername/Anuj-AI-ML-Lab.git
+git clone https://github.com/Anujpatel04/Anuj-AI-ML-Lab.git
 cd Anuj-AI-ML-Lab
 ```
 
