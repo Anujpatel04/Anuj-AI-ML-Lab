@@ -26,15 +26,47 @@
 
 - [Overview](#overview)
 - [Key Features](#key-features)
+- [System Architecture](#system-architecture)
 - [Project Categories](#project-categories)
 - [Quick Start](#quick-start)
 - [LLM Projects (Submodules)](#llm-projects-submodules)
+- [Usage Examples](#usage-examples)
 - [Contributing](#contributing)
 - [License](#license)
 
 ---
 
 ## Overview
+
+<div align="center">
+
+```mermaid
+mindmap
+  root((Anuj AI/ML Lab))
+    AI Agents
+      Content Generation
+      Web Scraping
+      Meeting Transcription
+      Business Intelligence
+    RAG Systems
+      Document Processing
+      Knowledge Retrieval
+      Multi-Source Integration
+    ML Algorithms
+      Supervised Learning
+      Unsupervised Learning
+      From Scratch Implementations
+    Voice & MCP
+      Voice Agents
+      Customer Support
+      Tool Integration
+    Automation
+      N8N Workflows
+      LLM Fine-tuning
+      Production Systems
+```
+
+</div>
 
 Welcome to **Anuj AI/ML Lab** - a comprehensive learning resource and development playground for building cutting-edge AI systems. This repository bridges the gap between theory and practice, offering production-ready implementations alongside educational resources.
 
@@ -49,48 +81,43 @@ Welcome to **Anuj AI/ML Lab** - a comprehensive learning resource and developmen
 <tr>
 <td width="50%">
 
-### **AI Agents**
-- Content generation pipelines
-- Intelligent web scraping
-- Meeting transcription systems
-- Business intelligence agents
-- Multi-modal integrations (Gmail, YouTube, PDF)
+---
 
-</td>
-<td width="50%">
+## System Architecture
 
-### **RAG Applications**
-- Advanced retrieval systems
-- Document processing pipelines
-- Knowledge base management
-- Context-aware responses
-- Multi-source data integration
+<div align="center">
 
-</td>
-</tr>
-<tr>
-<td width="50%">
+graph TB
+    A[User Input] --> B{Input Type}
+    B -->|Text| C[AI Agents]
+    B -->|Voice| D[Voice Agents]
+    B -->|Documents| E[RAG Systems]
 
-### **ML From Scratch**
-- Supervised learning algorithms
-- Unsupervised learning methods
-- Educational implementations
-- Performance benchmarks
-- Visualization tools
+    C --> F[Knowledge Base]
+    D --> F
+    E --> F
 
-</td>
-<td width="50%">
+    F --> G[Processing Layer]
 
-### **Voice & MCP Agents**
-- Voice-powered AI assistants
-- Customer support automation
-- Model Context Protocol integration
-- External tool connectivity
-- Real-time interactions
+    G --> H[ML Models]
+    G --> I[LLM Fine-tuning]
+    G --> J[MCP Integration]
 
-</td>
-</tr>
-</table>
+    H --> K[Results]
+    I --> K
+    J --> K
+
+    K --> L[N8N Automation]
+    L --> M[Output]
+
+    style A fill:#e1f5ff
+    style M fill:#d4edda
+    style F fill:#fff3cd
+    style G fill:#f8d7da
+
+**Architecture Flow**: Input → Processing → Knowledge Base → Model Execution → Automation → Output
+
+</div>
 
 ---
 
@@ -99,13 +126,13 @@ Welcome to **Anuj AI/ML Lab** - a comprehensive learning resource and developmen
 <details open>
 <summary><b>AI Agents</b> - Click to expand</summary>
 
-| Agent Type | Description | Tech Stack |
-|------------|-------------|------------|
-| Content Generation | Automated content creation systems | LangChain, OpenAI |
-| Web Scraping | Intelligent data extraction agents | Playwright, BeautifulSoup |
-| Meeting Transcription | Audio-to-text conversion with AI summaries | Whisper, GPT-4 |
-| Business Intelligence | Data analysis and reporting agents | Pandas, Plotly |
-| LLM Applications | Chat with Gmail, YouTube, PDFs, and more | RAG, Vector DBs |
+| Agent Type            | Description                                | Tech Stack                |
+| --------------------- | ------------------------------------------ | ------------------------- |
+| Content Generation    | Automated content creation systems         | LangChain, OpenAI         |
+| Web Scraping          | Intelligent data extraction agents         | Playwright, BeautifulSoup |
+| Meeting Transcription | Audio-to-text conversion with AI summaries | Whisper, GPT-4            |
+| Business Intelligence | Data analysis and reporting agents         | Pandas, Plotly            |
+| LLM Applications      | Chat with Gmail, YouTube, PDFs, and more   | RAG, Vector DBs           |
 
 </details>
 
@@ -113,6 +140,7 @@ Welcome to **Anuj AI/ML Lab** - a comprehensive learning resource and developmen
 <summary><b>RAG Applications</b> - Click to expand</summary>
 
 Advanced retrieval-augmented generation implementations for:
+
 - Document processing and indexing
 - Semantic search and retrieval
 - Context-aware question answering
@@ -125,6 +153,7 @@ Advanced retrieval-augmented generation implementations for:
 <summary><b>Machine Learning Algorithms</b> - Click to expand</summary>
 
 From-scratch implementations for educational purposes:
+
 - **Supervised Learning**: Linear/Logistic Regression, Decision Trees, SVM, Neural Networks
 - **Unsupervised Learning**: K-Means, PCA, Hierarchical Clustering
 - **Deep Learning**: CNNs, RNNs, Transformers (basic implementations)
@@ -136,6 +165,7 @@ From-scratch implementations for educational purposes:
 <summary><b>Fine-Tuning Projects</b> - Click to expand</summary>
 
 LLM fine-tuning implementations:
+
 - LoRA (Low-Rank Adaptation)
 - Domain-specific adaptations
 - Parameter-efficient fine-tuning
@@ -147,6 +177,7 @@ LLM fine-tuning implementations:
 <summary><b>Voice Agents</b> - Click to expand</summary>
 
 Voice-powered AI systems:
+
 - Customer support automation
 - Web interaction via voice
 - Real-time speech processing
@@ -158,6 +189,7 @@ Voice-powered AI systems:
 <summary><b>MCP Agents</b> - Click to expand</summary>
 
 Model Context Protocol implementations:
+
 - External tool integration
 - API connectivity
 - Multi-agent collaboration
@@ -169,6 +201,7 @@ Model Context Protocol implementations:
 <summary><b>N8N Automation</b> - Click to expand</summary>
 
 Workflow automation configurations:
+
 - AI-powered process automation
 - Email and notification workflows
 - Scheduled tasks
@@ -196,60 +229,52 @@ pip3 --version
 <tr>
 <td>
 
-**Step 1: Clone the Repository**
-```bash
-git clone https://github.com/yourusername/Anuj-AI-ML-Lab.git
-cd Anuj-AI-ML-Lab
-```
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Step 2: Navigate to Project**
-```bash
-cd <project_folder>
-```
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Step 3: Install Dependencies**
-```bash
-python3 -m pip install -r requirements.txt
-```
-
-</td>
-</tr>
-<tr>
-<td>
-
-**Step 4: Follow Project README**
-```bash
-# Each project has specific setup instructions
-cat README.md
-```
-
-</td>
-</tr>
-</table>
-
 ---
 
 ## LLM Projects (Submodules)
 
 <div align="center">
 
-| Project | Description | Status |
-|---------|-------------|--------|
-| [AIExpense-ManagementSystem](LLM_PROJECTS/AIExpense-ManagementSystem) | AI-powered expense tracking and management platform | Active |
-| [DailyNews_IncrementalModel](LLM_PROJECTS/DailyNews_IncrementalModel) | Incremental learning for news intelligence systems | Active |
-| [Multi-agent-orchestrator-system](LLM_PROJECTS/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol) | Multi-agent orchestration with A2A protocol | Active |
+| Project                                                                                                     | Description                                         | Status |
+| ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------- | ------ |
+| [AIExpense-ManagementSystem](LLM_PROJECTS/AIExpense-ManagementSystem)                                          | AI-powered expense tracking and management platform | Active |
+| [DailyNews_IncrementalModel](LLM_PROJECTS/DailyNews_IncrementalModel)                                          | Incremental learning for news intelligence systems  | Active |
+| [Multi-agent-orchestrator-system](LLM_PROJECTS/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol) | Multi-agent orchestration with A2A protocol         | Active |
 
 </div>
+
+---
+
+## Usage Examples
+
+### Running Streamlit Applications
+
+```bash
+# Interactive web applications
+streamlit run <app_file>.py
+
+# Example: RAG chat application
+streamlit run rag_chat_app.py
+```
+
+### Running Python Scripts
+
+```bash
+# Command-line utilities
+python3 <script_file>.py
+
+# Example: ML training script
+python3 train_model.py --config config.yaml
+```
+
+### Project-Specific Configuration
+
+| Configuration Type           | Description                                    |
+| ---------------------------- | ---------------------------------------------- |
+| **Dependencies**       | Each project includes `requirements.txt`     |
+| **Browser Automation** | Playwright projects need additional setup      |
+| **MCP Agents**         | Require configuration files (see docs)         |
+| **API Keys**           | Store in `.env` files (see `.env.example`) |
 
 ---
 
