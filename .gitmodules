@@ -13,3 +13,6 @@
 [submodule "LLM_PROJECTS/Synthetic_Data_Factory"]
 	path = LLM_PROJECTS/Synthetic_Data_Factory
 	url = https://github.com/Anujpatel04/Synthetic_Data_Factory
+[submodule "RAGs/GraphRAG_Papers"]
+	path = RAGs/GraphRAG_Papers
+	url = https://github.com/Anujpatel04/GraphRAG_Papers.git
