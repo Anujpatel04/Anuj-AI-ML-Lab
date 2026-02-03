@@ -16,3 +16,6 @@
 [submodule "RAGs/GraphRAG_Papers"]
 	path = RAGs/GraphRAG_Papers
 	url = https://github.com/Anujpatel04/GraphRAG_Papers.git
+[submodule "DS_PROJECTS/ChurnSense"]
+	path = DS_PROJECTS/ChurnSense
+	url = https://github.com/Anujpatel04/ChurnSense.git
