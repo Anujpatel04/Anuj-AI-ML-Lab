@@ -1,5 +1,5 @@
 [submodule "LLM_PROJECTS/AIExpense-ManagementSystem"]
-	path = LLM_PROJECTS/AIExpense-ManagementSystem
+	path = DS_PROJECTS/AIExpense-ManagementSystem
 	url = https://github.com/Anujpatel04/AIExpense-ManagementSystem
 [submodule "LLM_PROJECTS/DailyNews_IncrementalModel"]
 	path = LLM_PROJECTS/DailyNews_IncrementalModel
@@ -19,3 +19,19 @@
 [submodule "DS_PROJECTS/ChurnSense"]
 	path = DS_PROJECTS/ChurnSense
 	url = https://github.com/Anujpatel04/ChurnSense.git
+
+	[submodule "DS_PROJECTS/DailyNews_IncrementalModel"]
+		path = DS_PROJECTS/DailyNews_IncrementalModel
+		url = https://github.com/Anujpatel04/DailyNews_IncrementalModel
+
+		[submodule "DS_PROJECTS/MemoryBase_Chatbot"]
+			path = DS_PROJECTS/MemoryBase_Chatbot
+			url = https://github.com/Anujpatel04/MemoryBase_Chatbot
+
+			[submodule "DS_PROJECTS/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol"]
+				path = DS_PROJECTS/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol
+				url = https://github.com/Anujpatel04/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol
+
+				[submodule "DS_PROJECTS/Synthetic_Data_Factory"]
+					path = DS_PROJECTS/Synthetic_Data_Factory
+					url = https://github.com/Anujpatel04/Synthetic_Data_Factory

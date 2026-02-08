@@ -10,23 +10,6 @@ A production-quality Retrieval Augmented Generation (RAG) application for queryi
 - **In-Memory Vector Search**: Fast similarity search using FAISS
 - **OpenAI Integration**: Uses text-embedding-3-small for embeddings and GPT-4o for generation
 
-## Architecture
-
-```
-PDF Upload → Page Extraction → Embedding Generation → FAISS Index
-                                                          ↓
-User Query → Query Embedding → Similarity Search → Top-K Pages
-                                                          ↓
-                                              LLM Answer Generation
-                                                          ↓
-                                              Answer + Page Sources
-```
-
-## Requirements
-
-- Python 3.9+
-- OpenAI API key
-
 ## Installation
 
 1. Clone the repository and navigate to the project directory:
@@ -61,16 +44,6 @@ Then:
 2. Enter your question in the text input field
 3. Click Submit to get an answer with source page references
 
-## Configuration
-
-The following parameters can be modified in `app.py`:
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `EMBEDDING_MODEL` | text-embedding-3-small | OpenAI embedding model |
-| `CHAT_MODEL` | gpt-4o | OpenAI chat model |
-| `TOP_K` | 3 | Number of pages to retrieve per query |
-
 ## Project Structure
 
 ```
@@ -80,29 +53,10 @@ PageIndexed_RAG/
 └── README.md           # Documentation
 ```
 
-## Dependencies
-
-| Package | Purpose |
-|---------|---------|
-| streamlit | Web interface |
-| openai | Embeddings and chat completion |
-| faiss-cpu | Vector similarity search |
-| pypdf | PDF text extraction |
-| python-dotenv | Environment variable management |
-| numpy | Numerical operations |
-
 ## How It Works
 
 1. **PDF Processing**: The uploaded PDF is parsed page-by-page using pypdf. Each page's text content is extracted and stored with its page number.
-
 2. **Embedding Creation**: Page contents are converted to vector embeddings using OpenAI's embedding API.
-
 3. **Index Building**: Embeddings are normalized and added to a FAISS inner-product index for fast similarity search.
-
 4. **Query Processing**: User questions are embedded and compared against the page index to find the most relevant pages.
-
 5. **Answer Generation**: Retrieved page content is passed to GPT-4o with a strict system prompt that enforces grounded, citation-backed responses.
-
-## License
-
-MIT
