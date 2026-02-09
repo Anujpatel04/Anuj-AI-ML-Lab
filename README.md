@@ -291,6 +291,5 @@ If you find this project useful, please consider giving it a star!
 
 ---
 
-**Made with care by Anuj** | [GitHub](https://github.com) | [LinkedIn](https://linkedin.com) | [Twitter](https://twitter.com)
-
+**Made with care by Anuj**
 </div>
