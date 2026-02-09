@@ -9,25 +9,19 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from pypdf import PdfReader
 
-<<<<<<< HEAD
 
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
 
-=======
 # Load environment variables from .env file
 load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), "..", ".env"))
 
 # Get OpenAI API key from environment
->>>>>>> b3fcbe2 (Restore app.py after secret removal)
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 if not OPENAI_API_KEY:
     st.error("OpenAI API key not found. Please set OPENAI_API_KEY in your .env file.")
     sys.exit(1)
 
-<<<<<<< HEAD
-=======
 # Initialize OpenAI client
->>>>>>> b3fcbe2 (Restore app.py after secret removal)
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 EMBEDDING_MODEL = "text-embedding-3-small"
@@ -44,8 +38,6 @@ Rules:
 4. Do not make assumptions or add information beyond what is in the context.
 5. Keep answers concise and factual.
 6. Format page references as: (Page X) or (Pages X, Y, Z)."""
-
-<<<<<<< HEAD
 
 def extract_pages_from_pdf(pdf_file) -> list[dict]:
     """Extract text content from each page of the PDF with page metadata."""
@@ -268,6 +260,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-=======
-# ...existing code...
->>>>>>> b3fcbe2 (Restore app.py after secret removal)
