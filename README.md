@@ -238,21 +238,6 @@ cat README.md
 </table>
 
 ---
-
-## LLM Projects (Submodules)
-
-<div align="center">
-
-| Project | Description | Status |
-|---------|-------------|--------|
-| [AIExpense-ManagementSystem](LLM_PROJECTS/AIExpense-ManagementSystem) | AI-powered expense tracking and management platform | Active |
-| [DailyNews_IncrementalModel](LLM_PROJECTS/DailyNews_IncrementalModel) | Incremental learning for news intelligence systems | Active |
-| [Multi-agent-orchestrator-system](LLM_PROJECTS/Multi-agent-orchestrator-system-with-standardized-A2A-Protocol) | Multi-agent orchestration with A2A protocol | Active |
-
-</div>
-
----
-
 ## Contributing
 
 <div align="center">
@@ -291,6 +276,5 @@ If you find this project useful, please consider giving it a star!
 
 ---
 
-**Made with care by Anuj** | [GitHub](https://github.com) | [LinkedIn](https://linkedin.com) | [Twitter](https://twitter.com)
-
+**Made with care by Anuj**
 </div>
