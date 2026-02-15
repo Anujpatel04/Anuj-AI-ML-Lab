@@ -145,18 +145,26 @@ def generate_short_video(
     model: str = "sora-2",
     size: str = "1280x720",
     poll_interval: int = 15,
+    progress_callback=None,
 ):
     """
-    Generate a short video (20–30 seconds) from a text prompt.
+    Generate a short video (15–30 seconds) from a text prompt.
 
-    duration_seconds: target total length (20–30). We use 12s clips and optionally 8s; default 24.
+    duration_seconds: target total length (15–30). Uses 4s, 8s, 12s clips.
+    progress_callback: optional callable(message: str) for UI updates (e.g. Streamlit).
     """
-    if duration_seconds < 20:
-        duration_seconds = 20
+    if duration_seconds < 15:
+        duration_seconds = 15
     if duration_seconds > 30:
         duration_seconds = 30
 
-    # Clip lengths: use 12s as much as possible, then 8s
+    def report(msg: str):
+        if progress_callback:
+            progress_callback(msg)
+        else:
+            print(msg)
+
+    # Clip lengths: use 12s, 8s, 4s to reach target
     clips = []
     remaining = duration_seconds
     while remaining >= 12:
@@ -173,8 +181,8 @@ def generate_short_video(
 
     api_key = get_api_key()
     total_clips = len(clips)
-    print(f"Generating {total_clips} clip(s): {', '.join(clips)}s → ~{sum(int(c) for c in clips)}s total")
-    print(f"Model: {model}, size: {size}\n")
+    report(f"Generating {total_clips} clip(s): {', '.join(clips)}s → ~{sum(int(c) for c in clips)}s total")
+    report(f"Model: {model}, size: {size}")
 
     part_prompts = []
     if total_clips == 1:
@@ -182,15 +190,14 @@ def generate_short_video(
     else:
         for i in range(total_clips):
             part_prompts.append(
-                f"[Part {i+1}/{total_clips}] {prompt}"
-                if total_clips > 1 else prompt
+                f"[Part {i+1}/{total_clips}] {prompt}" if total_clips > 1 else prompt
             )
 
     temp_dir = tempfile.mkdtemp()
     clip_paths = []
     try:
         for i, (sec, part_prompt) in enumerate(zip(clips, part_prompts)):
-            print(f"Clip {i+1}/{total_clips} ({sec}s)...")
+            report(f"Clip {i+1}/{total_clips} ({sec}s)...")
             job = create_video(api_key, part_prompt, seconds=sec, model=model, size=size)
             video_id = job["id"]
             wait_for_video(api_key, video_id, poll_interval=poll_interval)
@@ -199,18 +206,17 @@ def generate_short_video(
             with open(path, "wb") as f:
                 f.write(data)
             clip_paths.append(path)
-            print(f"  Saved clip {i+1}.\n")
+            report(f"Saved clip {i+1}.")
 
         out_abs = os.path.abspath(output_path)
         os.makedirs(os.path.dirname(out_abs) or ".", exist_ok=True)
         if concatenate_mp4s(clip_paths, out_abs):
-            print(f"Done. Video saved to: {out_abs}")
+            report(f"Done. Video saved to: {out_abs}")
         else:
-            # Fallback: copy first clip if ffmpeg missing
             with open(clip_paths[0], "rb") as f:
                 with open(out_abs, "wb") as out:
                     out.write(f.read())
-            print(f"ffmpeg not found; saved single clip to: {out_abs}")
+            report("ffmpeg not found; saved single clip.")
     finally:
         for p in clip_paths:
             try:
@@ -221,6 +227,7 @@ def generate_short_video(
             os.rmdir(temp_dir)
         except Exception:
             pass
+    return out_abs
 
 def main():
     if len(sys.argv) < 2:
@@ -231,5 +238,86 @@ def main():
     output = sys.argv[2] if len(sys.argv) > 2 else "output.mp4"
     generate_short_video(prompt, output_path=output)
 
+
+# ----- Streamlit frontend -----
+def run_streamlit_app():
+    import streamlit as st
+
+    st.set_page_config(page_title="Short Video Generator", page_icon="🎬", layout="centered")
+    st.title("🎬 OpenAI Short Video Generator")
+    st.caption("Generate 15–30 second videos with Sora via your prompt")
+
+    prompt = st.text_area(
+        "Video prompt",
+        placeholder="e.g. A calico cat playing piano on stage, soft lighting, cinematic",
+        height=100,
+        help="Describe the scene, action, and style for your video.",
+    )
+    duration = st.slider(
+        "Duration (seconds)",
+        min_value=15,
+        max_value=30,
+        value=24,
+        step=1,
+        help="Choose between 15 and 30 seconds. Longer videos take more time.",
+    )
+    col1, col2 = st.columns(2)
+    with col1:
+        model = st.selectbox("Model", options=["sora-2", "sora-2-pro"], index=0, help="sora-2 is faster, sora-2-pro is higher quality.")
+    with col2:
+        size = st.selectbox(
+            "Resolution",
+            options=["1280x720", "720x1280", "1024x1792", "1792x1024"],
+            index=0,
+        )
+
+    if st.button("Generate video", type="primary", use_container_width=True):
+        if not prompt or not prompt.strip():
+            st.error("Please enter a video prompt.")
+            return
+        progress_placeholder = st.empty()
+        log_placeholder = st.container()
+        messages = []
+
+        def on_progress(msg: str):
+            messages.append(msg)
+            with log_placeholder:
+                for m in messages:
+                    st.text(m)
+
+        with progress_placeholder:
+            with st.spinner("Generating your video… This may take several minutes."):
+                try:
+                    out_path = generate_short_video(
+                        prompt.strip(),
+                        output_path=os.path.join(tempfile.gettempdir(), f"streamlit_video_{int(time.time())}.mp4"),
+                        duration_seconds=duration,
+                        model=model,
+                        size=size,
+                        progress_callback=on_progress,
+                    )
+                except Exception as e:
+                    st.error(str(e))
+                    return
+
+        progress_placeholder.empty()
+        st.success("Video ready!")
+        with open(out_path, "rb") as f:
+            video_bytes = f.read()
+        st.video(video_bytes)
+        st.download_button(
+            "Download MP4",
+            data=video_bytes,
+            file_name="generated_video.mp4",
+            mime="video/mp4",
+            use_container_width=True,
+        )
+
+
 if __name__ == "__main__":
-    main()
+    # CLI: python short_video_generator.py "prompt" [output.mp4]
+    # Web UI: streamlit run short_video_generator.py
+    if len(sys.argv) >= 2 and not sys.argv[1].startswith("-"):
+        main()
+    else:
+        run_streamlit_app()
